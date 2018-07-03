@@ -42,9 +42,8 @@
 			 * uppercase: Format a string to upper case.
 			 */
 			
-			var  myApp = angular.module("myApp", []);
 			//自定义Filter
-			myApp.filter("myFilter", function() {
+			demoApp.filter("myFilter", function() {
 				return function(val) {
 					return val + "@";
 				}

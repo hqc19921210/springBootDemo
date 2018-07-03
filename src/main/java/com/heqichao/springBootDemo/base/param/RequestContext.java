@@ -85,9 +85,11 @@ public class RequestContext {
         this.paramMap = paramMap;
     }
 
+
     public static HashMap getMapByRequest(HttpServletRequest request) {
         HashMap paramMap = new HashMap();
         if(request!=null){
+           Map m= request.getParameterMap();
             Enumeration enu = request.getParameterNames();
             while (enu.hasMoreElements()) {
                 String paraName = (String) enu.nextElement();

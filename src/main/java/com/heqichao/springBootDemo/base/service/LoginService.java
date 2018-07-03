@@ -1,11 +1,17 @@
-package com.heqichao.springBootDemo.system.service;
+package com.heqichao.springBootDemo.base.service;
 
-import org.springframework.stereotype.Service;
+import com.heqichao.springBootDemo.base.param.ResponeResult;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Created by heqichao on 2018-2-12.
  */
 public interface LoginService {
 
-     boolean volicateLogin(String userNo,String password);
+
+
+     ResponeResult login(String userNo,String password) throws IOException;
 }

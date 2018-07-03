@@ -14,6 +14,8 @@ public class PropertiesConfig {
     @Value("${spring.profiles.active}")
     private String systemEnviromment;
 
+    @Value("${server.servlet.contextPath}")
+    private String projectName;
 
     public String getSystemEnviromment() {
         return systemEnviromment;
@@ -21,5 +23,13 @@ public class PropertiesConfig {
 
     public void setSystemEnviromment(String systemEnviromment) {
         this.systemEnviromment = systemEnviromment;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 }

@@ -1,5 +1,5 @@
 //格式化球员位置
-angular.module("voteApp").filter("posFilter", function() {
+demoApp.filter("posFilter", function() {
 	return function(val) {
 		var pos = "Unknown";
 		switch (val) {

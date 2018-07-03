@@ -2,6 +2,8 @@ package com.heqichao.springBootDemo.base.filter;
 
 import com.heqichao.springBootDemo.base.exception.ResponeException;
 import com.heqichao.springBootDemo.base.param.RequestContext;
+import com.heqichao.springBootDemo.base.param.ResponeResult;
+import com.heqichao.springBootDemo.base.util.ServletUtil;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -17,16 +19,16 @@ import java.util.Map;
 /**
  * Created by heqichao on 2018-2-14.
  */
-@Component
-
-//@Order(value = 2)
-@WebFilter(urlPatterns = "/service/*",filterName = "SessionFilter")
-public class SessionFilter implements Filter {
+@WebFilter(urlPatterns = "/service/*",filterName = "SessionAppFilter")
+public class SessionAppFilter implements Filter {
     private static Map noLoginUrl=new HashMap();
+    //允许不登陆的请求
     static {
         noLoginUrl.put("/service/login",new Object());
         noLoginUrl.put("/service/updatePassword",new Object());
+        noLoginUrl.put("/service/checkLogin",new Object());
     }
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -39,21 +41,16 @@ public class SessionFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         try {
             String uri = request.getServletPath();
-            HttpSession session = RequestContext.getContext().getSession();
             if(noLoginUrl.get(uri) == null){
-                if(session== null || session.getAttribute("USER") == null){
-                      response.sendRedirect("login.html");
-                       return;
+                if(ServletUtil.getSessionUser() == null){
+                    ServletUtil.writeToResponse(response,ServletUtil.NO_LOGIN_RESULT);
+                    return;
                 }
             }
-
             filterChain.doFilter(request, response);
         }catch (Exception e){
             throw new ResponeException(e);
         }
-
-
-
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.heqichao.springBootDemo.base.util;
 
+import com.alibaba.fastjson.JSON;
+
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,36 +22,8 @@ public class JsonUtil {
         if(obj==null){
             return "";
         }
-        StringWriter writer = new StringWriter();
-     /*   if(obj instanceof BaseParam){//BaseEntity实体对象为大写时的转换
-            Map objMap=new HashMap();
-            BeanUtil.copyProperties(objMap, obj);
-            obj=objMap;
-        }else if(obj instanceof List) {
-            List list = new ArrayList();
-            List objList = (List) obj;
-            for (int i = 0; i < objList.size(); i++) {
-                Object object = objList.get(i);
-                if(object instanceof BaseParam){//BaseEntity实体对象为大写时的转换
-                    Map objMap=new HashMap();
-                    BeanUtil.copyProperties(objMap, object);
-                    list.add(objMap);
-                }else {
-                    list.add(object);
-                }
-            }
-            obj = list;
-        }
-        if(obj != null){
-            try {
-                mapper.writeValue(writer, obj);
-            } catch (Exception e) {
-                e.printStackTrace();
-                //throw new BaseRuningTimeException("json error");
-            }
-        }
-        return writer.toString();*/
-     return null;
+        String objJson = JSON.toJSONString(obj);
+     return objJson;
     }
 
 }

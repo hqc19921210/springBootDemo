@@ -1,6 +1,9 @@
 package com.heqichao.springBootDemo.base.exception;
 
+import com.heqichao.springBootDemo.base.param.ResponeResult;
 import com.heqichao.springBootDemo.base.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,7 +18,7 @@ import java.util.Map;
 //@RestControllerAdvice  则可以不用添加ResponseBody
 @ControllerAdvice
 public class ResponeExceptionHandler {
-
+    Logger logger = LoggerFactory.getLogger(getClass());
     private String DEFAULT_ERROR_MSG ="系统错误";
     @Autowired
     private ExceptionMap exceptionMap;
@@ -26,11 +29,9 @@ public class ResponeExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
-    public Map errorHandler(Exception ex) {
-        Map map = new HashMap();
-        map.put("code", 100);
-        map.put("msg", DEFAULT_ERROR_MSG);
-        return map;
+    public ResponeResult errorHandler(Exception ex) {
+        logger.error("System_Exception:",ex);
+        return new ResponeResult(false,DEFAULT_ERROR_MSG);
     }
 
     /**
@@ -40,15 +41,14 @@ public class ResponeExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(value = ResponeException.class)
-    public Map myErrorHandler(ResponeException ex) {
-        Map map = new HashMap();
-        map.put("code", ex.getCode());
+    public ResponeResult myErrorHandler(ResponeException ex) {
+        logger.error("System_ResponeException:",ex);
+        ResponeResult responeResult= new ResponeResult(false,DEFAULT_ERROR_MSG);
+
         if(StringUtil.isNotEmpty((String) exceptionMap.getExceptionMap().get(ex.getMsg()))){
-            map.put("msg", exceptionMap.getExceptionMap().get(ex.getMsg()));
-        }else{
-            map.put("msg", DEFAULT_ERROR_MSG);
+            responeResult.setMessage((String) exceptionMap.getExceptionMap().get(ex.getMsg()));
         }
 
-        return map;
+        return responeResult;
     }
 }

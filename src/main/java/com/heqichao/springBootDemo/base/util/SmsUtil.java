@@ -1,4 +1,4 @@
-package com.heqichao.springBootDemo.system.util;
+package com.heqichao.springBootDemo.base.util;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;

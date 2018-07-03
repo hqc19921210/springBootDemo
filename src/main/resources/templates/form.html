@@ -58,10 +58,9 @@
 			 * AngularJS offers client-side form validation.
 			 */
 			
-			var myApp = angular.module("myApp", []);
-			
+
 			//使用指令自定义表单验证规则
-			myApp.directive("myValDirective", function() {
+			demoApp.directive("myValDirective", function() {
 			    return {
 				    require: "ngModel",
 				    link: function(scope, element, attr, mCtrl) {

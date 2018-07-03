@@ -10,10 +10,16 @@ public class ResponeException extends RuntimeException {
         this.msg = msg;
     }
 
+    public  ResponeException(Throwable cause){
+        this.cause=cause;
+    }
+
     //异常编码
     private String code;
     //异常信息
     private String msg;
+
+    private Throwable cause;
 
     public String getCode() {
         return code;
@@ -29,5 +35,14 @@ public class ResponeException extends RuntimeException {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    @Override
+    public Throwable getCause() {
+        return cause;
+    }
+
+    public void setCause(Throwable cause) {
+        this.cause = cause;
     }
 }

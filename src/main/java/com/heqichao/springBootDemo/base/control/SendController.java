@@ -1,4 +1,4 @@
-package com.heqichao.springBootDemo.base.action;
+package com.heqichao.springBootDemo.base.control;
 
 import com.heqichao.springBootDemo.base.param.ResponeResult;
 import com.heqichao.springBootDemo.base.service.SendService;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by heqichao on 2018-2-12.
  */
 @RestController
-public class SendController {
+public class SendController extends BaseController{
 
     @Autowired
     private SendService sendService;

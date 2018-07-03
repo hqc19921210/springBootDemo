@@ -1,5 +1,6 @@
 package com.heqichao.springBootDemo.base.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,45 +11,24 @@ import java.util.Date;
 /**
  * Created by heqichao on 2018-2-12.
  */
-public class SystemUserInfo implements Serializable {
+public class UserInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String userNo;
-    private String NAME;
-    private String ID;
+    private String name;
+    private int id;
     @JsonIgnore//json返回时忽略该字段
     private String password;
 
+/*    @JsonInclude(JsonInclude.Include.NON_NULL) //为null时不返回
+    private String mail;
     @JsonInclude(JsonInclude.Include.NON_NULL) //为null时不返回
-  private String MAIL;
-    @JsonInclude(JsonInclude.Include.NON_NULL) //为null时不返回
-    private String mobile;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",locale = "zh",timezone = "GMT+8")
-    private Date CREATE_TIME;
+    private String mobile;*/
 
-    public String getMAIL() {
-        return MAIL;
-    }
 
-    public void setMAIL(String MAIL) {
-        this.MAIL = MAIL;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public Date getCREATE_TIME() {
-        return CREATE_TIME;
-    }
-
-    public void setCREATE_TIME(Date CREATE_TIME) {
-        this.CREATE_TIME = CREATE_TIME;
-    }
+   // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",locale = "zh",timezone = "GMT+8")
+   @JSONField(format="yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
 
     public String getUserNo() {
         return userNo;
@@ -56,6 +36,22 @@ public class SystemUserInfo implements Serializable {
 
     public void setUserNo(String userNo) {
         this.userNo = userNo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPassword() {
@@ -66,19 +62,11 @@ public class SystemUserInfo implements Serializable {
         this.password = password;
     }
 
-    public String getNAME() {
-        return NAME;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setNAME(String NAME) {
-        this.NAME = NAME;
-    }
-
-    public String getID() {
-        return ID;
-    }
-
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

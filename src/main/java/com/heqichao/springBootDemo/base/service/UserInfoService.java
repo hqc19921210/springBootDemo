@@ -1,5 +1,6 @@
 package com.heqichao.springBootDemo.base.service;
 
+import com.github.pagehelper.PageInfo;
 import com.heqichao.springBootDemo.base.entity.UserInfo;
 
 import java.util.List;
@@ -7,9 +8,11 @@ import java.util.List;
 /**
  * Created by heqichao on 2018-2-24.
  */
-public interface SystemUserInfoService {
+public interface UserInfoService {
 
     UserInfo queryById(String id);
-    List<UserInfo> queryAll();
+    PageInfo queryAll();
+
+
 
 }

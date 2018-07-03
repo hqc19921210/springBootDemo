@@ -1,5 +1,5 @@
 //验证球员号码
-angular.module("voteApp").directive("valPlayerNum", function() {
+angular.module("demoApp").directive("valPlayerNum", function() {
 	return {
 	    require: "ngModel",
 	    link: function(scope, element, attr, mCtrl) {

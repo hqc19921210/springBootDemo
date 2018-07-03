@@ -8,9 +8,10 @@ public class ResponeResult {
 
     private boolean isSuccess =true;
 
-    private String message;
+    private String message="";
 
-    private Object resultObj;
+    private Object resultObj=new Object();
+
 
     private PageInfo requestPageInfo;
 

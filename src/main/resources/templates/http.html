@@ -36,8 +36,7 @@
 			 * .statusText a string defining the HTTP status.
 			 */
 			
-			var myApp = angular.module("myApp", []);
-			myApp.controller("myCtrl", function($scope, $http) {
+			demoApp.controller("myCtrl", function($scope, $http) {
 				$http({
 					method: "GET",
 					url: "data/players.json"
