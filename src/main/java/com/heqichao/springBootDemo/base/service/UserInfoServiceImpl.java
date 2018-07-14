@@ -6,8 +6,12 @@ package com.heqichao.springBootDemo.base.service;
 
 import com.github.pagehelper.PageInfo;
 import com.heqichao.springBootDemo.base.mapper.UserInfoMapper;
+import com.heqichao.springBootDemo.base.mapper.UserMapper;
+import com.heqichao.springBootDemo.base.entity.User;
 import com.heqichao.springBootDemo.base.entity.UserInfo;
 import com.heqichao.springBootDemo.base.util.PageUtil;
+import com.heqichao.springBootDemo.base.util.ServletUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +23,18 @@ import java.util.List;
 public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
     private UserInfoMapper userInfoMapper;
+    
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public UserInfo queryById(String id) {
         return userInfoMapper.getOne(id);
+    }
+    
+    @Override
+    public List<User> queryUsersList() {
+    	return userMapper.getUsers(ServletUtil.getSessionUser());
     }
 
     @Override

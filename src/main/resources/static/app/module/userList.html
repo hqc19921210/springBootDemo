@@ -1,0 +1,147 @@
+<div class="container" >
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">用户列表</h3>
+				</div>
+				<div class="panel-body">
+				<div class="row" ng-show="user.competence == 2 ">
+                     <div class="col-sm-6">
+                         <div class="m-b-30">
+                             <button class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#user-add-modal">新增用户 <i class="fa fa-plus"></i></button>
+                         </div>
+                     </div>
+                 </div>
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+									<tr>
+										<th>帐号</th>
+										<th>公司名称</th>
+										<th>联系人</th>
+										<th>联系电话</th>
+										<th>传真</th>
+										<th>邮箱</th>
+										<th>站点</th>
+										<th>备注</th>
+										<th>权限</th>
+										<th>操作</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr ng-repeat="user in users"> 
+										<td>{{ user.account }}</td>
+										<td>{{ user.company }}</td>
+										<td>{{ user.contact }}</td>
+										<td>{{ user.phone }}</td>
+										<td>{{ user.fax }}</td>
+										<td>{{ user.email }}</td>
+										<td>{{ user.site }}</td>
+										<td>{{ user.remark }}</td>
+										<td>{{ user.competence == 2 ? "管理员" : (user.competence == 3 ? "客户" : "普通用户" ) }}</td>
+										<td><a href="javascript:void(0);"><span>设备配置</span></a></td>
+									</tr>
+									
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="user-add-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
+         <div class="modal-dialog"> 
+             <div class="modal-content"> 
+                 <div class="modal-header"> 
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> 
+                     <h4 class="modal-title">添加用户</h4> 
+                 </div> 
+                 <form class="modal-body" ng-submit="addUser()" name="addUserForm" novalidate="novalidate"> 
+                     <div class="row"> 
+                         <div class="col-md-6"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">帐号<span style="color : red">*</span></label> 
+                                 <input type="text" class="form-control" name="uID" ng-model="uID" required >
+                                 <span style="color:red" ng-show="addUserForm.uID.$dirty && addUserForm.uID.$invalid"> 
+                                 <label class="error" ng-show="addUserForm.uID.$error.required">用户名是必须的。</label>
+                                 </span>
+                             </div> 
+                         </div> 
+                         <div class="col-md-6"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">密码</label> 
+                                 <input type="text" class="form-control"  > 
+                             </div> 
+                         </div> 
+                     </div> 
+                     <div class="row"> 
+                         <div class="col-md-8"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">公司名称</label> 
+                                 <input type="text" class="form-control"  > 
+                             </div> 
+                         </div> 
+                         <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">联系人</label> 
+                                 <input type="text" class="form-control"  > 
+                             </div> 
+                         </div> 
+                     </div> 
+                     <div class="row"> 
+                         <div class="col-md-6"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">联系电话</label> 
+                                 <input type="text" class="form-control"  > 
+                             </div> 
+                         </div> 
+                         <div class="col-md-6"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">传真</label> 
+                                 <input type="text" class="form-control"  > 
+                             </div> 
+                         </div> 
+                     </div> 
+                     <div class="row"> 
+                         <div class="col-md-8"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">邮箱</label> 
+                                 <input type="text" class="form-control"  > 
+                             </div> 
+                         </div> 
+                         <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">站点</label> 
+                                 <input type="text" class="form-control"  > 
+                             </div> 
+                         </div> 
+                     </div> 
+                     <div class="row"> 
+                         <div class="col-md-8"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">备注</label> 
+                                 <input type="text" class="form-control"  > 
+                             </div> 
+                         </div> 
+                         <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">权限</label> 
+                                 <input type="text" class="form-control"  > 
+                             </div> 
+                         </div> 
+                     </div> 
+                 <div class="modal-footer"> 
+                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">关闭</button> 
+                     <button type="submit" class="btn btn-info waves-effect waves-light">保存并添加</button> 
+                 </div> 
+                 </form> 
+             </div> 
+         </div>
+     </div>
+</div>
