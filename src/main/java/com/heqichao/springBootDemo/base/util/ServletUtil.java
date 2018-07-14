@@ -1,5 +1,6 @@
 package com.heqichao.springBootDemo.base.util;
 
+import com.heqichao.springBootDemo.base.entity.User;
 import com.heqichao.springBootDemo.base.entity.UserInfo;
 import com.heqichao.springBootDemo.base.param.RequestContext;
 import com.heqichao.springBootDemo.base.param.ResponeResult;
@@ -22,20 +23,35 @@ public class ServletUtil {
 
 
 
-    public static UserInfo getSessionUser(){
+//    public static UserInfo getSessionUser(){
+//        HttpSession session = RequestContext.getContext().getSession();
+//        if(session == null || session.getAttribute(SESSION_USER) == null){
+//            return null;
+//        }else{
+//            return (UserInfo) session.getAttribute(SESSION_USER);
+//        }
+//    }
+
+//    public static void setSessionUser( UserInfo userInfo){
+//        HttpSession session = RequestContext.getContext().getSession();
+//        if(session != null){
+//            session.setAttribute(SESSION_USER,userInfo);
+//        }
+//    }
+    
+    public static User getSessionUser(){
         HttpSession session = RequestContext.getContext().getSession();
         if(session == null || session.getAttribute(SESSION_USER) == null){
             return null;
         }else{
-            return (UserInfo) session.getAttribute(SESSION_USER);
+            return (User) session.getAttribute(SESSION_USER);
         }
     }
-
-    public static void setSessionUser( UserInfo userInfo){
-        HttpSession session = RequestContext.getContext().getSession();
-        if(session != null){
-            session.setAttribute(SESSION_USER,userInfo);
-        }
+    public static void setSessionUser( User user){
+    	HttpSession session = RequestContext.getContext().getSession();
+    	if(session != null){
+    		session.setAttribute(SESSION_USER,user);
+    	}
     }
 
 /*    public static boolean   checkLoginForHtml(HttpServletRequest request ,  HttpServletResponse response ) throws IOException {

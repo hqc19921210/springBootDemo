@@ -4,6 +4,8 @@ import com.heqichao.springBootDemo.base.param.PageInfo;
 import com.heqichao.springBootDemo.base.param.RequestContext;
 import com.heqichao.springBootDemo.base.param.ResponeResult;
 import com.heqichao.springBootDemo.base.service.UserInfoService;
+import com.heqichao.springBootDemo.base.util.ServletUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +33,12 @@ public class UserInfoController extends BaseController{
         System.out.println(mm.get("id"));
         System.out.println(id);
         return new ResponeResult(userInfoService.queryById(id));
+    }
+    
+    
+    @RequestMapping(value = "/getUsers")
+    ResponeResult getUsers() {
+    	return new ResponeResult(userInfoService.queryUsersList());
     }
 
     @RequestMapping(value = "/test")

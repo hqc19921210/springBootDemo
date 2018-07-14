@@ -28,9 +28,9 @@ public class LoginController extends BaseController{
     @RequestMapping(value = "/login" )
     @ResponseBody
     public ResponeResult login(@RequestBody Map map) throws Exception {
-        String userNo = (String) map.get("userNo");
-        System.out.println(userNo);
-        ResponeResult responeResult=loginSerice.login("","");
+//        String userNo = (String) map.get("userNo");
+//        System.out.println(userNo);
+        ResponeResult responeResult=loginSerice.login(map.get("userNo").toString(),map.get("password").toString());
         return responeResult;
     }
 
