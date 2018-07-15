@@ -14,7 +14,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
  * @author chenrl
  * 2016年1月6日下午3:29:28
  */
-public class MqttUtilServer {
+public class MqttUtilTestServer {
 
 
 
@@ -29,7 +29,7 @@ public class MqttUtilServer {
 
     private MqttMessage message;
 
-    public MqttUtilServer() throws MqttException {
+    public MqttUtilTestServer() throws MqttException {
         // MemoryPersistence设置clientid的保存形式，默认为以内存保存
         client = new MqttClient(HOST, clientid, new MemoryPersistence());
         connect();
@@ -45,7 +45,7 @@ public class MqttUtilServer {
         // 设置会话心跳时间
         options.setKeepAliveInterval(20);
         try {
-            client.setCallback(new MqttUtilCallback());
+            client.setCallback(new MqttUtilTestCallback());
             client.connect(options);
             topic = client.getTopic(TOPIC);
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class MqttUtilServer {
     }
 
     public static void main(String[] args) throws MqttException {
-        MqttUtilServer server = new MqttUtilServer();
+        MqttUtilTestServer server = new MqttUtilTestServer();
 
         server.message = new MqttMessage();
         server.message.setQos(1);

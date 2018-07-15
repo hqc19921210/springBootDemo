@@ -5,24 +5,24 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-
-import java.util.concurrent.ScheduledExecutorService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by heqichao on 2018-7-9.
  */
-public class MqttUtilClient {
+public class MqttUtilTestClient {
 
-
-    public static final String HOST = "tcp://127.0.0.1:61613";
-    public static final String TOPIC = "toptic";
+    Logger logger = LoggerFactory.getLogger(getClass());
+    public static final String HOST = "tcp://120.25.158.182:1883";
+    public static final String TOPIC = "application/0000000000000001/node/0100000010000618/rx";
     private static final String clientid = "clientid";
+
+    private String userName = "wangw";
+    private String passWord = "ww1030";
+
     private MqttClient client;
     private MqttConnectOptions options;
-    private String userName = "admin";
-    private String passWord = "password";
-
-    private ScheduledExecutorService scheduler;
 
     private void start() {
         try {
@@ -41,10 +41,10 @@ public class MqttUtilClient {
             // 设置会话心跳时间 单位为秒 服务器会每隔1.5*20秒的时间向客户端发送个消息判断客户端是否在线，但这个方法并没有重连的机制
             options.setKeepAliveInterval(20);
             // 设置回调
-            client.setCallback(new MqttUtilCallback());
+            client.setCallback(new MqttUtilTestCallback());
             MqttTopic topic = client.getTopic(TOPIC);
             //setWill方法，如果项目中需要知道客户端是否掉线可以调用该方法。设置最终端口的通知消息
-            options.setWill(topic, "close".getBytes(), 2, true);
+            options.setWill(topic, "CLOSE".getBytes(), 2, true);
 
             client.connect(options);
             //订阅消息
@@ -58,7 +58,7 @@ public class MqttUtilClient {
     }
 
     public static void main(String[] args) throws MqttException {
-        MqttUtilClient client = new MqttUtilClient();
+        MqttUtilTestClient client = new MqttUtilTestClient();
         client.start();
     }
 }

@@ -5,7 +5,6 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -30,21 +29,14 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class MqttUtilCallback implements MqttCallback {
+public class MqttUtilTestCallback implements MqttCallback {
 
-    private MqttUtil mqttUtil;
-
-
-    public MqttUtilCallback(MqttUtil mqttUtil){
-        this.mqttUtil=mqttUtil;
-    }
 
     Logger logger = LoggerFactory.getLogger(getClass());
     @Override
     public void connectionLost(Throwable throwable) {
         // 连接丢失后，一般在这里面进行重连
         logger.error(" MQTT 连接异常断开，开始重连",throwable);
-        mqttUtil.init();
     }
 
     @Override
