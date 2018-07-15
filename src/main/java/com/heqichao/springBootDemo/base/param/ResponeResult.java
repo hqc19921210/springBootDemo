@@ -12,9 +12,6 @@ public class ResponeResult {
 
     private Object resultObj=new Object();
 
-
-    private PageInfo requestPageInfo;
-
     public ResponeResult() {
         this.isSuccess = true;
     }
