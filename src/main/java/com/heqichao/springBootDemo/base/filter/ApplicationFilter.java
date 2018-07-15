@@ -55,7 +55,7 @@ public class ApplicationFilter implements Filter {
 
     @Override
     public void destroy() {
-        System.out.println(" AAAAAAAAAAAAAAAAAAAAAAA destroy");
+        System.out.println(" application destroy !");
     }
 
 

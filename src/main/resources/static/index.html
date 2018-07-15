@@ -32,7 +32,6 @@
 
 
 
-
 	</head>
 	<body class="fixed-left" ng-controller="indexCtrl" >
 
@@ -142,7 +141,8 @@
 									</a>
                                     <ul class="dropdown-menu">
                                         <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> 个人信息</a></li>
-                                        <li><a href="javascript:void(0)"><i class="md md-settings"></i> 修改密码</a></li>
+                                        <li><a   data-toggle="modal" data-target="#update-pwd-modal"><i class="md md-settings"></i> 修改密码</a></li>
+									<!--	<button class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#update-pwd-modal">新增用户 <i class="fa fa-plus"></i></button>-->
                                         <li><a ng-click="logout()"><i class="md md-settings-power"></i> 退出登录</a></li>
                                     </ul>
                                 </li>
@@ -225,9 +225,7 @@
 		</div>-->
 
 		<div class="content-page" >
-			<div class="content" ng-view>
-
-			</div>
+			<div class="content" ng-view></div>
 			<footer class="footer text-right">
 				2018 © SSED.
 			</footer>
@@ -306,6 +304,9 @@
 		<script src="assets/plugins/flot-chart/jquery.flot.selection.js"></script>
 		<script src="assets/plugins/flot-chart/jquery.flot.stack.js"></script>
 		<script src="assets/plugins/flot-chart/jquery.flot.crosshair.js"></script>-->
+		
+		<!-- Sweet-Alert  -->
+		<script src="assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
 
 		<!-- todos app  -->
 		<script src="assets/pages/jquery.todo.js"></script>
@@ -316,6 +317,8 @@
 		<!-- dashboard  -->
 		<script src="assets/pages/jquery.dashboard.js"></script>
 
+		<!-- md5 -->
+		<script src="assets/js/md5.js"></script>
 		<!-- angular control js -->
 		<script src="app/controller/indexControllers.js"></script>
 		<script src="app/controller/demoControllers.js"></script>
@@ -350,7 +353,6 @@
 
 				});
 
-				console.info("indexCtrl");
 
 				$scope.logout=function(){
 					$http.get("service/logout").success(function(data) {
@@ -359,10 +361,67 @@
 					});
 				}
 
+				$scope.updatePwd=function(){
+					if($scope.newPwd != $scope.checkPwd){
+						$scope.newPwd ="";
+						$scope.checkPwd ="";
+						swal("两次密码不一致，请重新输入！");
+					}else{
+						$scope.encordSrcPwd=hex_md5($scope.srcPwd);
+						$scope.encordNewPwd=hex_md5($scope.newPwd);
+						console.info($scope.encordSrcPwd);
+						console.info($scope.encordNewPwd);
+					/*	$http.post("service/updatePwd",{id:$rootScope.user.id,srcPwd:$scope.srcPwd,newPwd :$scope.newPwd}).success(function(data) {
+							console.info(data);
+						});*/
+						//angular.element("#updatePwdId").click();
+						$("#updatePwdId").click();
+					}
+				}
+
 			});
 		</script>
 
 
+		<div id="update-pwd-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true" style="display: none">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<h4 class="modal-title">修改密码</h4>
+					</div>
+					<form class="modal-body" ng-submit="updatePwd()"   name="updatePwdForm" >
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label  class="control-label">原密码<span style="color: red">*</span></label>
+									<input type="password" class="form-control" required ng-model="srcPwd" name="srcPwd">
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label  class="control-label">新密码<span style="color: red">*</span></label>
+									<input type="password" class="form-control" required  ng-model="newPwd" name="newPwd">
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label  class="control-label">确认密码<span style="color: red">*</span></label>
+									<input type="password" class="form-control" required ng-model="checkPwd" name="checkPwd">
+								</div>
+								<div style="color: red" ng-show="newPwd != checkPwd && newPwd && checkPwd">
+                      		  		*两次密码输入不一致
+                   				</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button id="updatePwdId" type="button" class="btn btn-default waves-effect" data-dismiss="modal" >关闭</button>
+							<button type="submit" class="btn btn-info waves-effect waves-light"  ng-disabled="updatePwdForm.$invalid || newPwd != checkPwd">保存</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 		</div>
 	</body>
 </html>

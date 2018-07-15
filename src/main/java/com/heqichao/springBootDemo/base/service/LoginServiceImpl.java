@@ -21,13 +21,14 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public ResponeResult login(String userNo, String password) throws IOException {
             ResponeResult responeResult =new ResponeResult(false,"");
-            String enPassword = AesUtil.aesEncrypt(password);
-            User user = userMap.getUserInfo(userNo,enPassword);
-//            UserInfo userInfo =new UserInfo();
-//            userInfo.setId(123);
-            responeResult.setResultObj(user);
-            responeResult.setSuccess(true);
-            ServletUtil.setSessionUser(user);
+        // String enPassword = AesUtil.aesEncrypt(password);
+            //直接用前端传来的密文与数据库里的密文对比
+            User user = userMap.getUserInfo(userNo,password);
+            if(user!=null){
+                responeResult =new ResponeResult(user);
+                ServletUtil.setSessionUser(user);
+            }
+
         return responeResult;
     }
 }
