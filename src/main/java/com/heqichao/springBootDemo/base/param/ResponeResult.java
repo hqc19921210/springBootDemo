@@ -22,10 +22,6 @@ public class ResponeResult {
         this.resultObj = resultObj;
     }
 
-    public ResponeResult(boolean isSuccess,  Object resultObj) {
-        this.isSuccess = isSuccess;
-        this.resultObj = resultObj;
-    }
 
     public ResponeResult(boolean isSuccess, String message) {
         this.isSuccess = isSuccess;
@@ -33,6 +29,7 @@ public class ResponeResult {
     }
 
     public ResponeResult( Object resultObj) {
+        this.isSuccess =true;
         this.resultObj = resultObj;
     }
 
