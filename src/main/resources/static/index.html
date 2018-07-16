@@ -339,7 +339,11 @@
 
 
 			demoApp.controller("indexCtrl", function($scope, $http,$rootScope) {
-
+				$scope.newPwd ="";
+				$scope.checkPwd ="";
+				$scope.encordSrcPwd="";
+				$scope.encordNewPwd="";
+				$scope.srcPwd="";
 				$http.post("service/checkLogin").success(function(data) {
 					if(data.resultObj){
 						//保存全局的用户
@@ -374,9 +378,19 @@
 					/*	$http.post("service/updatePwd",{id:$rootScope.user.id,srcPwd:$scope.srcPwd,newPwd :$scope.newPwd}).success(function(data) {
 							console.info(data);
 						});*/
-						//angular.element("#updatePwdId").click();
-						$("#updatePwdId").click();
+						//修改成功后
+						$scope.closePwd();
+
 					}
+				}
+
+				$scope.closePwd=function(){
+					$scope.srcPwd="";
+					$scope.newPwd ="";
+					$scope.checkPwd ="";
+					$scope.encordSrcPwd="";
+					$scope.encordNewPwd="";
+					$("#updatePwdId").click();
 				}
 
 			});
@@ -387,7 +401,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closePwd()">×</button>
 						<h4 class="modal-title">修改密码</h4>
 					</div>
 					<form class="modal-body" ng-submit="updatePwd()"   name="updatePwdForm" >
@@ -415,7 +429,7 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button id="updatePwdId" type="button" class="btn btn-default waves-effect" data-dismiss="modal" >关闭</button>
+							<button id="updatePwdId" type="button" class="btn btn-default waves-effect" data-dismiss="modal" ng-click="closePwd()">关闭</button>
 							<button type="submit" class="btn btn-info waves-effect waves-light"  ng-disabled="updatePwdForm.$invalid || newPwd != checkPwd">保存</button>
 						</div>
 					</form>
