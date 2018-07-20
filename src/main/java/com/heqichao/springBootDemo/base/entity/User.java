@@ -1,18 +1,26 @@
 package com.heqichao.springBootDemo.base.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.heqichao.springBootDemo.base.util.StringUtil;
+
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Map;
+
+import org.springframework.stereotype.Component;
 
 /**
  * @author Muzzy Xu.
  * 
  * 
  */
+@Component("user")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private int uId;
-    private int parentId;
+    private Integer id;
+    private Integer parentId;
     private String account;
     
     @JsonIgnore//json返回时忽略该字段
@@ -26,19 +34,38 @@ public class User implements Serializable {
     private String site;
     private String remark;
     private String status;
-    private String competence;
+    private Integer competence;
     
-    public User() {
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
+    private Date updateTime;
+    
+    private Integer upadteUID;
+    
+    
+    
+	public User() {
     	
     }
-    public User(String account,String password) {
-    	this.account = account;
-    	this.password = password;
+    public User(Map map) {
+    	this.id = StringUtil.objectToInteger(StringUtil.getStringByMap(map,"id"));
+    	this.parentId = StringUtil.objectToInteger(StringUtil.getStringByMap(map,"parentId"));
+    	this.account = StringUtil.getStringByMap(map,"account");
+    	this.password = StringUtil.getStringByMap(map,"encordPwd");
+    	this.company = StringUtil.getStringByMap(map,"company");
+    	this.contact = StringUtil.getStringByMap(map,"contact");
+    	this.phone = StringUtil.getStringByMap(map,"phone");
+    	this.fax = StringUtil.getStringByMap(map,"fax");
+    	this.email = StringUtil.getStringByMap(map,"email");
+    	this.site = StringUtil.getStringByMap(map,"site");
+    	this.remark = StringUtil.getStringByMap(map,"remark");
+    	this.competence = StringUtil.objectToInteger(StringUtil.getStringByMap(map,"competence"));
     }
     
     public void reset() {
-    	this.uId = 0;
-    	this.parentId = 0;
+    	this.id = null;
+    	this.parentId = null;
     	this.account = null;
     	this.password = null;
     	this.company = null;
@@ -50,20 +77,23 @@ public class User implements Serializable {
     	this.remark = null;
     	this.status = null;
     	this.competence = null;
+    	this.createTime = null;
+    	this.updateTime = null;
+    	this.upadteUID = null;
         
     }
     
     
-	public int getuId() {
-		return uId;
+	public Integer getId() {
+		return id;
 	}
-	public void setuId(int uId) {
-		this.uId = uId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
-	public int getParentId() {
+	public Integer getParentId() {
 		return parentId;
 	}
-	public void setParentId(int parentId) {
+	public void setParentId(Integer parentId) {
 		this.parentId = parentId;
 	}
 	public String getAccount() {
@@ -126,11 +156,29 @@ public class User implements Serializable {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getCompetence() {
+	public Integer getCompetence() {
 		return competence;
 	}
-	public void setCompetence(String competence) {
+	public void setCompetence(Integer competence) {
 		this.competence = competence;
+	}
+	public Date getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+	public Integer getUpadteUID() {
+		return upadteUID;
+	}
+	public void setUpadteUID(Integer upadteUID) {
+		this.upadteUID = upadteUID;
 	}
 
 

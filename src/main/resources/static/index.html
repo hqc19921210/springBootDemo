@@ -201,7 +201,7 @@
 									
                                 </ul>
                             </li>
-							<li class="has_sub">
+							<li class="has_sub" ng-show="user.competence != 4">
                                 <a href="javascript:void(0);" class="waves-effect waves-light"><i class="ion-ios7-gear"></i><span>系统管理 </span><span class="pull-right"><i class="md md-add"></i></span></a>
                                 <ul>
                                     
@@ -338,7 +338,7 @@
 		<script type="text/javascript">
 
 
-			demoApp.controller("indexCtrl", function($scope, $http,$rootScope) {
+			demoApp.controller("indexCtrl", function($scope, $http, $rootScope, $timeout) {
 				$scope.newPwd ="";
 				$scope.checkPwd ="";
 				$scope.encordSrcPwd="";
@@ -369,17 +369,26 @@
 					if($scope.newPwd != $scope.checkPwd){
 						$scope.newPwd ="";
 						$scope.checkPwd ="";
-						swal("两次密码不一致，请重新输入！");
+						swal("两次密码不一致，请重新输入！","error");
 					}else{
 						$scope.encordSrcPwd=hex_md5($scope.srcPwd);
 						$scope.encordNewPwd=hex_md5($scope.newPwd);
-						console.info($scope.encordSrcPwd);
-						console.info($scope.encordNewPwd);
-					/*	$http.post("service/updatePwd",{id:$rootScope.user.id,srcPwd:$scope.srcPwd,newPwd :$scope.newPwd}).success(function(data) {
-							console.info(data);
-						});*/
-						//修改成功后
-						$scope.closePwd();
+						$http.post("service/updatePwd",
+								{srcPwd:$scope.encordSrcPwd,
+								newPwd :$scope.encordNewPwd}).success(function(data) {
+									console.info(data);
+									if(data.resultObj == "errorMsg"){
+							        	swal(data.message, null, "error");
+							        }else{
+										swal({   
+								            title: "修改密码成功，请重新登录",   
+								            text: "即将跳转登陆页...",   
+								            timer: 3000,   
+								            showConfirmButton: false 
+								        });
+										$timeout(function(){$scope.logout();}, 2900);
+							        }
+						});
 
 					}
 				}
