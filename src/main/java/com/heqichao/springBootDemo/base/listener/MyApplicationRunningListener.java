@@ -25,7 +25,7 @@ public class MyApplicationRunningListener implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
         logger.info("应用启动成功："+new Date());
-        initTask();
+//        initTask();
     }
 
     private void initTask(){

@@ -20,7 +20,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public ResponeResult login(String userNo, String password) throws IOException {
-            ResponeResult responeResult =new ResponeResult(false,"");
+            ResponeResult responeResult =new ResponeResult(false,"userLoginError");
         // String enPassword = AesUtil.aesEncrypt(password);
             //直接用前端传来的密文与数据库里的密文对比
             User user = userMap.getUserInfo(userNo,password);

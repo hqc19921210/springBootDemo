@@ -13,7 +13,6 @@ public interface UserInfoService {
 
     UserInfo queryById(String id);
     PageInfo queryAll();
-	List<User> queryUsersList();
 
 
 

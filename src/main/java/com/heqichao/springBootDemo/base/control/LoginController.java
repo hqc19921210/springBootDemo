@@ -1,16 +1,11 @@
 package com.heqichao.springBootDemo.base.control;
 
-import com.heqichao.springBootDemo.base.entity.UserInfo;
-import com.heqichao.springBootDemo.base.param.RequestContext;
 import com.heqichao.springBootDemo.base.param.ResponeResult;
 import com.heqichao.springBootDemo.base.service.LoginService;
-import com.heqichao.springBootDemo.base.util.PropertiesConfig;
 import com.heqichao.springBootDemo.base.util.ServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.serviceloader.ServiceFactoryBean;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -30,7 +25,7 @@ public class LoginController extends BaseController{
     public ResponeResult login(@RequestBody Map map) throws Exception {
 //        String userNo = (String) map.get("userNo");
 //        System.out.println(userNo);
-        ResponeResult responeResult=loginSerice.login(map.get("userNo").toString(),map.get("password").toString());
+        ResponeResult responeResult=loginSerice.login(map.get("userNo").toString().trim(),map.get("password").toString());
         return responeResult;
     }
 
