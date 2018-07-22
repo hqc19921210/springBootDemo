@@ -26,7 +26,13 @@ var demoApp =angular.module("demoApp", ["ngRoute"]);
 	}).when("/module/userList", {
 		templateUrl: "app/module/userList.html",
 		controller: userCtrl
-	}).otherwise({
+	}).when("/module/imageChar", {
+			templateUrl: "app/module/imageChar.html",
+			controller: imageCharCtrl
+		}).when("/module/userList", {
+			templateUrl: "app/module/userList.html",
+			controller: userCtrl
+		}).otherwise({
 		templateUrl: "app/module/demoList.html",
 		controller: listCtrl
 	});
