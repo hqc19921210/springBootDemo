@@ -5,6 +5,7 @@ function userCtrl($scope, $http, $rootScope) {
 	});
 	
 	$scope.chkCmp = $rootScope.user.competence;
+	$scope.chkId = $rootScope.user.id;
 	$scope.addUser = function() {
 		$scope.encordPwd=hex_md5($scope.password);
         $http.post("service/addUser",
@@ -17,23 +18,32 @@ function userCtrl($scope, $http, $rootScope) {
     			email:$scope.email,
     			site:$scope.site,
     			remark:$scope.remark,
-    			competence:$scope.competence
+    			competence:$scope.seleCompetence,
+    			parentId:(!$scope.seleCompany ? $rootScope.user.id : $scope.seleCompany)
     			}).success(function(data) {
 			    	console.info(data);
 			    	if(data.resultObj == "errorMsg"){
+			    		$("#close-add-user-modal").click();
 			    		swal(data.message, null, "error");
 			        }else{
+			        	//修改成功后
+			        	$scope.closeAddModal();
 			        	swal("新增成功", null, "success");
+			            $scope.reloadUserList();
 			        }
         });
-		//修改成功后
-        $scope.reloadUserList();
-		$scope.closeAddModal();
+		
     };
+    $scope.seleCompetenceChg = function(){
+    	$http.get("service/getCompanySeleList").success(function(data) {
+    		$scope.selCompanys = data.resultObj;
+
+    	});
+	}
     
     $scope.closeAddModal = function(){
 		$scope.account="";
-		$scope.encordPwd ="";
+		$scope.password ="";
 		$scope.company ="";
 		$scope.contact="";
 		$scope.phone="";
@@ -41,7 +51,7 @@ function userCtrl($scope, $http, $rootScope) {
 		$scope.email="";
 		$scope.site="";
 		$scope.remark="";
-		$scope.competence="";
+		$scope.seleCompetence="";
 		$("#close-add-user-modal").click();
 	}
     
