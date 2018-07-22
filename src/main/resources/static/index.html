@@ -125,12 +125,6 @@
 									</li>
 								</ul>
 							</li>
-							<!-- <li class="hidden-xs">
-								<a href="#" id="btn-fullscreen" class="waves-effect"><i class="md md-crop-free"></i></a>
-							</li>
-							<li class="hidden-xs">
-								<a href="#" class="right-bar-toggle waves-effect"><i class="md md-chat"></i></a>
-							</li> -->
 							<li class="dropdown">
                                     <!--<a href="" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true">
 									<img src="assets/images/users/avatar-1.jpg" alt="user-img" class="img-circle"> </a>-->
@@ -140,9 +134,8 @@
 									
 									</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> 个人信息</a></li>
-                                        <li><a   data-toggle="modal" data-target="#update-pwd-modal"><i class="md md-settings"></i> 修改密码</a></li>
-									<!--	<button class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#update-pwd-modal">新增用户 <i class="fa fa-plus"></i></button>-->
+                                        <li><a href="javascript:void(0)" data-toggle="modal" data-target="#user-info-modal"><i class="md md-face-unlock"></i> 个人信息</a></li>
+                                        <li><a href="javascript:void(0)"  data-toggle="modal" data-target="#update-pwd-modal"><i class="md md-settings"></i> 修改密码</a></li>
                                         <li><a ng-click="logout()"><i class="md md-settings-power"></i> 退出登录</a></li>
                                     </ul>
                                 </li>
@@ -205,7 +198,7 @@
                                 <a href="javascript:void(0);" class="waves-effect waves-light"><i class="ion-ios7-gear"></i><span>系统管理 </span><span class="pull-right"><i class="md md-add"></i></span></a>
                                 <ul>
                                     
-                                    <li>
+                                    <li ng-if="user.competence != 4">
                                         <a href="#/module/userList"><span>用户管理</span></a>
                                     </li>
 									
@@ -348,6 +341,7 @@
 					if(data.resultObj){
 						//保存全局的用户
 						$rootScope.user=data.resultObj;
+						$scope.ajxUserInfo($rootScope.user);
 						var homeDiv=document.getElementById("wrapper");
 						homeDiv.style.display='block';
 					}else{
@@ -401,6 +395,59 @@
 					$scope.encordNewPwd="";
 					$("#updatePwdId").click();
 				}
+				
+				$scope.ajxUserInfo = function(user){
+					$scope.currCompany=user.company;
+					$scope.currContact=user.contact;
+					$scope.currPhone=user.phone;
+					$scope.currFax=user.fax;
+					$scope.currEmail=user.email;
+					$scope.currSite=user.site;
+					$scope.currRemark=user.remark;
+					$scope.currCompetence=user.competence+"";
+					$scope.userEditable = true;
+				}
+				
+				$scope.chgUserEdit = function(){
+					$scope.userEditable = !$scope.userEditable;
+				}
+				
+				$scope.closeUserInfoModal = function(){
+					$scope.userEditable = true;
+					$("#close-user-info-modal").click();
+				}
+				
+				$scope.userUpdate = function() {
+			        $http.post("service/updateUserInfo",
+			        		{company:$scope.currCompany,
+			    			contact:$scope.currContact,
+			    			phone:$scope.currPhone,
+			    			fax:$scope.currFax,
+			    			email:$scope.currEmail,
+			    			site:$scope.currSite,
+			    			remark:$scope.currRemark
+			    			}).success(function(data) {
+						    	if(data.resultObj == "errorMsg"){
+						    		$scope.closeUserInfoModal();
+						    		swal(data.message, null, "error");
+						        }else{
+						        	//修改成功后
+						        	swal("修改成功", null, "success");
+						        	$http.post("service/checkLogin").success(function(data) {
+										if(data.resultObj){
+											//保存全局的用户
+											$rootScope.user=data.resultObj;
+											$scope.closeUserInfoModal();
+										}else{
+											//未登录则跳回登录页
+											window.location.href="/login.html";
+										}
+
+									});
+						        }
+			        });
+					
+			    }
 
 			});
 		</script>
@@ -445,6 +492,90 @@
 				</div>
 			</div>
 		</div>
+		<div id="user-info-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="userInfoModal" aria-hidden="true" style="display: none">
+         <div class="modal-dialog"> 
+             <div class="modal-content"> 
+                 <div class="modal-header"> 
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >×</button> 
+                     <h4 class="modal-title">用户信息</h4> 
+                 </div> 
+                 <form class="modal-body" ng-submit="userUpdate()" name="userUpdateForm" novalidate="novalidate"> 
+                     <div class="row"> 
+                         <div class="col-md-8"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">公司名称<span style="color : red">*</span></label> 
+                                 <input type="text" class="form-control" ng-disabled="userEditable"  name="currCompany" ng-model="currCompany" required > 
+                             </div> 
+                         </div> 
+                         <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">联系人<span style="color : red">*</span></label> 
+                                 <input type="text" class="form-control" ng-disabled="userEditable" name="currContact" ng-model="currContact" required > 
+                             </div> 
+                         </div> 
+                     </div> 
+                     <div class="row"> 
+                         <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">联系电话<span style="color : red">*</span></label> 
+                                 <input type="text" class="form-control" ng-disabled="userEditable" name="currPhone" ng-model="currPhone" required > 
+                             </div> 
+                         </div> 
+                         
+                         <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">权限</label> 
+                                 <select class="form-control" ng-disabled="true" name="currCompetence" ng-model="currCompetence" >
+									<option  value="2">管理员</option>
+									<option  value="3">客户</option>
+									<option  value="4">普通用户</option>
+								</select>
+                             </div> 
+                         </div> 
+                          <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">站点</label> 
+                                 <input type="text" class="form-control" ng-disabled="userEditable" name="currSite" ng-model="currSite"  > 
+                             </div> 
+                         </div> 
+                     </div> 
+                     <div class="row"> 
+                         <div class="col-md-8"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">邮箱</label> 
+                                 <input type="email" class="form-control" ng-disabled="userEditable" name="currEmail" ng-model="currEmail"  > 
+                                 <div style="color: red" ng-show="addUserForm.email.$invalid">
+                      		  		*邮箱格式不正确
+                   				</div>
+                             </div> 
+                         </div> 
+                        <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">传真</label> 
+                                 <input type="text" class="form-control" ng-disabled="userEditable" name="currFax" ng-model="currFax"  > 
+                             </div> 
+                         </div> 
+                     </div> 
+                      <div class="row"> 
+	                        <div class="col-md-12"> 
+	                            <div class="form-group no-margin"> 
+	                                 <label  class="control-label">备注</label>  
+	                                <textarea  class="form-control autogrow" ng-disabled="userEditable" name="currRemark" ng-model="currRemark" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 75px"></textarea> 
+	                            </div>
+	                            <div style="color: red" ng-show="!userEditable && !userUpdateForm.$dirty">
+                      		  		*未修改任何信息
+                   				</div> 
+	                        </div> 
+	                    </div>     
+                 <div class="modal-footer"> 
+                     <button id="close-user-info-modal" type="button" class="btn btn-default waves-effect" data-dismiss="modal" ng-click="ajxUserInfo(user)" >关闭</button> 
+                     <button type="button" class="btn btn-info waves-effect waves-light" ng-show="userEditable" ng-click="chgUserEdit()" >编辑</button> 
+                     <button type="submit" class="btn btn-info waves-effect waves-light" ng-show="!userEditable" ng-disabled="userUpdateForm.$invalid || !userUpdateForm.$dirty">保存</button> 
+                 </div> 
+                 </form> 
+             </div> 
+         </div>
+     </div>
 		</div>
 	</body>
 </html>

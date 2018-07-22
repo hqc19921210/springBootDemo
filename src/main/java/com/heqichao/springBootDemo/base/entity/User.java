@@ -51,7 +51,7 @@ public class User implements Serializable {
     public User(Map map) {
     	this.id = StringUtil.objectToInteger(StringUtil.getStringByMap(map,"id"));
     	this.parentId = StringUtil.objectToInteger(StringUtil.getStringByMap(map,"parentId"));
-    	this.account = StringUtil.getStringByMap(map,"account");
+    	this.account = StringUtil.getStringByMap(map,"account") == null ? null : StringUtil.getStringByMap(map,"account").replaceAll(" ", "");
     	this.password = StringUtil.getStringByMap(map,"encordPwd");
     	this.company = StringUtil.getStringByMap(map,"company");
     	this.contact = StringUtil.getStringByMap(map,"contact");
