@@ -38,7 +38,7 @@ public class StringUtil {
     	try {
     		return map.get(key).toString();
     	} catch (Exception e) {
-    		e.printStackTrace();
+//    		e.printStackTrace();
     		return null;
     	}
     }

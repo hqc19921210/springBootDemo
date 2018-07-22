@@ -25,5 +25,10 @@ public interface UserService {
 	ResponeResult deleteUserByID(Map map);
 
 
+	ResponeResult getCompanySelectList();
+
+	ResponeResult updateUserInfo(Map map);
+
+
 
 }

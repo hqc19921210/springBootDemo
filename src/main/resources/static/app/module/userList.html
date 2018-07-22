@@ -6,7 +6,7 @@
 					<h3 class="panel-title">用户列表</h3>
 				</div>
 				<div class="panel-body">
-				<div class="row" ng-show="user.competence != 4 ">
+				<div class="row" ng-if="user.competence != 4 ">
                      <div class="col-sm-6">
                          <div class="m-b-30">
                              <button class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#user-add-modal">新增用户 <i class="fa fa-plus"></i></button>
@@ -42,8 +42,8 @@
 										<td>{{ user.site }}</td>
 										<td>{{ user.remark }}</td>
 										<td>{{ user.competence == 2 ? "管理员" : (user.competence == 3 ? "客户" : "普通用户" ) }}</td>
-										<td><a ng-show="user.competence != 2" data-toggle="modal" data-target="#update-pwd-by-id-modal" ng-click="getUid(user.id)"><span>修改密码</span></a> 
-										<a ng-show="user.competence != 2" data-toggle="modal" data-target="#del-by-id-modal" ng-click="delUser(user.id)"><span>删除</span></a></td>
+										<td><a href="javascript:void(0)" ng-if="user.id != chkId" data-toggle="modal" data-target="#update-pwd-by-id-modal" ng-click="getUid(user.id)"><span>修改密码</span></a> 
+										<a href="javascript:void(0)" ng-if="user.id != chkId" data-toggle="modal" data-target="#del-by-id-modal" ng-click="delUser(user.id)"><span>删除</span></a></td>
 									</tr>
 									
 
@@ -60,7 +60,7 @@
          <div class="modal-dialog"> 
              <div class="modal-content"> 
                  <div class="modal-header"> 
-                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeAddModal()">×</button> 
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >×</button> 
                      <h4 class="modal-title">添加用户</h4> 
                  </div> 
                  <form class="modal-body" ng-submit="addUser()" name="addUserForm" novalidate="novalidate"> 
@@ -68,14 +68,14 @@
                          <div class="col-md-6"> 
                              <div class="form-group"> 
                                  <label  class="control-label">帐号<span style="color : red">*</span></label> 
-                                 <input type="text" class="form-control" name="account" ng-model="account" required >
+                                 <input type="text" class="form-control" name="account" ng-model="account" ng-minlength="3" ng-maxlength="16" required >
                                  
                              </div> 
                          </div> 
                          <div class="col-md-6"> 
                              <div class="form-group"> 
                                  <label  class="control-label">密码<span style="color : red">*</span></label> 
-                                 <input type="password" class="form-control" name="password" ng-model="password" required  > 
+                                 <input type="password" class="form-control" name="password" ng-model="password" ng-minlength="6" ng-maxlength="16" required  > 
                              </div> 
                          </div> 
                      </div> 
@@ -104,8 +104,8 @@
                          <div class="col-md-4"> 
                              <div class="form-group"> 
                                  <label  class="control-label">权限<span style="color : red">*</span></label> 
-                                 <select class="form-control" name="competence" ng-model="competence" required>
-									<option ng-show="chkCmp == 2" value="3">客户</option>
+                                 <select class="form-control" ng-change="seleCompetence == 4 && chkCmp == 2 ? seleCompetenceChg() : return" name="seleCompetence" ng-model="seleCompetence" required>
+									<option ng-if="chkCmp == 2" value="3">客户</option>
 									<option  value="4">普通用户</option>
 								</select>
                              </div> 
@@ -117,6 +117,15 @@
                              </div> 
                          </div> 
                      </div> 
+                      <div class="row" ng-show="seleCompetence == 4 && chkCmp == 2"> 
+	                        <div class="col-md-12"> 
+	                            <div class="form-group "> 
+	                                 <label  class="control-label">请选择用户所属客户<span style="color : red">*</span></label>  
+	                                 <select ng-if="seleCompetence == 4 && chkCmp == 2" class="form-control" name="seleCompany"  ng-model="$parent.seleCompany" ng-options="x for (x, y) in selCompanys" required>
+									</select>
+	                            </div> 
+	                        </div> 
+	                    </div>     
                      <div class="row"> 
                          <div class="col-md-8"> 
                              <div class="form-group"> 

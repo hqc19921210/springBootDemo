@@ -36,6 +36,11 @@ public class UserController extends BaseController{
         return userService.insertUser(map);
     }
     
+    @RequestMapping(value = "/getCompanySeleList" )
+    public ResponeResult getCompanySeleList() throws Exception {
+    	return userService.getCompanySelectList();
+    }
+    
     @RequestMapping(value = "/updatePwd" )
     @ResponseBody
     public ResponeResult updatePwd(@RequestBody Map map) throws Exception {
@@ -46,6 +51,12 @@ public class UserController extends BaseController{
     @ResponseBody
     public ResponeResult updatePwdById(@RequestBody Map map) throws Exception {
     	return userService.updateUserPasswordByID(map);
+    }
+    
+    @RequestMapping(value = "/updateUserInfo" )
+    @ResponseBody
+    public ResponeResult updateUserInfo(@RequestBody Map map) throws Exception {
+    	return userService.updateUserInfo(map);
     }
     
     @RequestMapping(value = "/deleteUserById" )
