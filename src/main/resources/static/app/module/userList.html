@@ -68,14 +68,19 @@
                          <div class="col-md-6"> 
                              <div class="form-group"> 
                                  <label  class="control-label">帐号<span style="color : red">*</span></label> 
-                                 <input type="text" class="form-control" name="account" ng-model="account" ng-minlength="3" ng-maxlength="16" required >
-                                 
+                                 <input type="text" class="form-control" name="account" ng-model="account" ng-minlength="3" ng-maxlength="16" required />
+                                 <div style="color: red" ng-show="addUserForm.account.$invalid && addUserForm.account.$dirty">
+                      		  		*帐号最小长度为3，最大长度为16
+                   				</div>
                              </div> 
                          </div> 
                          <div class="col-md-6"> 
                              <div class="form-group"> 
                                  <label  class="control-label">密码<span style="color : red">*</span></label> 
-                                 <input type="password" class="form-control" name="password" ng-model="password" ng-minlength="6" ng-maxlength="16" required  > 
+                                 <input type="password" class="form-control" name="password" ng-model="password" ng-minlength="6" ng-maxlength="16" required  />
+                                 <div style="color: red" ng-show="addUserForm.password.$invalid && addUserForm.password.$dirty">
+                      		  		*密码最小长度为6，最大长度为16
+                   				</div> 
                              </div> 
                          </div> 
                      </div> 
@@ -83,13 +88,13 @@
                          <div class="col-md-8"> 
                              <div class="form-group"> 
                                  <label  class="control-label">公司名称<span style="color : red">*</span></label> 
-                                 <input type="text" class="form-control" name="company" ng-model="company" required > 
+                                 <input type="text" class="form-control" name="company" ng-model="company" required /> 
                              </div> 
                          </div> 
                          <div class="col-md-4"> 
                              <div class="form-group"> 
                                  <label  class="control-label">联系人<span style="color : red">*</span></label> 
-                                 <input type="text" class="form-control" name="contact" ng-model="contact" required > 
+                                 <input type="text" class="form-control" name="contact" ng-model="contact" required /> 
                              </div> 
                          </div> 
                      </div> 
@@ -97,7 +102,7 @@
                          <div class="col-md-4"> 
                              <div class="form-group"> 
                                  <label  class="control-label">联系电话<span style="color : red">*</span></label> 
-                                 <input type="text" class="form-control" name="phone" ng-model="phone" required > 
+                                 <input type="text" class="form-control" name="phone" ng-model="phone" required /> 
                              </div> 
                          </div> 
                          
@@ -113,7 +118,7 @@
                           <div class="col-md-4"> 
                              <div class="form-group"> 
                                  <label  class="control-label">站点</label> 
-                                 <input type="text" class="form-control" name="site" ng-model="site"  > 
+                                 <input type="text" class="form-control" name="site" ng-model="site"  /> 
                              </div> 
                          </div> 
                      </div> 
@@ -130,7 +135,7 @@
                          <div class="col-md-8"> 
                              <div class="form-group"> 
                                  <label  class="control-label">邮箱</label> 
-                                 <input type="email" class="form-control" name="email" ng-model="email"  > 
+                                 <input type="email" class="form-control" name="email" ng-model="email"  /> 
                                  <div style="color: red" ng-show="addUserForm.email.$invalid">
                       		  		*邮箱格式不正确
                    				</div>
@@ -139,7 +144,7 @@
                         <div class="col-md-4"> 
                              <div class="form-group"> 
                                  <label  class="control-label">传真</label> 
-                                 <input type="text" class="form-control" name="fax" ng-model="fax"  > 
+                                 <input type="text" class="form-control" name="fax" ng-model="fax"  /> 
                              </div> 
                          </div> 
                      </div> 
