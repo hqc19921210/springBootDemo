@@ -12,13 +12,13 @@ public class PageUtil {
     public static void setPage(){
         Map map =RequestContext.getContext().getParamMap();
         try{
-            String page= (String) map.get("page");
-            String size= (String) map.get("size");
-            if( StringUtil.isNotEmpty(page) && StringUtil.isNotEmpty(size)){
-                PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(size));
+            Integer page= (Integer) map.get("page");
+            Integer size= (Integer) map.get("size");
+            if(page!= null  && size!=null){
+                PageHelper.startPage(page, size);
             }
         }catch (Exception e){
-
+            //System.out.println(e);
         }
 
     }

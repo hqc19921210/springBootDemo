@@ -1,6 +1,9 @@
 package com.heqichao.springBootDemo.base.filter;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.heqichao.springBootDemo.base.exception.ResponeException;
+import com.heqichao.springBootDemo.base.param.BodyReaderHttpServletRequestWrapper;
 import com.heqichao.springBootDemo.base.param.RequestContext;
 import com.heqichao.springBootDemo.base.util.PropertiesConfig;
 import com.heqichao.springBootDemo.base.util.ServletUtil;
@@ -42,8 +45,12 @@ public class ApplicationFilter implements Filter {
 
             request.setCharacterEncoding("UTF-8");
             response.setContentType("text/html;charset=UTF-8");
-            RequestContext.setRequestContext(request,response);
-            filterChain.doFilter(request, response);
+
+
+            // 防止流读取一次后就没有了, 所以需要将流继续写出去
+            ServletRequest requestWrapper = new BodyReaderHttpServletRequestWrapper(request);
+            filterChain.doFilter(requestWrapper, servletResponse);
+           // filterChain.doFilter(request, response);
 
         }catch (Exception e){
             throw new ResponeException(e);

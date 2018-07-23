@@ -29,9 +29,9 @@ var demoApp =angular.module("demoApp", ["ngRoute"]);
 	}).when("/module/imageChar", {
 			templateUrl: "app/module/imageChar.html",
 			controller: imageCharCtrl
-		}).when("/module/userList", {
-			templateUrl: "app/module/userList.html",
-			controller: userCtrl
+	}).when("/module/lightLog", {
+			templateUrl: "app/module/lightLog.html",
+			controller: lightLogCtrl
 		}).otherwise({
 		templateUrl: "app/module/demoList.html",
 		controller: listCtrl

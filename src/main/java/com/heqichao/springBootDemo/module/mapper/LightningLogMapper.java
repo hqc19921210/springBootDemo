@@ -1,11 +1,7 @@
 package com.heqichao.springBootDemo.module.mapper;
 
-import com.heqichao.springBootDemo.base.entity.User;
 import com.heqichao.springBootDemo.module.entity.LightningLog;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -15,32 +11,26 @@ import java.util.List;
 public interface LightningLogMapper {
 
     @Select("SELECT * "
-            + " FROM user "
-            + "where ACCOUNT = #{account}  "
-            + "and PASSWORD = #{password} "
-            + "and STATUS = 'Y' ")
-    public LightningLog getLightningLog(@Param("id") String id);
+            + " FROM lightning_log "
+            + "where id = #{id}  ")
+     LightningLog getLightningLog(@Param("id") String id);
 
-    @Select("<script>SELECT id,parent_id,account,company,contact,phone,fax,email,site,remark,competence"
-            + " FROM user "
-            + "where STATUS = 'Y'  "
-            + "<if test=\"competence == 3 \"> and id = #{uId} or parent_id = #{uId} </if>"
-            + " </script>")
-    public List<User> getUsers(User user);
+    @Select("<script>"
+            +"SELECT *  FROM lightning_log  where devEUI in  "
+            + "<foreach  collection=\"list\" open=\"(\" close=\")\" separator=\",\" item=\"uid\" >"
+            + "#{uid}"
+            + "</foreach>"
+            +"</script>")
+     List<LightningLog> queryLightningLogByDevIds(@Param("list") List<String> list);
 
-    @Select("select count(1)>0 from user where ACCOUNT = #{account} and STATUS = 'Y' ")
-    public boolean duplicatedAccount(String account);
+    @Insert("insert into lightning_log (devEUI,time,fPort,gatewayCount,rssi,fCnt,loRaSNR,data,devicePath,functionCode,dataLen,ligntningCount,ligntningTime,peakValue,effectiveValue,waveHeadTime,halfPeakTime,actionTime,energy,status)"
+            + " values(#{devEUI},#{time},#{fPort},#{gatewayCount},#{rssi},#{fCnt},#{loRaSNR},#{data},#{devicePath},#{functionCode},#{dataLen}, #{ligntningCount}, #{ligntningTime}, #{peakValue}, #{effectiveValue}, #{waveHeadTime}, #{halfPeakTime}, #{actionTime}, #{energy}, #{status}) ")
+     int saveLightningLog(LightningLog log);
 
-    @Select("select id from user where ACCOUNT = #{account} and password = #{password} and STATUS = 'Y' limit 1")
-    public Integer checkPassword(@Param("account") String account,@Param("password") String password);
 
-    @Insert("insert into user (parent_id,account,password,company,contact,phone,fax,email,site,remark,competence,STATUS,create_time,update_uid)"
-            + " values(#{parentId},#{account},#{password},#{company},#{contact},#{phone},#{fax},#{email},#{site},#{remark},#{competence}, 'Y', sysdate(), #{upadteUID}) ")
-    public int insertUser(User user);
-
-    @Update("update user set password=#{password} , update_time = sysdate() , update_uid = #{udid} where id=#{id} and STATUS = 'Y' ")
-    public int updateUserPassword(@Param("id")Integer uid,@Param("udid")Integer udid,@Param("password") String password);
-
-    @Update("update user set  update_time = sysdate() , update_uid = #{udid} , STATUS ='N' where id=#{id} and STATUS = 'Y' ")
-    public int delUserById(@Param("id")Integer uid,@Param("udid")Integer udid);
+    @Delete("delete from lightning_log" + "where devEUI in  "
+            + "<foreach item='item' index='index' collection='devIds' open='(' separator=',' close=')'>"
+            + "#{item}"
+            + "</foreach>")
+     int deleteLightningLogByDevIds(@Param("devIds") List<String> devIds);
 }

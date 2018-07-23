@@ -161,7 +161,7 @@ public class MqttUtil {
                     log.setDevicePath(transDatas[0]);  //设备地址
                     log.setFunctionCode(transDatas[1]);//功能码
                     log.setDataLen(transDatas[2]);//数据区长度
-                    log.setLigntningCount(Long.parseLong(transDatas[3]+transDatas[4],16));//雷击次数
+                    log.setLigntningCount(Integer.parseInt(transDatas[3]+transDatas[4],16));//雷击次数
                     String ligntningTime="20"+transDatas[5]+"-"+transDatas[6]+"-"+transDatas[7]+" "+transDatas[8]+":"+transDatas[9]+":"+transDatas[10];
                     log.setLigntningTime(ligntningTime); //雷击时间
                     log.setPeakValue(Long.parseLong(transDatas[11]+transDatas[12],16)/1000*defaule +"KA");//电流峰值

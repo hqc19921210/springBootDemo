@@ -1,6 +1,5 @@
 package com.heqichao.springBootDemo.base.control;
 
-import com.heqichao.springBootDemo.base.param.PageInfo;
 import com.heqichao.springBootDemo.base.param.RequestContext;
 import com.heqichao.springBootDemo.base.param.ResponeResult;
 import com.heqichao.springBootDemo.base.service.UserInfoService;
@@ -35,12 +34,4 @@ public class UserInfoController extends BaseController{
     
     
 
-    @RequestMapping(value = "/test")
-    ResponeResult test(PageInfo pageInfo) {
-        Map mm =RequestContext.getContext().getParamMap();
-        System.out.println(pageInfo.getPageSize());
-        System.out.println(pageInfo.getSize());
-
-        return new ResponeResult(pageInfo);
-    }
 }

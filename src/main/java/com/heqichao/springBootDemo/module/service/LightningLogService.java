@@ -1,6 +1,6 @@
 package com.heqichao.springBootDemo.module.service;
 
-import com.heqichao.springBootDemo.base.param.PageInfo;
+import com.github.pagehelper.PageInfo;
 import com.heqichao.springBootDemo.module.entity.LightningLog;
 
 import java.util.Date;

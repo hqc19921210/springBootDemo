@@ -165,7 +165,7 @@
                                 <ul class="list-unstyled">
                                     
                                     <li>
-                                        <a href="#/module/demoChar/1"><span>电流监控</span></a>
+                                        <a href="#/module/lightLog"><span>电流监控</span></a>
                                     </li>
 									<li>
                                         <a href="#/module/demoCharTest"><span>避雷器状态（劣化故障）</span></a>
@@ -320,6 +320,7 @@
 		<script src="app/controller/userControllers.js"></script>
 		<script src="app/controller/demo2Controllers.js"></script>
 		<script src="app/controller/imageControllers.js"></script>
+		<script src="app/controller/lightLogControllers.js"></script>
 
 		<script type="text/javascript">
 			jQuery(document).ready(function($) {
@@ -332,7 +333,7 @@
 
 		<script type="text/javascript">
 
-
+			var defaultSize=10;
 			demoApp.controller("indexCtrl", function($scope, $http, $rootScope, $timeout) {
 				$scope.newPwd ="";
 				$scope.checkPwd ="";

@@ -32,7 +32,7 @@ public class LightningLog extends BaseEntity {
     //数据区长度
     private String dataLen;
     //雷击次数
-    private long ligntningCount;
+    private int ligntningCount;
     //雷击时间
     private String ligntningTime;
     //电流峰值
@@ -147,11 +147,11 @@ public class LightningLog extends BaseEntity {
         this.dataLen = dataLen;
     }
 
-    public long getLigntningCount() {
+    public int getLigntningCount() {
         return ligntningCount;
     }
 
-    public void setLigntningCount(long ligntningCount) {
+    public void setLigntningCount(int ligntningCount) {
         this.ligntningCount = ligntningCount;
     }
 
