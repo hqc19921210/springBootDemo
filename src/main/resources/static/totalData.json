@@ -1,0 +1,192 @@
+[
+  {
+    "edgesData": [
+      {
+        "lineStyle": {
+          "normal": {
+            "color": "black",
+            "width": 5
+          }
+        },
+        "source": 0,
+        "target": 1
+      },
+      {
+        "lineStyle": {
+          "normal": {
+            "color": "black",
+            "width": 5
+          }
+        },
+        "source": 1,
+        "target": 2
+      },
+      {
+        "lineStyle": {
+          "normal": {
+            "color": "black",
+            "width": 5
+          }
+        },
+        "source": 2,
+        "target": 3
+      },
+      {
+        "lineStyle": {
+          "normal": {
+            "color": "black",
+            "width": 5
+          }
+        },
+        "source": 3,
+        "target": 4
+      },
+      {
+        "lineStyle": {
+          "normal": {
+            "color": "black",
+            "width": 5
+          }
+        },
+        "source": 4,
+        "target": 5
+      }
+    ]
+  },
+  {
+    "page": [
+      {
+        "symbolSize": 50,
+        "name": "equipment_1",
+        "x": 100,
+        "tooltip": {
+          "formatter": "设备名：equipment_1 展示信息：设备ID，报警次数，状态...."
+        },
+        "y": 100,
+        "itemStyle": {
+          "normal": {
+            "color": "rgb(50,205,50)"
+          }
+        },
+        "fixed": true,
+        "id": 0
+      },
+      {
+        "symbolSize": 50,
+        "name": "equipment_2",
+        "x": 200,
+        "tooltip": {
+          "formatter": "设备名：equipment_2 展示信息：设备ID，报警次数，状态...."
+        },
+        "y": 100,
+        "itemStyle": {
+          "normal": {
+            "color": "rgb(50,205,50)"
+          }
+        },
+        "fixed": true,
+        "id": 1
+      },
+      {
+        "symbolSize": 50,
+        "name": "equipment_3",
+        "x": 300,
+        "tooltip": {
+          "formatter": "设备名：equipment_3 展示信息：设备ID，报警次数，状态...."
+        },
+        "y": 100,
+        "itemStyle": {
+          "normal": {
+            "color": "rgb(50,205,50)"
+          }
+        },
+        "fixed": true,
+        "id": 2
+      },
+      {
+        "symbolSize": 50,
+        "name": "equipment_4",
+        "x": 300,
+        "tooltip": {
+          "formatter": "设备名：equipment_4 展示信息：设备ID，报警次数，状态...."
+        },
+        "y": 200,
+        "itemStyle": {
+          "normal": {
+            "color": "rgb(255,0,0)"
+          }
+        },
+        "fixed": true,
+        "id": 3
+      },
+      {
+        "symbolSize": 50,
+        "name": "equipment_5",
+        "x": 200,
+        "tooltip": {
+          "formatter": "设备名：equipment_5 展示信息：设备ID，报警次数，状态...."
+        },
+        "y": 200,
+        "itemStyle": {
+          "normal": {
+            "color": "rgb(50,205,50)"
+          }
+        },
+        "fixed": true,
+        "id": 4
+      },
+      {
+        "symbolSize": 50,
+        "name": "equipment_6",
+        "x": 100,
+        "tooltip": {
+          "formatter": "设备名：equipment_6 展示信息：设备ID，报警次数，状态...."
+        },
+        "y": 200,
+        "itemStyle": {
+          "normal": {
+            "color": "rgb(255,215,0)"
+          }
+        },
+        "fixed": true,
+        "id": 5
+      }
+    ]
+  },
+  {
+    "page": [
+      {
+        "symbolSize": 50,
+        "name": "equipment_7",
+        "x": 100,
+        "tooltip": {
+          "formatter": "设备名：equipment_7 展示信息：设备ID，报警次数，状态...."
+        },
+        "y": 100,
+        "itemStyle": {
+          "normal": {
+            "color": "rgb(50,205,50)"
+          }
+        },
+        "fixed": true,
+        "id": 0
+      },
+      {
+        "symbolSize": 50,
+        "name": "equipment_8",
+        "x": 200,
+        "tooltip": {
+          "formatter": "设备名：equipment_8 展示信息：设备ID，报警次数，状态...."
+        },
+        "y": 100,
+        "itemStyle": {
+          "normal": {
+            "color": "rgb(50,205,50)"
+          }
+        },
+        "fixed": true,
+        "id": 1
+      }
+    ]
+  }
+]

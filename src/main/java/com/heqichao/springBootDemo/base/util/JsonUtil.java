@@ -26,4 +26,8 @@ public class JsonUtil {
      return objJson;
     }
 
+    public static  <T> T getObjByJsonString(String jsonString,Class<T> tClass){
+      return  JSON.parseObject(jsonString,tClass);
+    }
+
 }

@@ -1,5 +1,10 @@
 package com.heqichao.springBootDemo.module.mqtt;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.heqichao.springBootDemo.base.util.JsonUtil;
+import com.heqichao.springBootDemo.module.entity.LightningLog;
+import com.heqichao.springBootDemo.module.service.LightningLogService;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -7,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.text.SimpleDateFormat;
 
 /**
  * Created by heqichao on 2018-7-9.
@@ -35,6 +42,10 @@ public class MqttUtilCallback implements MqttCallback {
     private MqttUtil mqttUtil;
 
 
+    @Autowired
+    private LightningLogService lightningLogService;
+
+
     public MqttUtilCallback(MqttUtil mqttUtil){
         this.mqttUtil=mqttUtil;
     }
@@ -50,9 +61,21 @@ public class MqttUtilCallback implements MqttCallback {
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
 // subscribe后得到的消息会执行到这里面
+        String mes =new String(message.getPayload());
         logger.info("接收消息主题 : " + topic);
         logger.info("接收消息Qos : " + message.getQos());
-        logger.info("接收消息内容 : " + new String(message.getPayload()));
+        logger.info("接收消息内容 : " + mes);
+        LightningLog log =MqttUtil.saveTransData(mes);
+        if(log!=null){
+            lightningLogService.save(log);
+
+            if(LightningLogService.HEART_BEAT_ERROR.equals(log.getStatus())){ //设置设备故障
+                log.getDevEUI();
+            }
+
+
+            logger.info("保存消息内容成功！");
+        }
     }
 
     @Override

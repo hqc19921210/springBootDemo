@@ -1,5 +1,11 @@
 package com.heqichao.springBootDemo.module.mqtt;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.heqichao.springBootDemo.base.util.Base64Encrypt;
+import com.heqichao.springBootDemo.base.util.StringUtil;
+import com.heqichao.springBootDemo.module.entity.LightningLog;
+import com.heqichao.springBootDemo.module.service.LightningLogService;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -10,14 +16,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by heqichao on 2018-7-15.
  */
 @Component
 public class MqttUtil {
-    Logger logger = LoggerFactory.getLogger(getClass());
+    static Logger logger = LoggerFactory.getLogger(MqttUtil.class);
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+
     @Autowired
     private MqttOption mqttOption;
+
+    @Autowired
+    private LightningLogService lightningLogService;
 
     private static MqttClient client;
     public MqttConnectOptions getOptions() {
@@ -69,7 +84,7 @@ public class MqttUtil {
     }
 
     private void connect(int number,int waitSecond) {
-        for (int i = 0; i < number||number>999; i++) {
+        for (int i = 1; i <= number||number>999; i++) {
             try {
                 connect();
             } catch (Exception e) {
@@ -98,7 +113,83 @@ public class MqttUtil {
             logger.info("**** INIT MQTT SUCCESS! ");
         } catch (MqttException e) {
             logger.error("**** INIT MQTT FAIL! ",e);
+
         }
     }
 
+
+    public static LightningLog saveTransData(String mes){
+        int defaule=100;
+        LightningLog log =new LightningLog();
+        JSONObject jsonObject = JSON.parseObject(mes);
+        String devEUI=jsonObject.getString("devEUI"); //设备id
+        log.setDevEUI(devEUI);
+        String data =jsonObject.getString("data");
+        log.setData(data);
+        String time =jsonObject.getString("time");
+        try {
+            log.setTime(sdf.parse(time));
+        } catch (Exception e) {}
+        //不一定有用
+        try {
+            log.setfPort(jsonObject.getInteger("fPort"));
+        } catch (Exception e) {}
+        try {
+            log.setGatewayCount(jsonObject.getInteger("gatewayCount"));
+        } catch (Exception e) {}
+        try {
+            log.setGatewayCount(jsonObject.getInteger("gatewayCount"));
+        } catch (Exception e) {}
+        try {
+            log.setfCnt(jsonObject.getInteger("fCnt"));
+        }catch (Exception e1){}
+        try {
+            log.setGatewayCount(jsonObject.getInteger("gatewayCount"));
+        }catch (Exception e1){}
+        try {
+            log.setRssi(jsonObject.getInteger("rssi"));
+        }catch (Exception e1){}
+        try {
+            log.setLoRaSNR(jsonObject.getFloat("loRaSNR"));
+        }catch (Exception e1){}
+
+        try {
+            if(StringUtil.isNotEmpty(data)){
+                String[] transDatas =Base64Encrypt.decodeToHexStr(data);
+                if(transDatas.length == 25){
+                    //正常雷击数据
+                    log.setDevicePath(transDatas[0]);  //设备地址
+                    log.setFunctionCode(transDatas[1]);//功能码
+                    log.setDataLen(transDatas[2]);//数据区长度
+                    log.setLigntningCount(Integer.parseInt(transDatas[3]+transDatas[4],16));//雷击次数
+                    String ligntningTime="20"+transDatas[5]+"-"+transDatas[6]+"-"+transDatas[7]+" "+transDatas[8]+":"+transDatas[9]+":"+transDatas[10];
+                    log.setLigntningTime(ligntningTime); //雷击时间
+                    log.setPeakValue(Long.parseLong(transDatas[11]+transDatas[12],16)/1000*defaule +"KA");//电流峰值
+                    log.setEffectiveValue(Long.parseLong(transDatas[13]+transDatas[14],16)/1000*defaule +"KA"); //电流有效值
+                    log.setWaveHeadTime(Long.parseLong(transDatas[15]+transDatas[16],16)/10+".0uS");//电流波头时间
+                    log.setHalfPeakTime(Long.parseLong(transDatas[17]+transDatas[18],16)/10+".0uS"); //电流半峰值时间
+                    log.setActionTime(Long.parseLong(transDatas[19]+transDatas[20],16)/10+".0uS");//电流作用时间
+                    log.setEnergy(Long.parseLong(transDatas[21]+transDatas[22],16)/1000*defaule+"KA.uS"); //能量
+                    //后两位作校验
+                    log.setStatus(LightningLogService.LIGNHTNING_LOG);
+                }else if(transDatas.length == 7){
+                    log.setDevicePath(transDatas[0]);  //设备地址
+                    log.setFunctionCode(transDatas[1]);//功能码
+                    log.setDataLen(transDatas[2]);//数据区长度
+                    String status =transDatas[3]+transDatas[4];
+                    //后两位作校验
+                    log.setStatus(status);
+
+                }
+
+                return log;
+            }
+
+        } catch (Exception e) {
+            logger.error(" ******** TRANS LIGHTNING LOG ERRPR ! ",e);
+        }
+
+        return null;
+
+    }
 }
