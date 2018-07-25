@@ -2,7 +2,9 @@ package com.heqichao.springBootDemo.base.service;
 
 import com.heqichao.springBootDemo.base.mapper.UserMapper;
 import com.heqichao.springBootDemo.base.param.ResponeResult;
+import com.github.pagehelper.PageInfo;
 import com.heqichao.springBootDemo.base.entity.User;
+import com.heqichao.springBootDemo.base.util.PageUtil;
 import com.heqichao.springBootDemo.base.util.ServletUtil;
 import com.heqichao.springBootDemo.base.util.StringUtil;
 
@@ -10,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -28,8 +28,10 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public List<User> queryUsersList() {
-    	return userMapper.getUsers(ServletUtil.getSessionUser());
+    public PageInfo queryUsersList() {
+    	PageUtil.setPage();
+        PageInfo pageInfo = new PageInfo(userMapper.getUsers(ServletUtil.getSessionUser()));
+    	return pageInfo;
     }
     
 	@Override

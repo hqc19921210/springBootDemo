@@ -1,8 +1,25 @@
 function userCtrl($scope, $http, $rootScope) {
-	$http.get("service/getUsers").success(function(data) {
-		$scope.users = data.resultObj;
+	//为后台请求参数 带分页数据
+    $scope.quereyData={
+        page:1, //当前页码 初始化为1
+        size:defaultSize, //每页数据量 defaultSize全局变量
+    };
+    $scope.init=function(){
+    	$http.post("service/getUsers",$scope.quereyData).success(function(data) {
+    		$scope.users = data.resultObj.list;
+    		$scope.pages=data.resultObj.pages;
+    		$scope.pageArr=data.resultObj.navigatepageNums;
+    		$scope.quereyData.page=data.resultObj.pageNum;
+    	});
+    }
+  //初始化
+    $scope.init();
 
-	});
+    //翻页
+    $scope.changePage=function(page){
+        $scope.quereyData.page=page;
+        $scope.init();
+    }
 	
 	$scope.chkCmp = $rootScope.user.competence;
 	$scope.chkId = $rootScope.user.id;
@@ -19,7 +36,8 @@ function userCtrl($scope, $http, $rootScope) {
     			site:$scope.site,
     			remark:$scope.remark,
     			competence:$scope.seleCompetence,
-    			parentId:(!$scope.seleCompany ? $rootScope.user.id : $scope.seleCompany)
+    			parentId:(!$scope.seleCompany || $scope.seleCompetence != 4 || $scope.chkCmp !=2 ?
+    							$rootScope.user.id : $scope.seleCompany)
     			}).success(function(data) {
 			    	console.info(data);
 			    	if(data.resultObj == "errorMsg"){
@@ -52,6 +70,7 @@ function userCtrl($scope, $http, $rootScope) {
 		$scope.site="";
 		$scope.remark="";
 		$scope.seleCompetence="";
+		$scope.seleCompany = null;
 		$("#close-add-user-modal").click();
 	}
     
@@ -124,10 +143,7 @@ function userCtrl($scope, $http, $rootScope) {
 	}
 	
 	$scope.reloadUserList = function(){
-		$http.get("service/getUsers").success(function(data) {
-			$scope.users = data.resultObj;
-			
-		});
+		$scope.init();
 	}
 }
 

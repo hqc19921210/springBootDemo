@@ -1,0 +1,18 @@
+ <!-- 分页 -->
+       <div class="col-md-12 col-sm-12 col-xs-12" ng-transclude>
+           <div class="" style="text-align: center">
+               <ul class="pagination m-b-5">
+                   <li ng-show="pages>1 && quereyData.page>1">
+                       <a aria-label="Previous"  ng-click="changePage(quereyData.page-1)">
+                           <i class="fa fa-angle-left"></i>
+                       </a>
+                   </li>
+                   <li ng-repeat="x in pageArr"><a ng-click="changePage(x)">{{x}}</a></li>
+                   <li ng-show="pages>1 && quereyData.page<pages ">
+                       <a  aria-label="Next" ng-click="changePage(quereyData.page+1)" >
+                           <i class="fa fa-angle-right"></i>
+                       </a>
+                   </li>
+               </ul>
+           </div>
+       </div>

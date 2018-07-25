@@ -1,4 +1,5 @@
 <div class="container" >
+	
 	<div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-default">
@@ -9,7 +10,7 @@
 				<div class="row" ng-show="user.competence != 4 ">
                      <div class="col-sm-6">
                          <div class="m-b-30">
-                             <button class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#user-add-modal">新增设备 <i class="fa fa-plus"></i></button>
+                             <button class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#equ-add-modal" ng-click="chkCmp == 2 ? seleCompetenceChg() : return">新增设备 <i class="fa fa-plus"></i></button>
                          </div>
                      </div>
                  </div>
@@ -33,6 +34,17 @@
 									</thead>
 									<tbody>
 									<tr ng-repeat="eqm in equipments"> 
+									<td>{{ eqm.eid }}</td>
+									<td>{{ eqm.type }}</td>
+									<td>{{ eqm.amount == null ? 0 : eqm.amount}}</td>
+									<td>{{ eqm.range }}</td>
+									<td>{{ eqm.total == null ? 0 : eqm.total }}</td>
+									<td>{{ eqm.alarms == null ? 0 : eqm.alarms }}</td>
+									<td>{{ eqm.eStatus == "N" ? "正常" : eqm.eStatus }}</td>
+									<td>{{ eqm.onlineTime }}</td>
+									<td>{{ eqm.remark }}</td>
+									<td> 
+										<a href="javascript:void(0)"  ng-click="delEqu(eqm.id)"><span>删除</span></a></td>
 									</tr>
 									
 
@@ -40,86 +52,72 @@
 								</table>
 							</div>
 						</div>
+						 <!-- 分页 -->
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="" style="text-align: center">
+                                <ul class="pagination m-b-5">
+                                    <li ng-show="pages>1 && quereyData.page>1">
+                                        <a aria-label="Previous"  ng-click="changePage(quereyData.page-1)">
+                                            <i class="fa fa-angle-left"></i>
+                                        </a>
+                                    </li>
+                                    <li ng-repeat="x in pageArr"><a ng-click="quereyData.page == x ? return : changePage(x)">{{x}}</a></li>
+                                    <li ng-show="pages>1 && quereyData.page<pages ">
+                                        <a  aria-label="Next" ng-click="changePage(quereyData.page+1)" >
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div id="user-add-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addUserModal" aria-hidden="true" style="display: none">
+	<div id="equ-add-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addEquModal" aria-hidden="true" style="display: none">
          <div class="modal-dialog"> 
              <div class="modal-content"> 
                  <div class="modal-header"> 
-                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeAddModal()">×</button> 
-                     <h4 class="modal-title">添加用户</h4> 
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeAddEquModal()">×</button> 
+                     <h4 class="modal-title">添加设备</h4> 
                  </div> 
-                 <form class="modal-body" ng-submit="addUser()" name="addUserForm" novalidate="novalidate"> 
-                     <div class="row"> 
-                         <div class="col-md-6"> 
-                             <div class="form-group"> 
-                                 <label  class="control-label">帐号<span style="color : red">*</span></label> 
-                                 <input type="text" class="form-control" name="account" ng-model="account" required >
-                                 
-                             </div> 
-                         </div> 
-                         <div class="col-md-6"> 
-                             <div class="form-group"> 
-                                 <label  class="control-label">密码<span style="color : red">*</span></label> 
-                                 <input type="password" class="form-control" name="password" ng-model="password" required  > 
-                             </div> 
-                         </div> 
-                     </div> 
-                     <div class="row"> 
-                         <div class="col-md-8"> 
-                             <div class="form-group"> 
-                                 <label  class="control-label">公司名称<span style="color : red">*</span></label> 
-                                 <input type="text" class="form-control" name="company" ng-model="company" required > 
-                             </div> 
-                         </div> 
-                         <div class="col-md-4"> 
-                             <div class="form-group"> 
-                                 <label  class="control-label">联系人<span style="color : red">*</span></label> 
-                                 <input type="text" class="form-control" name="contact" ng-model="contact" required > 
-                             </div> 
-                         </div> 
-                     </div> 
-                     <div class="row"> 
-                         <div class="col-md-4"> 
-                             <div class="form-group"> 
-                                 <label  class="control-label">联系电话<span style="color : red">*</span></label> 
-                                 <input type="text" class="form-control" name="phone" ng-model="phone" required > 
-                             </div> 
-                         </div> 
-                         
-                         <div class="col-md-4"> 
-                             <div class="form-group"> 
-                                 <label  class="control-label">权限<span style="color : red">*</span></label> 
-                                 <select class="form-control" name="competence" ng-model="competence" required>
-									<option ng-show="chkCmp == 2" value="3">客户</option>
-									<option  value="4">普通用户</option>
+                 <form class="modal-body" ng-submit="addEqu()" name="addEquForm" novalidate="novalidate">
+	               		<div class="row" ng-show="chkCmp == 2"> 
+	                       <div class="col-md-12"> 
+	                           <div class="form-group "> 
+	                                <label  class="control-label">请选择设备所属客户<span style="color : red">*</span></label>  
+	                                <select ng-if="chkCmp == 2" class="form-control" name="seleCompany"  ng-model="$parent.seleCompany" ng-options="x for (x, y) in selCompanys" required>
 								</select>
-                             </div> 
-                         </div> 
-                          <div class="col-md-4"> 
-                             <div class="form-group"> 
-                                 <label  class="control-label">站点</label> 
-                                 <input type="text" class="form-control" name="site" ng-model="site"  > 
-                             </div> 
-                         </div> 
-                     </div> 
+	                           </div> 
+	                       </div> 
+	                   </div> 
                      <div class="row"> 
-                         <div class="col-md-8"> 
+                         <div class="col-md-12"> 
                              <div class="form-group"> 
-                                 <label  class="control-label">邮箱</label> 
-                                 <input type="email" class="form-control" name="email" ng-model="email"  > 
-                                 <div style="color: red" ng-show="addUserForm.email.$invalid">
-                      		  		*邮箱格式不正确
-                   				</div>
+                                 <label  class="control-label">杆塔ID<span style="color : red">*</span></label> 
+                                 <input type="text" class="form-control" name="eid" ng-model="eid" required >
                              </div> 
                          </div> 
-                        <div class="col-md-4"> 
+                        </div> 
+                        <div class="row"> 
+                            <div class="col-md-4"> 
+                                <div class="form-group"> 
+                                    <label  class="control-label">设备种类</label> 
+                                    <input type="text" class="form-control" name="eType" ng-model="eType"   > 
+                                </div> 
+                            </div> 
+                         <div class="col-md-4"> 
                              <div class="form-group"> 
-                                 <label  class="control-label">传真</label> 
-                                 <input type="text" class="form-control" name="fax" ng-model="fax"  > 
+                                 <label  class="control-label">设备数量</label> 
+                                 <input type="text" class="form-control" name="amount" ng-model="amount"  > 
+                             </div> 
+                         </div> 
+                         <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">测量范围</label> 
+                                 <input type="text" class="form-control" name="eRange" ng-model="eRange"  > 
                              </div> 
                          </div> 
                      </div> 
@@ -127,49 +125,16 @@
 	                        <div class="col-md-12"> 
 	                            <div class="form-group no-margin"> 
 	                                 <label  class="control-label">备注</label>  
-	                                <textarea  class="form-control autogrow" name="remark" ng-model="remark" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 75px"></textarea> 
+	                                <textarea  class="form-control autogrow" name="eRemark" ng-model="eRemark" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 75px"></textarea> 
 	                            </div> 
 	                        </div> 
 	                    </div>     
                  <div class="modal-footer"> 
-                     <button id="close-add-user-modal" type="button" class="btn btn-default waves-effect" data-dismiss="modal" ng-click="closeAddModal()" >关闭</button> 
-                     <button type="submit" class="btn btn-info waves-effect waves-light"  ng-disabled="addUserForm.$invalid">保存并添加</button> 
+                     <button id="close-add-equ-modal" type="button" class="btn btn-default waves-effect" data-dismiss="modal" ng-click="closeAddEquModal()" >关闭</button> 
+                     <button type="submit" class="btn btn-info waves-effect waves-light"  ng-disabled="addEquForm.$invalid">保存并添加</button> 
                  </div> 
                  </form> 
              </div> 
          </div>
      </div>
-     <div id="update-pwd-by-id-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="pwdByIdModalLabel" aria-hidden="true" style="display: none">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closePwdById()">×</button>
-						<h4 class="modal-title">修改密码</h4>
-					</div>
-					<form class="modal-body" ng-submit="updatePwdById()"   name="updatePwdByIdForm" >
-						<div class="row">
-							<div class="col-md-12">
-								<div class="form-group">
-									<label  class="control-label">新密码<span style="color: red">*</span></label>
-									<input type="password" class="form-control" required  ng-model="newPwd" name="newPwd">
-								</div>
-							</div>
-							<div class="col-md-12">
-								<div class="form-group">
-									<label  class="control-label">确认密码<span style="color: red">*</span></label>
-									<input type="password" class="form-control" required ng-model="checkPwd" name="checkPwd">
-								</div>
-								<div style="color: red" ng-show="newPwd != checkPwd && newPwd && checkPwd">
-                      		  		*两次密码输入不一致
-                   				</div>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button id="updatePwdById" type="button" class="btn btn-default waves-effect" data-dismiss="modal" ng-click="closePwdById()">关闭</button>
-							<button type="submit" class="btn btn-info waves-effect waves-light"  ng-disabled="updatePwdByIdForm.$invalid || newPwd != checkPwd">保存</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
 </div>
