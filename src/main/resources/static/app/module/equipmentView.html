@@ -7,7 +7,7 @@
 					<h3 class="panel-title">设备列表</h3>
 				</div>
 				<div class="panel-body">
-				<div class="row" ng-show="user.competence != 4 ">
+				<div class="row" ng-if="user.competence != 4 ">
                      <div class="col-sm-6">
                          <div class="m-b-30">
                              <button class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#equ-add-modal" ng-click="chkCmp == 2 ? seleCompetenceChg() : return">新增设备 <i class="fa fa-plus"></i></button>
@@ -111,7 +111,7 @@
                          <div class="col-md-4"> 
                              <div class="form-group"> 
                                  <label  class="control-label">设备数量</label> 
-                                 <input type="text" class="form-control" name="amount" ng-model="amount"  > 
+                                 <input type="number" class="form-control" name="amount" ng-model="amount"  > 
                              </div> 
                          </div> 
                          <div class="col-md-4"> 
