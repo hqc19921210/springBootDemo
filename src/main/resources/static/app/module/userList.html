@@ -51,6 +51,24 @@
 								</table>
 							</div>
 						</div>
+						 <!-- 分页 -->
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="" style="text-align: center">
+                                <ul class="pagination m-b-5">
+                                    <li ng-show="pages>1 && quereyData.page>1">
+                                        <a aria-label="Previous"  ng-click="changePage(quereyData.page-1)">
+                                            <i class="fa fa-angle-left"></i>
+                                        </a>
+                                    </li>
+                                    <li ng-repeat="x in pageArr"><a ng-click="quereyData.page == x ? return : changePage(x)">{{x}}</a></li>
+                                    <li ng-show="pages>1 && quereyData.page<pages ">
+                                        <a  aria-label="Next" ng-click="changePage(quereyData.page+1)" >
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
 					</div>
 				</div>
 			</div>
@@ -68,14 +86,19 @@
                          <div class="col-md-6"> 
                              <div class="form-group"> 
                                  <label  class="control-label">帐号<span style="color : red">*</span></label> 
-                                 <input type="text" class="form-control" name="account" ng-model="account" ng-minlength="3" ng-maxlength="16" required >
-                                 
+                                 <input type="text" class="form-control" name="account" ng-model="account" ng-minlength="3" ng-maxlength="16" required />
+                                 <div style="color: red" ng-show="addUserForm.account.$invalid && addUserForm.account.$dirty">
+                      		  		*帐号最小长度为3，最大长度为16
+                   				</div>
                              </div> 
                          </div> 
                          <div class="col-md-6"> 
                              <div class="form-group"> 
                                  <label  class="control-label">密码<span style="color : red">*</span></label> 
-                                 <input type="password" class="form-control" name="password" ng-model="password" ng-minlength="6" ng-maxlength="16" required  > 
+                                 <input type="password" class="form-control" name="password" ng-model="password" ng-minlength="6" ng-maxlength="16" required  />
+                                 <div style="color: red" ng-show="addUserForm.password.$invalid && addUserForm.password.$dirty">
+                      		  		*密码最小长度为6，最大长度为16
+                   				</div> 
                              </div> 
                          </div> 
                      </div> 
@@ -83,13 +106,13 @@
                          <div class="col-md-8"> 
                              <div class="form-group"> 
                                  <label  class="control-label">公司名称<span style="color : red">*</span></label> 
-                                 <input type="text" class="form-control" name="company" ng-model="company" required > 
+                                 <input type="text" class="form-control" name="company" ng-model="company" required /> 
                              </div> 
                          </div> 
                          <div class="col-md-4"> 
                              <div class="form-group"> 
                                  <label  class="control-label">联系人<span style="color : red">*</span></label> 
-                                 <input type="text" class="form-control" name="contact" ng-model="contact" required > 
+                                 <input type="text" class="form-control" name="contact" ng-model="contact" required /> 
                              </div> 
                          </div> 
                      </div> 
@@ -97,7 +120,7 @@
                          <div class="col-md-4"> 
                              <div class="form-group"> 
                                  <label  class="control-label">联系电话<span style="color : red">*</span></label> 
-                                 <input type="text" class="form-control" name="phone" ng-model="phone" required > 
+                                 <input type="text" class="form-control" name="phone" ng-model="phone" required /> 
                              </div> 
                          </div> 
                          
@@ -113,7 +136,7 @@
                           <div class="col-md-4"> 
                              <div class="form-group"> 
                                  <label  class="control-label">站点</label> 
-                                 <input type="text" class="form-control" name="site" ng-model="site"  > 
+                                 <input type="text" class="form-control" name="site" ng-model="site"  /> 
                              </div> 
                          </div> 
                      </div> 
@@ -130,7 +153,7 @@
                          <div class="col-md-8"> 
                              <div class="form-group"> 
                                  <label  class="control-label">邮箱</label> 
-                                 <input type="email" class="form-control" name="email" ng-model="email"  > 
+                                 <input type="email" class="form-control" name="email" ng-model="email"  /> 
                                  <div style="color: red" ng-show="addUserForm.email.$invalid">
                       		  		*邮箱格式不正确
                    				</div>
@@ -139,7 +162,7 @@
                         <div class="col-md-4"> 
                              <div class="form-group"> 
                                  <label  class="control-label">传真</label> 
-                                 <input type="text" class="form-control" name="fax" ng-model="fax"  > 
+                                 <input type="text" class="form-control" name="fax" ng-model="fax"  /> 
                              </div> 
                          </div> 
                      </div> 
@@ -171,14 +194,17 @@
 							<div class="col-md-12">
 								<div class="form-group">
 									<label  class="control-label">新密码<span style="color: red">*</span></label>
-									<input type="password" class="form-control" required  ng-model="newPwd" name="newPwd">
+									<input type="password" class="form-control" ng-minlength="6" ng-maxlength="16" required  ng-model="newPwd" name="newPwd">
 								</div>
 							</div>
 							<div class="col-md-12">
 								<div class="form-group">
 									<label  class="control-label">确认密码<span style="color: red">*</span></label>
-									<input type="password" class="form-control" required ng-model="checkPwd" name="checkPwd">
+									<input type="password" class="form-control" ng-minlength="6" ng-maxlength="16" required ng-model="checkPwd" name="checkPwd">
 								</div>
+								<div style="color: red" ng-show="updatePwdByIdForm.newPwd.$invalid && updatePwdByIdForm.newPwd.$dirty">
+                      		  		*密码最小长度为6，最大长度为16
+                   				</div>
 								<div style="color: red" ng-show="newPwd != checkPwd && newPwd && checkPwd">
                       		  		*两次密码输入不一致
                    				</div>

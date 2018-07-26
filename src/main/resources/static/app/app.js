@@ -29,6 +29,9 @@ var demoApp =angular.module("demoApp", ["ngRoute"]);
 	}).when("/module/imageChar", {
 			templateUrl: "app/module/imageChar.html",
 			controller: imageCharCtrl
+	}).when("/module/equView", {
+		templateUrl: "app/module/equipmentView.html",
+		controller: equCtrl
 	}).when("/module/lightLog", {
 			templateUrl: "app/module/lightLog.html",
 			controller: lightLogCtrl
