@@ -27,9 +27,10 @@ public interface EquipmentMapper {
 	@Select("SELECT eid FROM equipment where STATUS = 'Y' ")
 	public List<String> getEquipmentIdListAll();
 	
-	@Select("<script>SELECT id,eid,e_type,IFNULL(amount,0) as amount,e_range,IFNULL(total,0) as total,IFNULL(alarms,0) as alarms,e_status,online_time,remark,own_id"
-			+ " FROM equipment "
-			+ "where STATUS = 'Y'  "
+	@Select("<script>SELECT id,eid,e_type,IFNULL(amount,0) as amount,e_range,"
+			+ "(select count(1) from lightning_log  where devEUI = equipment.eid) as total,"
+			+ "IFNULL(alarms,0) as alarms,e_status,online_time,remark,own_id"
+			+ " FROM equipment where STATUS = 'Y'  "
 			+ "<if test=\"competence == 3 \"> and own_id = #{id}  </if>"
 			+ "<if test=\"competence == 4 \"> and own_id = #{parentId}  </if>"
 			+ " </script>")
