@@ -36,10 +36,10 @@
 									<tr ng-repeat="eqm in equipments"> 
 									<td>{{ eqm.eid }}</td>
 									<td>{{ eqm.type }}</td>
-									<td>{{ eqm.amount == null ? 0 : eqm.amount}}</td>
+									<td>{{ eqm.amount}}</td>
 									<td>{{ eqm.range }}</td>
-									<td>{{ eqm.total == null ? 0 : eqm.total }}</td>
-									<td>{{ eqm.alarms == null ? 0 : eqm.alarms }}</td>
+									<td>{{ eqm.total }}</td>
+									<td>{{ eqm.alarms }}</td>
 									<td>{{ eqm.eStatus == "N" ? "正常" : eqm.eStatus }}</td>
 									<td>{{ eqm.onlineTime }}</td>
 									<td>{{ eqm.remark }}</td>

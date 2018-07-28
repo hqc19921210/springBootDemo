@@ -6,7 +6,7 @@ function equCtrl($scope, $http, $rootScope) {
     };
     $scope.init=function(){
     	$http.post("service/getEquipments",$scope.quereyData).success(function(data) {
-    		console.info(data);
+//    		console.info(data);
     		$scope.equipments = data.resultObj.list;
     		$scope.pages=data.resultObj.pages;
     		$scope.pageArr=data.resultObj.navigatepageNums;
@@ -30,7 +30,6 @@ function equCtrl($scope, $http, $rootScope) {
 //	});
     $scope.chkCmp = $rootScope.user.competence;
     $scope.addEqu = function() {
-    	console.log($scope.Cdate)
         $http.post("service/addEqu",
         		{eid:$scope.eid,
     			eType:$scope.eType,
