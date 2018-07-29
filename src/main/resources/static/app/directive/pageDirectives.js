@@ -91,6 +91,9 @@ demoApp.directive("pageInfo", function() {
 
 			//翻页
 			$scope.changePage=function(page){
+				if($scope.curpage==page){
+					return;
+				}
 				$scope.curpage=page;
 				$scope.pageFunc();
 				if ($attrs.change) {
