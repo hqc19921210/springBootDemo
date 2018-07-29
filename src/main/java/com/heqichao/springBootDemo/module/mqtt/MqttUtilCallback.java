@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
 
 /**
@@ -39,23 +40,27 @@ import java.text.SimpleDateFormat;
 @Component
 public class MqttUtilCallback implements MqttCallback {
 
-    private MqttUtil mqttUtil;
 
+    public static MqttUtilCallback mqttUtilCallback;
+
+    public MqttUtilCallback(){}
+
+    @PostConstruct
+    public void init() {
+        mqttUtilCallback = this;
+        mqttUtilCallback.lightningLogService = this.lightningLogService;
+    }
 
     @Autowired
     private LightningLogService lightningLogService;
 
-
-    public MqttUtilCallback(MqttUtil mqttUtil){
-        this.mqttUtil=mqttUtil;
-    }
 
     Logger logger = LoggerFactory.getLogger(getClass());
     @Override
     public void connectionLost(Throwable throwable) {
         // 连接丢失后，一般在这里面进行重连
         logger.error(" MQTT 连接异常断开，开始重连",throwable);
-        mqttUtil.init();
+        MqttUtil.init();
     }
 
     @Override
@@ -67,7 +72,8 @@ public class MqttUtilCallback implements MqttCallback {
         logger.info("接收消息内容 : " + mes);
         LightningLog log =MqttUtil.saveTransData(mes);
         if(log!=null){
-            lightningLogService.save(log);
+
+            mqttUtilCallback.lightningLogService.save(log);
 
             if(LightningLogService.HEART_BEAT_ERROR.equals(log.getStatus())){ //设置设备故障
                 log.getDevEUI();

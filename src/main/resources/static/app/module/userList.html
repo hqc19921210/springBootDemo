@@ -52,7 +52,7 @@
 							</div>
 						</div>
 						 <!-- 分页 -->
-                        <div class="col-md-12 col-sm-12 col-xs-12">
+                     <!--   <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="" style="text-align: center">
                                 <ul class="pagination m-b-5">
                                     <li ng-show="pages>1 && quereyData.page>1">
@@ -68,7 +68,8 @@
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div>-->
+						<page-info pages="pages" curpage="quereyData.page" change="changePage(page)"></page-info>
 					</div>
 				</div>
 			</div>

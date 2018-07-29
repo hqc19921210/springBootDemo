@@ -322,6 +322,9 @@ body.fixed-left .side-menu.left {
 #wrapper.enlarged .left.side-menu .user-details {
   display: none;
 }
+#wrapper.enlarged .content-page{
+  margin-left: 70px;
+}
 #wrapper.enlarged .topbar .topbar-left {
   width: 70px !important;
 }

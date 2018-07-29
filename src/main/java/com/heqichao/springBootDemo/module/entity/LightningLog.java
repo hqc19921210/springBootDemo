@@ -1,5 +1,6 @@
 package com.heqichao.springBootDemo.module.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.heqichao.springBootDemo.base.entity.BaseEntity;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ public class LightningLog extends BaseEntity {
     //设备id
     private String devEUI;
     //上报时间
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date time;
     private int fPort;
     private int gatewayCount;

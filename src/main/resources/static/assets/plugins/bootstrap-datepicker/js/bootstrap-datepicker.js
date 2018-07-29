@@ -1507,7 +1507,7 @@
 	$.fn.datepicker = datepickerPlugin;
 
 	var defaults = $.fn.datepicker.defaults = {
-		autoclose: false,
+		autoclose: true,
 		beforeShowDay: $.noop,
 		beforeShowMonth: $.noop,
 		calendarWeeks: false,
@@ -1517,9 +1517,11 @@
 		datesDisabled: [],
 		endDate: Infinity,
 		forceParse: true,
-		format: 'mm/dd/yyyy',
+		// format: 'mm/dd/yyyy',
+		format: 'yyyy-mm-dd',
 		keyboardNavigation: true,
-		language: 'en',
+	//	language: 'en',
+		language: 'zh-cn',
 		minViewMode: 0,
 		multidate: false,
 		multidateSeparator: ',',
@@ -1527,8 +1529,8 @@
 		rtl: false,
 		startDate: -Infinity,
 		startView: 0,
-		todayBtn: false,
-		todayHighlight: false,
+		todayBtn: 'linked',
+		todayHighlight: true,
 		weekStart: 0,
 		disableTouchKeyboard: false,
         enableOnReadonly: true,
@@ -1549,6 +1551,15 @@
 			monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
 			today: "Today",
 			clear: "Clear"
+		},
+		"zh-cn":{
+			days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+			daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+			daysMin: ["日", "一", "二", "三", "四", "五", "六", "日"],
+			months: ["一月份", "二月份", "三月份", "四月份", "五月份", "六月份", "七月份", "八月份", "九月份", "十月份", "十一月份", "十二月份"],
+			monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+			today: "今天",
+			clear: "清空"
 		}
 	};
 
