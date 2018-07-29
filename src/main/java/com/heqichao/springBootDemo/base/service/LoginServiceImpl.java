@@ -7,6 +7,7 @@ import com.heqichao.springBootDemo.base.util.AesUtil;
 import com.heqichao.springBootDemo.base.util.ServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
@@ -14,6 +15,7 @@ import java.io.IOException;
  * Created by heqichao on 2018-2-12.
  */
 @Service
+@Transactional
 public class LoginServiceImpl implements LoginService {
 	@Autowired
 	private UserMapper userMap;
