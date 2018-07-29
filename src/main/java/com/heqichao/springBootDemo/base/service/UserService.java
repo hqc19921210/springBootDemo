@@ -14,7 +14,12 @@ import java.util.Map;
 
 
 public interface UserService {
-
+	//管理员
+	Integer ROOT =2;
+	//用户
+	Integer CUSTOMER =3;
+	//访客
+	Integer VISTOR =4;
 	PageInfo queryUsersList();
 
 	ResponeResult insertUser(Map map);

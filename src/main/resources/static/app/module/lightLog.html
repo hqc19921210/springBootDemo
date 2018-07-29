@@ -5,7 +5,38 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">雷击记录列表</h3>
                 </div>
+
                 <div class="panel-body">
+                    <form role="form" class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label  class="col-sm-1 control-label">设备ID</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" ng-model="quereyData.devEUI" placeholder="设备ID">
+                                </div>
+                                <label  class="col-sm-1 control-label">雷击时间</label>
+                                <div class="col-sm-3">
+                                    <div class="input-group">
+                                            <input type="text" class="form-control"  id="datepickerStrat" ng-model="quereyData.start">
+                                          <!--  <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>-->
+                                        <span class="input-group-addon">到</span>
+                                            <input type="text" class="form-control"    id="datepickerEnd"  ng-model="quereyData.end">
+                                           <!-- <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>-->
+                                    </div>
+                                </div>
+                                <label  class="col-sm-1 control-label">功能码</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control"  ng-model="quereyData.functionCode"  placeholder="功能码">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-1 col-lg-11">
+                                <button class="btn btn-success waves-effect waves-light " ng-click="init()">搜索</button>
+                                <button class="btn btn-default waves-effect" type="button" ng-click="clear()">重置</button>
+                            </div>
+                        </div>
+                    </form>
 
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -13,12 +44,32 @@
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>设备ID</th>
+                                        <th>设备通道</th>
+                                        <th>雷击次数</th>
+                                        <th>雷击时间</th>
+                                        <th>电流峰值</th>
+                                        <th>电流有效值</th>
+                                        <th>波头时间</th>
+                                        <th>半峰值时间</th>
+                                        <th>雷击作用时间</th>
+                                        <th>雷击能量</th>
+                                        <th>操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="entity in data">
-                                        <td ng-bind="entity.id"></td>
+                                        <td ng-bind="entity.devEUI"></td>
+                                        <td ng-bind=""></td>
+                                        <td ng-bind="entity.ligntningCount"></td>
+                                        <td ng-bind="entity.ligntningTime"></td>
+                                        <td ng-bind="entity.peakValue"></td>
+                                        <td ng-bind="entity.effectiveValue"></td>
+                                        <td ng-bind="entity.waveHeadTime"></td>
+                                        <td ng-bind="entity.halfPeakTime"></td>
+                                        <td ng-bind="entity.actionTime"></td>
+                                        <td ng-bind="entity.energy"></td>
+                                        <td >  <a ng-click="showLightLog(entity)" data-toggle="modal" data-target="#show-light-log-modal" class="on-default edit-row" style="cursor:pointer">详情</a></td>
                                     </tr>
 
 
@@ -28,28 +79,96 @@
                         </div>
 
                         <!-- 分页 -->
-                        <div class="col-md-12 col-sm-12 col-xs-12">
+                       <!-- <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="" style="text-align: center">
                                 <ul class="pagination m-b-5">
-                                    <li ng-show="pages>1 && quereyData.page>1">
-                                        <a aria-label="Previous"  ng-click="changePage(quereyData.page-1)">
-                                            <i class="fa fa-angle-left"></i>
-                                        </a>
-                                    </li>
-                                    <li ng-repeat="x in pageArr"><a ng-click="changePage(x)">{{x}}</a></li>
-                                    <li ng-show="pages>1 && quereyData.page<pages ">
-                                        <a  aria-label="Next" ng-click="changePage(quereyData.page+1)" >
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
+                                    <li ng-repeat="obj in pageArr">
+                                        <a ng-if="obj.show" ng-click="changePage(obj.num)"  ng-class="{true:'page-put'}[quereyData.page==obj.num]" ng-bind="obj.num"></a>
+                                        <a ng-if="obj.hide" >...</a>
                                     </li>
                                 </ul>
                             </div>
-                        </div>
-
+                        </div>-->
+                        <page-info pages="pages" curpage="quereyData.page" change="changePage(page)"></page-info>
                     </div>
                 </div>
             </div>
         </div>
 
     </div>
+
+    <div id="show-light-log-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lightLogModalLabel" aria-hidden="true" style="display: none">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">雷击记录</h4>
+                </div>
+                <form class="modal-body"   name="lightLigForm" >
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div><strong>设备ID</strong></div>
+                                <div class="about-info-p"> <p class="text-muted"  ng-bind="showEntity.devEUI"></p></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div><strong>上报时间</strong></div>
+                                <div class="about-info-p"> <p class="text-muted"  ng-bind="showEntity.time"></p></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div><strong>产品地址</strong></div>
+                                <div class="about-info-p"> <p class="text-muted"  ng-bind="showEntity.devicePath"></p></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div><strong>功能码</strong></div>
+                            <div class="about-info-p"> <p class="text-muted" ng-bind="showEntity.functionCode"></p></div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div><strong>雷击次数</strong></div>
+                            <div class="about-info-p"> <p class="text-muted" ng-bind="showEntity.ligntningCount"></p></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div><strong>雷击时间</strong></div>
+                            <div class="about-info-p"> <p class="text-muted" ng-bind="showEntity.ligntningTime"></p></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div><strong>电流峰值</strong></div>
+                            <div class="about-info-p"> <p class="text-muted" ng-bind="showEntity.peakValue"></p></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div><strong>电流有效值</strong></div>
+                            <div class="about-info-p"> <p class="text-muted" ng-bind="showEntity.effectiveValue"></p></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div><strong>电流波头时间</strong></div>
+                            <div class="about-info-p"> <p class="text-muted" ng-bind="showEntity.waveHeadTime"></p></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div><strong>电流半峰值时间</strong></div>
+                            <div class="about-info-p"> <p class="text-muted" ng-bind="showEntity.halfPeakTime"></p></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div><strong>电流作用时间</strong></div>
+                            <div class="about-info-p"> <p class="text-muted" ng-bind="showEntity.actionTime"></p></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div><strong>能量</strong></div>
+                            <div class="about-info-p"> <p class="text-muted" ng-bind="showEntity.energy"></p></div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button id="updatePwdId" type="button" class="btn btn-default waves-effect" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+</div>

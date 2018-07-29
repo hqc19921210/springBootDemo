@@ -2,6 +2,8 @@ package com.heqichao.springBootDemo.module.mqtt;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.heqichao.springBootDemo.base.param.ApplicationContextUtil;
+import com.heqichao.springBootDemo.base.service.EquipmentService;
 import com.heqichao.springBootDemo.base.util.Base64Encrypt;
 import com.heqichao.springBootDemo.base.util.StringUtil;
 import com.heqichao.springBootDemo.module.entity.LightningLog;
@@ -16,9 +18,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by heqichao on 2018-7-15.
@@ -28,14 +33,22 @@ public class MqttUtil {
     static Logger logger = LoggerFactory.getLogger(MqttUtil.class);
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
 
-    @Autowired
-    private MqttOption mqttOption;
+    @Resource
+    private MqttOption mqttOptionSource;
 
-    @Autowired
-    private LightningLogService lightningLogService;
+    private static MqttOption  mqttOption;
+
+    public static MqttClient getClient(){
+        return client;
+    }
+
+    @PostConstruct
+    public void initOption() {
+        this.mqttOption = mqttOptionSource;
+    }
 
     private static MqttClient client;
-    public MqttConnectOptions getOptions() {
+    public static MqttConnectOptions getOptions() {
         MqttConnectOptions options = new MqttConnectOptions();
 
         // 设置是否清空session,这里如果设置为false表示服务器会保留客户端的连接记录，这里设置为true表示每次连接到服务器都以新的身份连接
@@ -50,17 +63,17 @@ public class MqttUtil {
         options.setKeepAliveInterval(20);
         // 设置回调
 
-        MqttTopic topic = client.getTopic(mqttOption.getTopic());
+        //MqttTopic topic = client.getTopic(mqttOption.getTopic());
         //setWill方法，如果项目中需要知道客户端是否掉线可以调用该方法。设置最终端口的通知消息
         //options.setWill(topic, "CLOSE".getBytes(), 1, true);
 
         return options;
     }
-    private void connect() throws MqttException {
+    private static void connect() throws MqttException {
         //防止重复创建MQTTClient实例
         if (client==null) {
             client = new MqttClient(mqttOption.getHostPort(), mqttOption.getClientId(), new MemoryPersistence());
-            client.setCallback(new MqttUtilCallback(this));
+            client.setCallback(new MqttUtilCallback());
 
         }
         MqttConnectOptions options = getOptions();
@@ -75,15 +88,30 @@ public class MqttUtil {
         }
     }
 
-    private void getTopicMes() throws MqttException {
-        logger.info("MQTT订阅主题:"+mqttOption.getTopic());
+    private static void subscribeTopicMes(List<String> topsics) throws Exception {
+        if(topsics== null || topsics.size()<1){
+            logger.info("MQTT 无订阅主题！！！");
+            return;
+        }
+        String[] strings = new String[topsics.size()];
+
+        for(int i=0 ;i< topsics.size();i++){
+            String s =topsics.get(i);
+            s="application/0000000000000001/node/"+s+"/rx";
+            logger.info("MQTT订阅主题:"+s);
+            strings[i]=s;
+        }
+
+
         //订阅消息
-        int[] Qos  = {1};
-        String[] topic1 = {mqttOption.getTopic()};
-        client.subscribe(topic1, Qos);
+      /*  Integer[] Qos  =new Integer[topsics.length];
+        for(int i=0;i<topsics.length;i++){
+            Qos[i]=2;
+        }*/
+        client.subscribe(strings);
     }
 
-    private void connect(int number,int waitSecond) {
+    private static void connect(int number,int waitSecond) {
         for (int i = 1; i <= number||number>999; i++) {
             try {
                 connect();
@@ -105,13 +133,16 @@ public class MqttUtil {
     }
 
     //监听设备发来的消息
-    public void init() {
+    public static void init() {
         try {
             logger.info("**** INIT MQTT START : "+mqttOption);
             connect(mqttOption.getRetryTime(),mqttOption.getRetrySpace());
-            getTopicMes();
+            EquipmentService equipmentService= (EquipmentService) ApplicationContextUtil.getApplicationContext().getBean("equipmentServiceImpl");
+
+
+            subscribeTopicMes(equipmentService.getEquipmentIdListAll());
             logger.info("**** INIT MQTT SUCCESS! ");
-        } catch (MqttException e) {
+        } catch (Exception e) {
             logger.error("**** INIT MQTT FAIL! ",e);
 
         }
@@ -180,6 +211,8 @@ public class MqttUtil {
                     //后两位作校验
                     log.setStatus(status);
 
+                }else{
+                    logger.error(" ******** 无法解析接收数据 ："+mes+" 正文数据长度为："+transDatas.length);
                 }
 
                 return log;

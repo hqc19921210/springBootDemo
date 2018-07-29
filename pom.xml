@@ -24,6 +24,7 @@
 	</parent>
 
 	<dependencies>
+
 		<!-- WEB -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

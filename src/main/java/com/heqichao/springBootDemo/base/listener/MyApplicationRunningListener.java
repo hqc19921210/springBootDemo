@@ -14,22 +14,19 @@ import java.util.Date;
 /**
  * Created by heqichao on 2018-7-15.
  */
-@Component//被spring容器管理
+@Component
 @Order(1)//如果多个自定义ApplicationRunner，用来标明执行顺序
 public class MyApplicationRunningListener implements ApplicationRunner {
-
-    @Autowired
-    private MqttUtil mqttUtil;
 
     Logger logger = LoggerFactory.getLogger(getClass());
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
+        initTask();
         logger.info("应用启动成功："+new Date());
-//        initTask();
     }
 
     private void initTask(){
-        mqttUtil.init();
+        MqttUtil.init();
     }
 
 }
