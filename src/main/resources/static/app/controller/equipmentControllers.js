@@ -4,6 +4,7 @@ function equCtrl($scope, $http, $rootScope) {
         page:1, //当前页码 初始化为1
         size:defaultSize, //每页数据量 defaultSize全局变量
     };
+	$scope.pages=0;
     $scope.init=function(){
     	$http.post("service/getEquipments",$scope.quereyData).success(function(data) {
     		console.info(data);
