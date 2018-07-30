@@ -38,4 +38,7 @@ public interface LightningLogMapper {
             + "#{item}"
             + "</foreach>")
      int deleteLightningLogByDevIds(@Param("devIds") List<String> devIds);
+
+    @Select("select DISTINCT devEUI from lightning_log where createTime >= now()-interval #{time} minute")
+    List<String> queryLogOnTime(@Param("time") int time);
 }

@@ -77,4 +77,9 @@ public class LightningLogServiceImpl implements LightningLogService {
     public void setDevError(String devId, Date time) {
 
     }
+
+    @Override
+    public List<String> queryLogOnTime(int time) {
+        return lightningLogMapper.queryLogOnTime(time);
+    }
 }
