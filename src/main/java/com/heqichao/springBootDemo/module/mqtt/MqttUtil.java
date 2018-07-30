@@ -151,6 +151,9 @@ public class MqttUtil {
 
     public static LightningLog saveTransData(String mes){
         int defaule=100;
+        if("CLOSE".equalsIgnoreCase(mes)) {
+        	return null;
+        }
         LightningLog log =new LightningLog();
         JSONObject jsonObject = JSON.parseObject(mes);
         String devEUI=jsonObject.getString("devEUI"); //设备id
