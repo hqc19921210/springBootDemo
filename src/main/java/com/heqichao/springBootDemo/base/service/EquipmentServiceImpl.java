@@ -9,11 +9,13 @@ import com.heqichao.springBootDemo.base.entity.User;
 import com.heqichao.springBootDemo.base.util.PageUtil;
 import com.heqichao.springBootDemo.base.util.ServletUtil;
 import com.heqichao.springBootDemo.base.util.StringUtil;
+import com.heqichao.springBootDemo.module.mqtt.MqttUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,15 +46,30 @@ public class EquipmentServiceImpl implements EquipmentService {
     	return eMapper.getEquipmentIdListAll();
     }
     
+    // 根据杆塔ID设置状态
+    @Override
+    public void setEquStatus(String eid,String status) {
+    	 eMapper.setEquStatus(eid,status);
+    }
+    // 根据状态获取有效设备杆塔ID数组
+    @Override
+    public List<String> getEquipmentByStatus(String status) {
+    	return eMapper.getEquipmentByStatus(status);
+    }
+    
     @Override
     public ResponeResult insertEqu(Map map) {
     	Equipment equ = new Equipment(map);
     	Integer uid = ServletUtil.getSessionUser().getId();
     	Integer cmp = ServletUtil.getSessionUser().getCompetence();
     	Integer oid = StringUtil.objectToInteger(StringUtil.getStringByMap(map,"seleCompany"));
-    	if(		equ.getEid() == null || uid == null || cmp == 4) {
+    	if(equ.getEid() == null || uid == null || cmp == 4) {
     		return new ResponeResult(true,"Add Equipment Input Error!","errorMsg");
-    	}if(cmp == 2 && oid == null) {
+    	}
+    	if(eMapper.duplicatedEid(equ.getEid())) {
+    		return new ResponeResult(true,"杆塔Id重复","errorMsg");
+    	}
+    	if(cmp == 2 && oid == null) {
     		return new ResponeResult(true,"Add Equipment Input Error!","errorMsg");
 		}else {
     		if(cmp == 2) {
@@ -63,7 +80,15 @@ public class EquipmentServiceImpl implements EquipmentService {
     		equ.setUpdateUid(uid);
     		equ.seteStatus("N");
     		if(eMapper.insertEquipment(equ)>0) {
-    			return new ResponeResult();
+    			List<String> mqId = new ArrayList<String>();
+    			mqId.add(equ.getEid());
+    			try {
+					MqttUtil.subscribeTopicMes(mqId);
+					return new ResponeResult();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
     		}
     	}
     	return  new ResponeResult(true,"Add Equipment fail","errorMsg");
