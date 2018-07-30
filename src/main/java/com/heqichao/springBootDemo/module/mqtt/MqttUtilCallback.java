@@ -70,18 +70,24 @@ public class MqttUtilCallback implements MqttCallback {
         logger.info("接收消息主题 : " + topic);
         logger.info("接收消息Qos : " + message.getQos());
         logger.info("接收消息内容 : " + mes);
-        LightningLog log =MqttUtil.saveTransData(mes);
-        if(log!=null){
-
+        if("CLOSE".equalsIgnoreCase(mes)) {
+            logger.error("设备下线！！！");
+            LightningLog log =new LightningLog();
+            log.setStatus(LightningLogService.OFF_LINE);
             mqttUtilCallback.lightningLogService.save(log);
 
-            if(LightningLogService.HEART_BEAT_ERROR.equals(log.getStatus())){ //设置设备故障
-                log.getDevEUI();
+        }else{
+            LightningLog log =MqttUtil.saveTransData(mes);
+            if(log!=null){
+                mqttUtilCallback.lightningLogService.save(log);
+                if(LightningLogService.HEART_BEAT_ERROR.equals(log.getStatus())){
+                    //设置设备故障
+                    logger.error("设备故障！！！");
+                }
+                logger.info("保存消息内容成功！");
             }
-
-
-            logger.info("保存消息内容成功！");
         }
+
     }
 
     @Override

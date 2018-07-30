@@ -56,13 +56,11 @@ public class Base64Encrypt {
         System.out.println("str1:"+str1);
         String str2=new String(base64.decode(str1));*/
 
-      String[] bs =Base64Encrypt.decodeToHexStr("AQMUAAAABwUJBAAAAAAAAAAAAAAAAAANwA==");
+      String[] bs =Base64Encrypt.decodeToHexStr("AQMGAAGGoAAANd8=");
         for(String s :bs){
             System.out.println(s);
         }
 
-        String hex = "01F4";
-        Integer x = Integer.parseInt(hex,16);
-        System.out.println(x);
+
     }
 }

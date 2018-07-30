@@ -9,12 +9,20 @@ public class ResponeException extends RuntimeException {
         this.code = code;
         this.msg = msg;
     }
+    public  ResponeException(String msg){
+        this.msg=msg;
+    }
 
     public  ResponeException(Throwable cause){
         this.cause=cause;
     }
 
-    //异常编码
+    public  ResponeException(String msg,Throwable cause) {
+        this.cause = cause;
+        this.msg=msg;
+    }
+
+        //异常编码
     private String code;
     //异常信息
     private String msg;

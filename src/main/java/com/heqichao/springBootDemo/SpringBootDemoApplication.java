@@ -17,6 +17,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,7 @@ import java.util.Properties;
 @EnableTransactionManagement // 开启事物
 @ServletComponentScan(basePackages = {"com.heqichao.springBootDemo.base.filter"})
 //@ComponentScan(basePackages = {"com.heqichao.page"})  扫描包下的子包、类
-//@EnableScheduling  整合quartz  开启定时任务功能
+@EnableScheduling // 整合quartz  开启定时任务功能
 //@EnableAsync  开启异步任务
 @SpringBootApplication
 public class SpringBootDemoApplication {

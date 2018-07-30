@@ -1,8 +1,11 @@
 package com.heqichao.springBootDemo.base.param;
 
+
+/*
 import com.heqichao.springBootDemo.SpringBootDemoApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+*/
 
 /**
  * 打war的应用启动入口
@@ -18,5 +21,5 @@ public class ServletInitializer extends SpringBootServletInitializer {
 */
 
 public class ServletInitializer{
-    
+
 }
