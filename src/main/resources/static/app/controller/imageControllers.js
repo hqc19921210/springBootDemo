@@ -191,6 +191,7 @@ function imageCharCtrl($scope, $http, $rootScope) {
     				data: $scope.nodeList
     			}]
     		})
+    		window.onresize = myChart.resize;
     		$scope.pages=data.resultObj.pages;
     		$scope.pageArr=data.resultObj.navigatepageNums;
     		$scope.quereyData.page=data.resultObj.pageNum;
