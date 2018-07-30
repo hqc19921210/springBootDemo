@@ -5,9 +5,9 @@ function listCtrl($scope, $http,$rootScope) {
 	/*$http.get("data/players.json").success(function(data) {
 		$scope.players = data;
 	});*/
-	console.info("listCtrl");
-	console.info("登录用户：" );
-	console.info($rootScope.user);
+//	console.info("listCtrl");
+//	console.info("登录用户：" );
+//	console.info($rootScope.user);
 }
 
 //Edit Controller

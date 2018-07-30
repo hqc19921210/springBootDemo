@@ -72,7 +72,7 @@
           },
           tooltip: true,
           tooltipOpts: {
-              content: '%s: Value of %x is %y',
+              content: '%x月雷击 %y次',
               shifts: {
                   x: -60,
                   y: 25
@@ -123,17 +123,17 @@
         //initializing various charts and components
         Dashboard.prototype.init = function() {
           //plot graph data
-          var uploads = [[0, 9], [1, 8], [2, 5], [3, 8], [4, 5], [5, 14], [6, 10]];
-          var downloads = [[0, 5], [1, 12], [2,4], [3, 3], [4, 12], [5, 11], [6, 14]];
-          var plabels = ["Visits", "Pages/Visit"];
+          var uploads = [];
+          var downloads = [[1, 5], [2, 12], [3,4], [4, 3], [5, 12], [6, 11], [7, 14], [8, 14], [9, 12], [10, 15], [11, 9], [12, 6]];
+          var plabels = ["", "雷击次数"];
           var pcolors = ['#2b4049', '#2b9ac9'];
           var borderColor = '#fff';
           var bgColor = '#fff';
           this.createPlotGraph("#website-stats", uploads, downloads, plabels, pcolors, borderColor, bgColor);
 
             //Pie graph data
-            var pielabels = ["Series 1","Series 2","Series 3"];
-            var datas = [20,30, 20];
+            var pielabels = ["故障","正常","下线"];
+            var datas = [32,119, 19];
             var colors = ['#2b4049', '#2b9ac9', "#58c9c7"];
             this.createPieGraph("#pie-chart #pie-chart-container", pielabels , datas, colors);
 
@@ -146,8 +146,12 @@
 
 //initializing Dashboard
 function($) {
-    "use strict";
-    $.Dashboard.init()
+	
+	setTimeout("test()",2000); 
 }(window.jQuery);
 
+function test() { 
+	"use strict";
+	$.Dashboard.init();
+}; 
 

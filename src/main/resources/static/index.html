@@ -291,15 +291,7 @@
 		<script src="assets/plugins/raphael/raphael-min.js"></script>
 		<script src="assets/pages/morris.init.js"></script>
 
-		<!-- flot Chart -->
-		<script src="assets/plugins/flot-chart/jquery.flot.js"></script>
-		<script src="assets/plugins/flot-chart/jquery.flot.time.js"></script>
-		<script src="assets/plugins/flot-chart/jquery.flot.tooltip.min.js"></script>
-		<script src="assets/plugins/flot-chart/jquery.flot.resize.js"></script>
-		<script src="assets/plugins/flot-chart/jquery.flot.pie.js"></script>
-		<script src="assets/plugins/flot-chart/jquery.flot.selection.js"></script>
-		<script src="assets/plugins/flot-chart/jquery.flot.stack.js"></script>
-		<script src="assets/plugins/flot-chart/jquery.flot.crosshair.js"></script>
+		
 		<!-- 杆塔图echar -->
 		<script type="text/javascript" src="static/js/echarts.min.js"></script>
 		
@@ -312,7 +304,18 @@
 		<!-- chat app  -->
 		<script src="assets/pages/jquery.chat.js"></script>
 		
-	<script src="assets/pages/jquery.dashboard.js"></script>
+	
+		<!-- flot Chart -->
+		<script src="assets/plugins/flot-chart/jquery.flot.js"></script>
+		<script src="assets/plugins/flot-chart/jquery.flot.time.js"></script>
+		<script src="assets/plugins/flot-chart/jquery.flot.tooltip.min.js"></script>
+		<script src="assets/plugins/flot-chart/jquery.flot.resize.js"></script>
+		<script src="assets/plugins/flot-chart/jquery.flot.pie.js"></script>
+		<script src="assets/plugins/flot-chart/jquery.flot.selection.js"></script>
+		<script src="assets/plugins/flot-chart/jquery.flot.stack.js"></script>
+		<script src="assets/plugins/flot-chart/jquery.flot.crosshair.js"></script>
+		
+		<script src="assets/pages/jquery.dashboard.js"></script>
 		
 
 		<!-- md5 -->
@@ -321,6 +324,7 @@
 		<script src="app/controller/indexControllers.js"></script>
 		<script src="app/controller/demoControllers.js"></script>
 		<script src="app/controller/userControllers.js"></script>
+		<script src="app/controller/homeController.js"></script>
 		<script src="app/controller/equipmentControllers.js"></script>
 		<script src="app/controller/demo2Controllers.js"></script>
 		<script src="app/controller/imageControllers.js"></script>
@@ -361,7 +365,6 @@
 
 				$scope.logout=function(){
 					$http.get("service/logout").success(function(data) {
-						console.info(data);
 						window.location.href="/login.html"
 					});
 				}
@@ -377,7 +380,6 @@
 						$http.post("service/updatePwd",
 								{srcPwd:$scope.encordSrcPwd,
 								newPwd :$scope.encordNewPwd}).success(function(data) {
-									console.info(data);
 									if(data.resultObj == "errorMsg"){
 							        	swal(data.message, null, "error");
 							        }else{

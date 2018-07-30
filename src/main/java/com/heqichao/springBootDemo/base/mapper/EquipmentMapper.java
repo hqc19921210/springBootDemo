@@ -32,7 +32,7 @@ public interface EquipmentMapper {
 	
 	@Select("<script>SELECT id,eid,e_type,IFNULL(amount,0) as amount,e_range,"
 		//	+ "(select count(1) from lightning_log  where devEUI = equipment.eid and lightning_log.STATUS = '1111') as total,"
-			+ "(select max(ligntningCount) from lightning_log where devEUI = equipment.eid and lightning_log.STATUS = '1111') as total,"
+			+ "IFNULL((select max(ligntningCount) from lightning_log where devEUI = equipment.eid and lightning_log.STATUS = '1111'),0) as total,"
 			+ "IFNULL(alarms,0) as alarms,e_status,online_time,remark,own_id"
 			+ " FROM equipment where STATUS = 'Y'  "
 			+ "<if test=\"competence == 3 \"> and own_id = #{id}  </if>"

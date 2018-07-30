@@ -40,7 +40,6 @@ function userCtrl($scope, $http, $rootScope) {
     			parentId:(!$scope.seleCompany || $scope.seleCompetence != 4 || $scope.chkCmp !=2 ?
     							$rootScope.user.id : $scope.seleCompany)
     			}).success(function(data) {
-			    	console.info(data);
 			    	if(data.resultObj == "errorMsg"){
 			    		$("#close-add-user-modal").click();
 			    		swal(data.message, null, "error");
@@ -86,7 +85,6 @@ function userCtrl($scope, $http, $rootScope) {
 			$http.post("service/updatePwdById",
 					{uid:$scope.currUid,
 					newPwd :$scope.encordNewPwd}).success(function(data) {
-						console.info(data);
 						if(data.resultObj == "errorMsg"){
 				        	swal(data.message, null, "error");
 				        }else{

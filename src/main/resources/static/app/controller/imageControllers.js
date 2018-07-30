@@ -65,8 +65,8 @@ function imageCharCtrl($scope, $http, $rootScope) {
     //定义节点状态颜色
     var showColor = {
     	"N" : "rgb(50,205,50)",
-    	"W" : "rgb(255,215,0)",
-    	"E" : "rgb(255,0,0)"
+    	"B" : "rgb(255,215,0)",
+    	"F" : "rgb(255,0,0)"
     }
   //定义节点位置
     var nodePosition = [

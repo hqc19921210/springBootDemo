@@ -36,7 +36,7 @@ var demoApp =angular.module("demoApp", ["ngRoute"]);
 			templateUrl: "app/module/lightLog.html",
 			controller: lightLogCtrl
 		}).otherwise({
-		templateUrl: "app/module/home.html"
-		//controller: listCtrl
+		templateUrl: "app/module/home.html",
+		controller: homeCtrl
 	});
 }]);
