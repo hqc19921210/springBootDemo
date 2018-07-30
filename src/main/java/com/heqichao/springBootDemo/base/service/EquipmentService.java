@@ -1,8 +1,6 @@
 package com.heqichao.springBootDemo.base.service;
 
 import com.github.pagehelper.PageInfo;
-import com.heqichao.springBootDemo.base.entity.Equipment;
-import com.heqichao.springBootDemo.base.entity.User;
 import com.heqichao.springBootDemo.base.param.ResponeResult;
 
 import java.util.List;
@@ -15,6 +13,9 @@ import java.util.Map;
 
 
 public interface EquipmentService {
+	String FAULT = "F";
+	String NORMAL = "N";
+	String BREAKDOWN = "B";
 
 	PageInfo queryEquipmentList();
 
@@ -25,6 +26,11 @@ public interface EquipmentService {
 	ResponeResult insertEqu(Map map);
 
 	ResponeResult deleteEquByID(Map map);
+
+
+	void setEquStatus(String eid, String status);
+
+	List<String> getEquipmentByStatus(String status);
 
 
 

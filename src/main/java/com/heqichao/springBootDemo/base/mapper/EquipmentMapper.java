@@ -24,11 +24,14 @@ public interface EquipmentMapper {
 	@Select("SELECT eid FROM equipment where own_id = #{uid}  and STATUS = 'Y' ")
 	public List<String> getUserEquipmentIdList(@Param("uid") Integer uid);
 	
+	@Select("SELECT eid FROM equipment where e_status = #{status}  and STATUS = 'Y' ")
+	public List<String> getEquipmentByStatus(@Param("status") String  status);
+	
 	@Select("SELECT eid FROM equipment where STATUS = 'Y' ")
 	public List<String> getEquipmentIdListAll();
 	
 	@Select("<script>SELECT id,eid,e_type,IFNULL(amount,0) as amount,e_range,"
-			+ "(select count(1) from lightning_log  where devEUI = equipment.eid) as total,"
+			+ "(select count(1) from lightning_log  where devEUI = equipment.eid and lightning_log.STATUS = '1111') as total,"
 			+ "IFNULL(alarms,0) as alarms,e_status,online_time,remark,own_id"
 			+ " FROM equipment where STATUS = 'Y'  "
 			+ "<if test=\"competence == 3 \"> and own_id = #{id}  </if>"
@@ -45,5 +48,11 @@ public interface EquipmentMapper {
 	
 	@Update("update equipment set  update_time = sysdate(), update_uid = #{udid}, STATUS = 'N' where id=#{id} and STATUS = 'Y' ")
 	public int delEquById(@Param("id")Integer eid,@Param("udid")Integer udid);
+	
+	@Update("update equipment set  e_status = #{status} where eid=#{eid} and STATUS = 'Y' ")
+	public int setEquStatus(@Param("eid")String eid,@Param("status")String status);
+	
+	@Select("select count(1)>0 from equipment where eid = #{eid} and STATUS = 'Y' ")
+	public boolean duplicatedEid(@Param("eid")String eid);
 
 }

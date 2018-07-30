@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     	boolean checkAcc = userMapper.duplicatedAccount(user.getAccount(),user.getCompany());
     	if(		user.getAccount() == null || user.getParentId() == null || user.getCompany() == null ||
     			user.getPassword() == null ||user.getContact() == null || user.getPhone() == null ||
-    			user.getCompetence() == null || checkAcc || uid == null || cmp == 4) {
+    			user.getCompetence() == null || checkAcc || uid == null || cmp == UserService.VISTOR) {
     		String errorMsg = "Create User Input Error!";
     		if(checkAcc) {
     			 errorMsg = "用户名或公司名称重复";
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponeResult getCompanySelectList() {
     	Integer cmp = ServletUtil.getSessionUser().getCompetence();
-    	if(cmp == 2) {
+    	if(cmp == UserService.ROOT) {
     		Map<String, Integer> res =  userMapper.getCompanySelectList().stream().collect(
     						Collectors.toMap(User::getCompany,User::getId, (k1,k2)->k1)
     					);
