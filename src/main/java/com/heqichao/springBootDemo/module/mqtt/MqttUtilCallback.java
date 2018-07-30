@@ -2,6 +2,7 @@ package com.heqichao.springBootDemo.module.mqtt;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.heqichao.springBootDemo.base.service.EquipmentService;
 import com.heqichao.springBootDemo.base.util.JsonUtil;
 import com.heqichao.springBootDemo.module.entity.LightningLog;
 import com.heqichao.springBootDemo.module.service.LightningLogService;
@@ -49,10 +50,14 @@ public class MqttUtilCallback implements MqttCallback {
     public void init() {
         mqttUtilCallback = this;
         mqttUtilCallback.lightningLogService = this.lightningLogService;
+        mqttUtilCallback.equipmentService = this.equipmentService;
     }
 
     @Autowired
     private LightningLogService lightningLogService;
+
+    @Autowired
+    private EquipmentService equipmentService;
 
 
     Logger logger = LoggerFactory.getLogger(getClass());
@@ -66,22 +71,35 @@ public class MqttUtilCallback implements MqttCallback {
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
 // subscribe后得到的消息会执行到这里面
+        String devId =topic.replace("application/0000000000000001/node/","");
+        devId =devId.replace("/rx","");
+
         String mes =new String(message.getPayload());
         logger.info("接收消息主题 : " + topic);
         logger.info("接收消息Qos : " + message.getQos());
         logger.info("接收消息内容 : " + mes);
-        LightningLog log =MqttUtil.saveTransData(mes);
-        if(log!=null){
-
+        if("CLOSE".equalsIgnoreCase(mes)) {
+            logger.error( devId+ " 设备下线！！！");
+            LightningLog log =new LightningLog();
+            log.setStatus(LightningLogService.OFF_LINE);
             mqttUtilCallback.lightningLogService.save(log);
-
-            if(LightningLogService.HEART_BEAT_ERROR.equals(log.getStatus())){ //设置设备故障
-                log.getDevEUI();
+            mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.BREAKDOWN);
+        }else{
+            LightningLog log =MqttUtil.saveTransData(mes);
+            if(log!=null){
+                mqttUtilCallback.lightningLogService.save(log);
+                if(LightningLogService.HEART_BEAT_ERROR.equals(log.getStatus())){
+                    //设置设备故障
+                    logger.error(devId+" 设备故障！！！");
+                    mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.FAULT);
+                }else{
+                    logger.error(devId+ " 设备正常！！！");
+                    mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.NORMAL);
+                }
+               // logger.info("保存消息内容成功！");
             }
-
-
-            logger.info("保存消息内容成功！");
         }
+
     }
 
     @Override

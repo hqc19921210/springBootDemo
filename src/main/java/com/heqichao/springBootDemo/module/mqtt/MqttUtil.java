@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.heqichao.springBootDemo.base.param.ApplicationContextUtil;
 import com.heqichao.springBootDemo.base.service.EquipmentService;
 import com.heqichao.springBootDemo.base.util.Base64Encrypt;
+import com.heqichao.springBootDemo.base.util.DataUtil;
 import com.heqichao.springBootDemo.base.util.StringUtil;
 import com.heqichao.springBootDemo.module.entity.LightningLog;
 import com.heqichao.springBootDemo.module.service.LightningLogService;
@@ -48,8 +49,10 @@ public class MqttUtil {
     }
 
     private static MqttClient client;
+    private static MqttConnectOptions options = new MqttConnectOptions();
+
     public static MqttConnectOptions getOptions() {
-        MqttConnectOptions options = new MqttConnectOptions();
+
 
         // 设置是否清空session,这里如果设置为false表示服务器会保留客户端的连接记录，这里设置为true表示每次连接到服务器都以新的身份连接
         options.setCleanSession(true);
@@ -62,10 +65,6 @@ public class MqttUtil {
         // 设置会话心跳时间 单位为秒 服务器会每隔1.5*20秒的时间向客户端发送个消息判断客户端是否在线，但这个方法并没有重连的机制
         options.setKeepAliveInterval(20);
         // 设置回调
-
-        //MqttTopic topic = client.getTopic(mqttOption.getTopic());
-        //setWill方法，如果项目中需要知道客户端是否掉线可以调用该方法。设置最终端口的通知消息
-        //options.setWill(topic, "CLOSE".getBytes(), 1, true);
 
         return options;
     }
@@ -93,22 +92,27 @@ public class MqttUtil {
             logger.info("MQTT 无订阅主题！！！");
             return;
         }
-        String[] strings = new String[topsics.size()];
+        String[] topisArr = new String[topsics.size()];
 
         for(int i=0 ;i< topsics.size();i++){
             String s =topsics.get(i);
             s="application/0000000000000001/node/"+s+"/rx";
             logger.info("MQTT订阅主题:"+s);
-            strings[i]=s;
+            topisArr[i]=s;
+
+            MqttTopic topic = client.getTopic(s);
+            //setWill方法，如果项目中需要知道客户端是否掉线可以调用该方法。设置最终端口的通知消息
+            options.setWill(topic, LightningLogService.OFF_LINE.getBytes(), 1, true);
         }
-
-
         //订阅消息
-      /*  Integer[] Qos  =new Integer[topsics.length];
-        for(int i=0;i<topsics.length;i++){
-            Qos[i]=2;
-        }*/
-        client.subscribe(strings);
+        int[] qos  =new int[topisArr.length];
+        for(int i=0;i<topisArr.length;i++){
+            qos[i]=2;
+        }
+        client.subscribe(topisArr,qos);
+        //更改option后要重连
+        connect();
+
     }
 
     private static void connect(int number,int waitSecond) {
@@ -135,6 +139,8 @@ public class MqttUtil {
     //监听设备发来的消息
     public static void init() {
         try {
+            String clentId =mqttOption.getClientId();
+            mqttOption.setClientId(DataUtil.getLocalIP()+"_"+clentId);
             logger.info("**** INIT MQTT START : "+mqttOption);
             connect(mqttOption.getRetryTime(),mqttOption.getRetrySpace());
             EquipmentService equipmentService= (EquipmentService) ApplicationContextUtil.getApplicationContext().getBean("equipmentServiceImpl");
@@ -151,9 +157,6 @@ public class MqttUtil {
 
     public static LightningLog saveTransData(String mes){
         int defaule=100;
-        if("CLOSE".equalsIgnoreCase(mes)) {
-        	return null;
-        }
         LightningLog log =new LightningLog();
         JSONObject jsonObject = JSON.parseObject(mes);
         String devEUI=jsonObject.getString("devEUI"); //设备id
@@ -206,7 +209,7 @@ public class MqttUtil {
                     log.setEnergy(Long.parseLong(transDatas[21]+transDatas[22],16)/1000*defaule+"KA.uS"); //能量
                     //后两位作校验
                     log.setStatus(LightningLogService.LIGNHTNING_LOG);
-                }else if(transDatas.length == 7){
+                }else if(transDatas.length == 11){
                     log.setDevicePath(transDatas[0]);  //设备地址
                     log.setFunctionCode(transDatas[1]);//功能码
                     log.setDataLen(transDatas[2]);//数据区长度
