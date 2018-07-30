@@ -87,7 +87,7 @@ public class MqttUtil {
         }
     }
 
-    private static void subscribeTopicMes(List<String> topsics) throws Exception {
+    public static void subscribeTopicMes(List<String> topsics) throws Exception {
         if(topsics== null || topsics.size()<1){
             logger.info("MQTT 无订阅主题！！！");
             return;

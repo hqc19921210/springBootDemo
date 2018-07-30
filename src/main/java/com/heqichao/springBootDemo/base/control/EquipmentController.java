@@ -29,17 +29,17 @@ public class EquipmentController extends BaseController{
 
     
     @RequestMapping(value = "/getEquipments")
-    ResponeResult getUsers() {
+    public ResponeResult getUsers() {
     	return new ResponeResult(eService.queryEquipmentList());
     }
     
     @RequestMapping(value = "/getUserEqu")
-    List<String> getUserEquipmentIdList(@RequestParam("id") Integer uid) {
+    public List<String> getUserEquipmentIdList(@RequestParam("id") Integer uid) {
     	return eService.getUserEquipmentIdList(uid);
     }
     
     @RequestMapping(value = "/getEquAll")
-    List<String> getEquipmentIdListAll() {
+    public List<String> getEquipmentIdListAll() {
     	return eService.getEquipmentIdListAll();
     }
     
