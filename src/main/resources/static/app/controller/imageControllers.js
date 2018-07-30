@@ -166,10 +166,11 @@ function imageCharCtrl($scope, $http, $rootScope) {
     	$http.post("service/getEquipments",$scope.quereyData).success(function(data) {
     		console.info(data);
     		$scope.equipments = data.resultObj.list;
+    		$scope.initKey = (data.resultObj.pageNum-1)*6+1;
     		$scope.nodeList = [];
     		for(i = 0; i<$scope.equipments.length; i++ ){
     			$scope.equ = $scope.equipments[i];
-    			$scope.formatter = "杆塔"+$scope.equ.id+
+    			$scope.formatter = "杆塔"+(i+$scope.initKey)+
 					    			"<br/>杆塔ID："+$scope.equ.eid+
 					    			"<br/>设备种类："+(!$scope.equ.type ? "" : $scope.equ.type)+
 					    			"<br/>设备数量："+$scope.equ.amount+
@@ -178,7 +179,7 @@ function imageCharCtrl($scope, $http, $rootScope) {
 					    			"<br/>上线时间："+$scope.equ.onlineTime;
     			
     			$scope.nodeList.push(nodeFactory($scope.equ.id,
-    									"杆塔"+$scope.equ.id,
+    									"杆塔"+(i+$scope.initKey),
 			    						$scope.formatter,
 			    						showColor[$scope.equ.eStatus],
 			    						nodePosition[i]));
