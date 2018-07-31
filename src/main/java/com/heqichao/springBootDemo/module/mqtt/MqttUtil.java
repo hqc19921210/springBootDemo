@@ -213,7 +213,8 @@ public class MqttUtil {
                     log.setDevicePath(transDatas[0]);  //设备地址
                     log.setFunctionCode(transDatas[1]);//功能码
                     log.setDataLen(transDatas[2]);//数据区长度
-                    String status =transDatas[3]+transDatas[4];
+                    String value = transDatas[3]+transDatas[4]+transDatas[5]+transDatas[6];//产品量程
+                    String status =transDatas[7]+transDatas[8];
                     //后两位作校验
                     log.setStatus(status);
 
