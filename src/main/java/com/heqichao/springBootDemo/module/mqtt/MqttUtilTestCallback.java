@@ -45,6 +45,9 @@ public class MqttUtilTestCallback implements MqttCallback {
         logger.info("接收消息主题 : " + topic);
         logger.info("接收消息Qos : " + message.getQos());
         logger.info("接收消息内容 : " + new String(message.getPayload()));
+        String devId =topic.replace("application/0000000000000001/node/","");
+        devId =devId.replace("/rx","");
+        logger.info("devId: " +devId);
     }
 
     @Override

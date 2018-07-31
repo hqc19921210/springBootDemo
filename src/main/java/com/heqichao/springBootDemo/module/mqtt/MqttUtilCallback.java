@@ -79,8 +79,10 @@ public class MqttUtilCallback implements MqttCallback {
         logger.info("接收消息Qos : " + message.getQos());
         logger.info("接收消息内容 : " + mes);
         if(LightningLogService.OFF_LINE.equalsIgnoreCase(mes)) {
-            logger.error( devId+ " 设备下线！！！");
+            logger.error( devId+":"+LightningLogService.OFF_LINE+" 设备下线！！！");
             LightningLog log =new LightningLog();
+            log.setDevEUI(devId);
+
             log.setStatus(LightningLogService.OFF_LINE);
             mqttUtilCallback.lightningLogService.save(log);
             mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.BREAKDOWN);
@@ -90,8 +92,8 @@ public class MqttUtilCallback implements MqttCallback {
                 mqttUtilCallback.lightningLogService.save(log);
                 if(LightningLogService.HEART_BEAT_ERROR.equals(log.getStatus())){
                     //设置设备故障
-                    logger.error(devId+" 设备故障！！！");
-                    mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.FAULT);
+                    logger.error( devId+":"+LightningLogService.HEART_BEAT_ERROR+" 设备下线！！！");
+                    mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.BREAKDOWN);
                 }else{
                     logger.error(devId+ " 设备正常！！！");
                     mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.NORMAL);

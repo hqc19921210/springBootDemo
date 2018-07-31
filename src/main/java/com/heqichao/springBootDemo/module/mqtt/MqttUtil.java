@@ -100,18 +100,23 @@ public class MqttUtil {
             logger.info("MQTT订阅主题:"+s);
             topisArr[i]=s;
 
-            MqttTopic topic = client.getTopic(s);
+     //       MqttTopic topic = client.getTopic(s);
             //setWill方法，如果项目中需要知道客户端是否掉线可以调用该方法。设置最终端口的通知消息
-            options.setWill(topic, LightningLogService.OFF_LINE.getBytes(), 1, true);
+    //        options.setWill(topic, LightningLogService.OFF_LINE.getBytes(), 1, true);
         }
         //订阅消息
         int[] qos  =new int[topisArr.length];
         for(int i=0;i<topisArr.length;i++){
             qos[i]=2;
         }
-        client.subscribe(topisArr,qos);
-        //更改option后要重连
-        connect();
+        if(client==null){
+            connect();
+            EquipmentService equipmentService= (EquipmentService) ApplicationContextUtil.getApplicationContext().getBean("equipmentServiceImpl");
+            logger.info("客户端异常，重新连接订阅主题");
+            subscribeTopicMes(equipmentService.getEquipmentIdListAll());
+        }else{
+            client.subscribe(topisArr,qos);
+        }
 
     }
 
@@ -144,8 +149,6 @@ public class MqttUtil {
             logger.info("**** INIT MQTT START : "+mqttOption);
             connect(mqttOption.getRetryTime(),mqttOption.getRetrySpace());
             EquipmentService equipmentService= (EquipmentService) ApplicationContextUtil.getApplicationContext().getBean("equipmentServiceImpl");
-
-
             subscribeTopicMes(equipmentService.getEquipmentIdListAll());
             logger.info("**** INIT MQTT SUCCESS! ");
         } catch (Exception e) {

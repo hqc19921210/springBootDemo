@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 public class MqttUtilTestClient {
 
     Logger logger = LoggerFactory.getLogger(getClass());
-    public static final String HOST = "tcp://120.25.158.182:1883";
+    public static final String HOST = "tcp://120.78.181.134:1883";
     public static final String TOPIC = "application/0000000000000001/node/0100000010000618/rx";
-    private static final String clientid = "clientid";
+    private static final String clientid = "1231231234534556y5677563453431clientid";
 
     private String userName = "wangw";
     private String passWord = "ww1030";
@@ -44,14 +44,14 @@ public class MqttUtilTestClient {
             client.setCallback(new MqttUtilTestCallback());
             MqttTopic topic = client.getTopic(TOPIC);
             //setWill方法，如果项目中需要知道客户端是否掉线可以调用该方法。设置最终端口的通知消息
-            options.setWill(topic, "CLOSE".getBytes(), 2, true);
+       //     options.setWill(topic, "CLOSE".getBytes(), 2, true);
 
             client.connect(options);
             //订阅消息
-            int[] Qos  = {1};
+            int[] Qos  = {0};
             String[] topic1 = {TOPIC};
             client.subscribe(topic1, Qos);
-
+            logger.info("start");
         } catch (Exception e) {
             e.printStackTrace();
         }
