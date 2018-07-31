@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by heqichao on 2018-7-9.
@@ -73,7 +74,7 @@ public class MqttUtilCallback implements MqttCallback {
 // subscribe后得到的消息会执行到这里面
         String devId =topic.replace("application/0000000000000001/node/","");
         devId =devId.replace("/rx","");
-
+        Date date =new Date();
         String mes =new String(message.getPayload());
         logger.info("接收消息主题 : " + topic);
         logger.info("接收消息Qos : " + message.getQos());
@@ -82,23 +83,27 @@ public class MqttUtilCallback implements MqttCallback {
             logger.error( devId+":"+LightningLogService.OFF_LINE+" 设备下线！！！");
             LightningLog log =new LightningLog();
             log.setDevEUI(devId);
-
+            log.setCreateTime(date);
+            log.setUpdateTime(date);
             log.setStatus(LightningLogService.OFF_LINE);
             mqttUtilCallback.lightningLogService.save(log);
-            mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.BREAKDOWN);
+            mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.NORMAL);
         }else{
             LightningLog log =MqttUtil.saveTransData(mes);
             if(log!=null){
+                log.setCreateTime(date);
+                log.setUpdateTime(date);
                 mqttUtilCallback.lightningLogService.save(log);
-                if(LightningLogService.HEART_BEAT_ERROR.equals(log.getStatus())){
+              /*  if(LightningLogService.HEART_BEAT_ERROR.equals(log.getStatus())){
                     //设置设备故障
                     logger.error( devId+":"+LightningLogService.HEART_BEAT_ERROR+" 设备下线！！！");
-                    mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.BREAKDOWN);
+                    mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.NORMAL);
                 }else{
                     logger.error(devId+ " 设备正常！！！");
                     mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.NORMAL);
-                }
-               // logger.info("保存消息内容成功！");
+                }*/
+                logger.error( devId+":"+log.getStatus()+"  ！！！");
+                mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.NORMAL);
             }
         }
 
