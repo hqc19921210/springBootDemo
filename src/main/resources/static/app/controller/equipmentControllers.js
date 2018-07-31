@@ -1,8 +1,8 @@
 function equCtrl($scope, $http, $rootScope) {
 	$scope.equStatus={
-	        "N":"正常", 
+	        "N":"在线", 
 	        "F":"故障", 
-	        "B":"下线", 
+	        "B":"离线", 
 	    };
 	//为后台请求参数 带分页数据
     $scope.quereyData={

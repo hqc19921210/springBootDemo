@@ -17,7 +17,7 @@ import com.heqichao.springBootDemo.base.entity.User;
  */
 public interface EquipmentMapper {
 	
-	@Select("SELECT id,eid,type,amount,range,total,alarms,e_status,online_time,remark,own_id"
+	@Select("SELECT id,eid,type,amount,range,alarms,IFNULL((select max(ligntningCount) from lightning_log where devEUI = equipment.eid and lightning_log.STATUS = '1111'),0) as total,e_status,online_time,remark,own_id"
 			+ " FROM equipment where id = #{id}  and STATUS = 'Y' ")
 	public Equipment getEquipmentById(@Param("id") Integer id);
 	
@@ -31,7 +31,6 @@ public interface EquipmentMapper {
 	public List<String> getEquipmentIdListAll();
 	
 	@Select("<script>SELECT id,eid,e_type,IFNULL(amount,0) as amount,e_range,"
-		//	+ "(select count(1) from lightning_log  where devEUI = equipment.eid and lightning_log.STATUS = '1111') as total,"
 			+ "IFNULL((select max(ligntningCount) from lightning_log where devEUI = equipment.eid and lightning_log.STATUS = '1111'),0) as total,"
 			+ "IFNULL(alarms,0) as alarms,e_status,online_time,remark,own_id"
 			+ " FROM equipment where STATUS = 'Y'  "
@@ -40,8 +39,8 @@ public interface EquipmentMapper {
 			+ " </script>")
 	public List<Equipment> getEquipments(User user);
 	
-	@Insert("insert into equipment (eid,e_type,amount,e_range,total,alarms,e_status,online_time,remark,own_id,status,update_uid)"
-			+ " values(#{eid},#{eType},#{amount},#{eRange},#{total},#{alarms},#{eStatus},sysdate(),#{remark},#{ownId},'Y',#{updateUid}) ")
+	@Insert("insert into equipment (eid,e_type,amount,e_range,alarms,e_status,online_time,remark,own_id,status,update_uid)"
+			+ " values(#{eid},#{eType},#{amount},#{eRange},#{alarms},#{eStatus},sysdate(),#{remark},#{ownId},'Y',#{updateUid}) ")
 	public int insertEquipment(Equipment equ);
 	
 	@Update("update user set company=#{company}, contact=#{contact}, phone=#{phone}, fax=#{fax}, email=#{email}, site=#{site}, remark=#{remark}, update_time = sysdate(), update_uid = #{id} where id=#{id} and STATUS = 'Y' ")
