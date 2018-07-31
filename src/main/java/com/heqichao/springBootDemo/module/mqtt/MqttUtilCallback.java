@@ -78,7 +78,7 @@ public class MqttUtilCallback implements MqttCallback {
         logger.info("接收消息主题 : " + topic);
         logger.info("接收消息Qos : " + message.getQos());
         logger.info("接收消息内容 : " + mes);
-        if("CLOSE".equalsIgnoreCase(mes)) {
+        if(LightningLogService.OFF_LINE.equalsIgnoreCase(mes)) {
             logger.error( devId+ " 设备下线！！！");
             LightningLog log =new LightningLog();
             log.setStatus(LightningLogService.OFF_LINE);
