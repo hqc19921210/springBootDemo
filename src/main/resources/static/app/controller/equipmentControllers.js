@@ -1,4 +1,9 @@
 function equCtrl($scope, $http, $rootScope) {
+	$scope.equStatus={
+	        "N":"正常", 
+	        "F":"故障", 
+	        "B":"下线", 
+	    };
 	//为后台请求参数 带分页数据
     $scope.quereyData={
         page:1, //当前页码 初始化为1
@@ -41,7 +46,6 @@ function equCtrl($scope, $http, $rootScope) {
     			eRemark:$scope.eRemark,
     			seleCompany:$scope.seleCompany
     			}).success(function(data) {
-			    	console.info(data);
 			    	if(data.resultObj == "errorMsg"){
 			    		$("#close-add-equ-modal").click();
 			    		swal(data.message, null, "error");

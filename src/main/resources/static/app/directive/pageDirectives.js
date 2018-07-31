@@ -24,14 +24,14 @@ demoApp.directive("pageInfo", function() {
 			/*  监听最大页数，如果页数变化，重新生成页数数组
 			 * */
 			var watch = $scope.$watch('pages', function (newValue, oldValue, scope) {
-				console.info("newValue:"+newValue);
+//				console.info("newValue:"+newValue);
 				$scope.pageFunc();
 			});
 
 
 			$scope.pageFunc=function () {
-				console.info($scope.pages);
-				console.info($scope.curpage);
+//				console.info($scope.pages);
+//				console.info($scope.curpage);
 
 				var indexes = [{num:0}];
 				for(var i=1;i<=$scope.pages;i++){
@@ -84,7 +84,7 @@ demoApp.directive("pageInfo", function() {
 					indexes[1].hide=false;
 				}
 				$scope.pageArr=indexes;
-				console.info(indexes);
+//				console.info(indexes);
 			}
 
 

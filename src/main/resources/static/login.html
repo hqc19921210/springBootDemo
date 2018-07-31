@@ -131,9 +131,7 @@
                 $scope.login=function(){
                     //加密密码
                     $scope.encordPassword = hex_md5($scope.password);
-                    console.info({"userNo":$scope.userNo,"password":$scope.encordPassword});
                     $http.post("service/login",{"userNo":$scope.userNo,"password":$scope.encordPassword}).success(function(data) {
-                    	console.info(data);
                         //todo 密码或账号错误
                         if(data.success){
                             window.location.href="/";
