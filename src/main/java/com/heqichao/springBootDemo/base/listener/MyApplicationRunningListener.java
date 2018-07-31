@@ -21,7 +21,7 @@ public class MyApplicationRunningListener implements ApplicationRunner {
     Logger logger = LoggerFactory.getLogger(getClass());
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
-        initTask();
+//        initTask();
         logger.info("应用启动成功："+new Date());
     }
 
