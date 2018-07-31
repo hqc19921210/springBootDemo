@@ -45,7 +45,7 @@
                                     <thead>
                                     <tr>
                                         <th>设备ID</th>
-                                        <th>设备通道</th>
+                                        <!--<th>设备通道</th>-->
                                         <th>雷击次数</th>
                                         <th>雷击时间</th>
                                         <th>电流峰值</th>
@@ -60,7 +60,7 @@
                                     <tbody>
                                     <tr ng-repeat="entity in data">
                                         <td ng-bind="entity.devEUI"></td>
-                                        <td ng-bind=""></td>
+                                     <!--   <td ng-bind=""></td>-->
                                         <td ng-bind="entity.ligntningCount"></td>
                                         <td ng-bind="entity.ligntningTime"></td>
                                         <td ng-bind="entity.peakValue"></td>
