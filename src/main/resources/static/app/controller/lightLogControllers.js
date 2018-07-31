@@ -3,6 +3,7 @@
  */
 function lightLogCtrl($scope, $http, $rootScope) {
     $scope.pages=0;
+
     $scope.clear=function(){
         $scope.quereyData.start=null;
         $scope.quereyData.end=null;
@@ -30,15 +31,16 @@ function lightLogCtrl($scope, $http, $rootScope) {
     $scope.pageArr=[1];//页码数组
     $scope.pages= $scope.pageArr.length; //总页数
     //初始化数据
+    $scope.loading=false;
     $scope.init=function(){
+        $scope.loading=true;
         console.info($scope.quereyData);
         $scope.showEntity={};
         $http.post("/service/queryLightLogs",$scope.quereyData).success(function(data) {
-            console.info(data);
             $scope.data = data.resultObj.list;
             $scope.pages=data.resultObj.pages;
             $scope.quereyData.page=data.resultObj.pageNum;
-
+            $scope.loading=false;
         });
     }
 
