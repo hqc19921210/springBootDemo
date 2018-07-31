@@ -13,7 +13,8 @@ import java.util.Map;
 
 
 public interface EquipmentService {
-	String FAULT = "F";
+	//设备只有在线和离线线状态，所以把故障状态也改为下线状态B
+	String FAULT = "B";
 	String NORMAL = "N";
 	String BREAKDOWN = "B";
 

@@ -1,11 +1,9 @@
 package com.heqichao.springBootDemo.base.service;
 
 import com.heqichao.springBootDemo.base.mapper.EquipmentMapper;
-import com.heqichao.springBootDemo.base.mapper.UserMapper;
 import com.heqichao.springBootDemo.base.param.ResponeResult;
 import com.github.pagehelper.PageInfo;
 import com.heqichao.springBootDemo.base.entity.Equipment;
-import com.heqichao.springBootDemo.base.entity.User;
 import com.heqichao.springBootDemo.base.util.PageUtil;
 import com.heqichao.springBootDemo.base.util.ServletUtil;
 import com.heqichao.springBootDemo.base.util.StringUtil;
@@ -14,6 +12,7 @@ import com.heqichao.springBootDemo.module.mqtt.MqttUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ import java.util.Map;
 
 
 @Service
-@Transactional
+@Transactional(rollbackFor = { Exception.class })
 public class EquipmentServiceImpl implements EquipmentService {
     @Autowired
     private EquipmentMapper eMapper ;
@@ -88,6 +87,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 				}
     		}
     	}
