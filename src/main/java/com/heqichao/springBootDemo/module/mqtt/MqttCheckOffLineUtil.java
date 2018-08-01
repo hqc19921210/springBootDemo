@@ -20,7 +20,7 @@ public class MqttCheckOffLineUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(MqttCheckOffLineUtil.class);
 
-    @Scheduled(cron="0 0/10 * * * ?")
+    @Scheduled(cron="0 0/20 * * * ?")
     public void checkOffLine() {
         logger.info(" 定时任务: 检查心跳");
         EquipmentService equipmentService= (EquipmentService) ApplicationContextUtil.getBean("equipmentServiceImpl");
@@ -33,7 +33,7 @@ public class MqttCheckOffLineUtil {
                errorList.add(id);
            }
             LightningLogService lightningLogService= (LightningLogService) ApplicationContextUtil.getBean("lightningLogServiceImpl");
-            List<String> mesLog = lightningLogService.queryLogOnTime(10); //查询10分钟内有接收数据的设备
+            List<String> mesLog = lightningLogService.queryLogOnTime(20); //查询20分钟内有接收数据的设备
             if(mesLog!=null && mesLog.size()>0){
                 for(String hasLogDev :mesLog){
                     for(String allDev :allNormallist){

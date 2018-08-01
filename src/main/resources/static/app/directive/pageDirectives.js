@@ -1,4 +1,3 @@
-//验证球员号码
 demoApp.directive("pageInfo", function() {
 	return {
 		restrict: 'EA',

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="loginApp">
+<html ng-app="demoApp">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -71,7 +71,7 @@
                     
                     <div class="form-group text-center m-t-40">
                         <div class="col-xs-12">
-                            <button class="btn btn-primary btn-lg w-lg waves-effect waves-light" type="submit" >登录</button>
+                            <button class="btn btn-primary btn-lg w-lg waves-effect waves-light" type="submit" btn-loading="loading">登录</button>
                         </div>
                     </div>
 
@@ -110,16 +110,17 @@
 
         <script src="assets/js/jquery.app.js"></script>
 
-        <script type="text/javascript" src="static/js/angular-1.5.8.js"></script>
+        <script type="text/javascript" src="static/js/angular-1.5.8.min.js"></script>
         <!-- md5 -->
         <script src="assets/js/md5.js"></script>
 
         <script type="text/javascript">
 
 
-            var loginApp = angular.module("loginApp", []);
-            loginApp.controller("loginCtrl", function($scope, $http) {
-
+            var demoApp = angular.module("demoApp", []);
+            demoApp.controller("loginCtrl", function($scope, $http) {
+                //设置按钮是否显示加载中不可用
+                $scope.loading=false;
                 $http.post("service/checkLogin").success(function(data) {
                     //已登陆则跳回首页
                    if(data.resultObj){
@@ -129,10 +130,12 @@
 
                 //
                 $scope.login=function(){
+                    $scope.loading=true;
                     //加密密码
                     $scope.encordPassword = hex_md5($scope.password);
                     $http.post("service/login",{"userNo":$scope.userNo,"password":$scope.encordPassword}).success(function(data) {
                         //todo 密码或账号错误
+                        $scope.loading=false;
                         if(data.success){
                             window.location.href="/";
                         }else{
@@ -147,5 +150,6 @@
 
             });
         </script>
+    <script type="text/javascript" src="app/directive/btnLoadDirectives.js"></script>
 	</body>
 </html>
