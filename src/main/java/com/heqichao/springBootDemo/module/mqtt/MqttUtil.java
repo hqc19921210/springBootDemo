@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -204,12 +205,33 @@ public class MqttUtil {
                     log.setLigntningCount(Integer.parseInt(transDatas[3]+transDatas[4],16));//雷击次数
                     String ligntningTime="20"+transDatas[5]+"-"+transDatas[6]+"-"+transDatas[7]+" "+transDatas[8]+":"+transDatas[9]+":"+transDatas[10];
                     log.setLigntningTime(ligntningTime); //雷击时间
-                    log.setPeakValue(Long.parseLong(transDatas[11]+transDatas[12],16)/1000*defaule +"KA");//电流峰值
-                    log.setEffectiveValue(Long.parseLong(transDatas[13]+transDatas[14],16)/1000*defaule +"KA"); //电流有效值
-                    log.setWaveHeadTime(Long.parseLong(transDatas[15]+transDatas[16],16)/10+".0uS");//电流波头时间
-                    log.setHalfPeakTime(Long.parseLong(transDatas[17]+transDatas[18],16)/10+".0uS"); //电流半峰值时间
-                    log.setActionTime(Long.parseLong(transDatas[19]+transDatas[20],16)/10+".0uS");//电流作用时间
-                    log.setEnergy(Long.parseLong(transDatas[21]+transDatas[22],16)/1000*defaule+"KA.uS"); //能量
+
+                    //统一保留一位小数
+                    NumberFormat nbf= NumberFormat.getInstance();
+                    nbf.setMinimumFractionDigits(1);
+
+                    double peakDouble =(double)Long.parseLong(transDatas[11]+transDatas[12],16);
+                    if(peakDouble >32768){
+                        log.setPeakValue(nbf.format((peakDouble-65536)/1000*defaule) +"KA");//电流峰值
+                    }else{
+                        log.setPeakValue(nbf.format(peakDouble/1000*defaule) +"KA");//电流峰值
+                    }
+
+                    double effect=(double) Long.parseLong(transDatas[13]+transDatas[14],16);
+                    log.setEffectiveValue(nbf.format(effect/1000*defaule) +"KA"); //电流有效值
+
+                    double wave=(double)Long.parseLong(transDatas[15]+transDatas[16],16);
+                    log.setWaveHeadTime(nbf.format(wave/10)+"uS");//电流波头时间
+
+                    double half =(double)Long.parseLong(transDatas[17]+transDatas[18],16);
+                    log.setHalfPeakTime(nbf.format(half/10)+"uS"); //电流半峰值时间
+
+                    double actionTime =(double)Long.parseLong(transDatas[19]+transDatas[20],16);
+                    log.setActionTime(nbf.format(actionTime/10)+"uS");//电流作用时间
+
+                    double energy =(double)Long.parseLong(transDatas[21]+transDatas[22],16);
+                    log.setEnergy(nbf.format(energy/1000*defaule)+"KA.uS"); //能量
+
                     //后两位作校验
                     log.setStatus(LightningLogService.LIGNHTNING_LOG);
                 }else if(transDatas.length == 11){
@@ -220,8 +242,8 @@ public class MqttUtil {
                     String status =transDatas[7]+transDatas[8];
                     //后两位作校验
                     log.setStatus(status);
-
                 }else{
+                    log.setStatus("ERROR");
                     logger.error(" ******** 无法解析接收数据 ："+mes+" 正文数据长度为："+transDatas.length);
                 }
 
@@ -234,5 +256,20 @@ public class MqttUtil {
 
         return null;
 
+    }
+
+    public static void main(String[] args) {
+        String a ="0";
+        double l =(double)Long.parseLong(a,16);
+        System.out.println(Long.parseLong(a,16)/1000*100);
+        NumberFormat nbf= NumberFormat.getInstance();
+        nbf.setMinimumFractionDigits(1);
+        System.out.println(nbf.format(l/1000*100));
+
+        double bb =1363;
+        System.out.println(bb/1000);
+
+        long cc =1363;
+        System.out.println(cc/1000);
     }
 }
