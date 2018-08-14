@@ -4,13 +4,23 @@ function userCtrl($scope, $http, $rootScope) {
         page:1, //当前页码 初始化为1
         size:defaultSize, //每页数据量 defaultSize全局变量
     };
+    //loading控制
+    $scope.loadCtl={
+    		search:false,	
+    		addUser:false,	
+    		upPWD:false	
+    };
 	$scope.pages=0;
+	$scope.chkCmp = $rootScope.user.competence;
+	$scope.chkId = $rootScope.user.id;
     $scope.init=function(){
+    	$scope.loadCtl.search = true;
     	$http.post("service/getUsers",$scope.quereyData).success(function(data) {
     		$scope.users = data.resultObj.list;
     		$scope.pages=data.resultObj.pages;
     		$scope.pageArr=data.resultObj.navigatepageNums;
     		$scope.quereyData.page=data.resultObj.pageNum;
+    		$scope.loadCtl.search = false;
     	});
     }
   //初始化
@@ -21,10 +31,16 @@ function userCtrl($scope, $http, $rootScope) {
         $scope.quereyData.page=page;
         $scope.init();
     }
-	
-	$scope.chkCmp = $rootScope.user.competence;
-	$scope.chkId = $rootScope.user.id;
+    $scope.resetSearch=function(){
+        $scope.quereyData.account=null;
+        $scope.quereyData.company=null;
+        $scope.quereyData.seleCompetence=null;
+        $scope.quereyData.page=1;
+        $scope.pages=0;
+        $scope.init();
+    }
 	$scope.addUser = function() {
+		$scope.loadCtl.addUser = true;
 		$scope.encordPwd=hex_md5($scope.password);
         $http.post("service/addUser",
         		{account:$scope.account,
@@ -47,8 +63,9 @@ function userCtrl($scope, $http, $rootScope) {
 			        	//修改成功后
 			        	$scope.closeAddModal();
 			        	swal("新增成功", null, "success");
-			            $scope.reloadUserList();
+			            $scope.init();
 			        }
+			    	$scope.loadCtl.addUser = false;
         });
 		
     };
@@ -76,6 +93,7 @@ function userCtrl($scope, $http, $rootScope) {
     
     
     $scope.updatePwdById = function(){
+    	$scope.loadCtl.upPWD = true;
 		if($scope.newPwd != $scope.checkPwd){
 			$scope.newPwd ="";
 			$scope.checkPwd ="";
@@ -90,6 +108,7 @@ function userCtrl($scope, $http, $rootScope) {
 				        }else{
 				        	swal("修改成功", null, "success");
 				        }
+						$scope.loadCtl.upPWD = false;
 			});
 
 		}
@@ -132,7 +151,7 @@ function userCtrl($scope, $http, $rootScope) {
 					swal(data.message, null, "error");
 				}else{
 					swal("删除成功", null, "success");
-					$scope.reloadUserList();
+					$scope.init();
 				}
 			});
 	}
@@ -141,8 +160,5 @@ function userCtrl($scope, $http, $rootScope) {
 		
 	}
 	
-	$scope.reloadUserList = function(){
-		$scope.init();
-	}
 }
 

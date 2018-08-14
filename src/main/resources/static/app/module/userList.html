@@ -6,7 +6,7 @@
 					<h3 class="panel-title">用户列表</h3>
 				</div>
 				<div class="panel-body">
-				<form role="form" class="form-horizontal">
+				<form role="form" class="form-horizontal" id="searchForm">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <label  class="col-sm-1 control-label">账号：</label>
@@ -28,9 +28,9 @@
                         </div>
                         <div class="form-group row-margin-top">
                             <div class="col-sm-5 col-md-offset-9 ">
-                             	<button ng-if="user.competence != 4 " class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#user-add-modal">新增用户 <i class="fa fa-plus"></i></button>
-                                <button class="btn btn-primary   waves-effect waves-light" btn-loading="loading" ng-click="init()">搜索</button>
-                                <button class="btn btn-default waves-effect" type="button" ng-click="clear()">重置</button>
+                                <button id="searchButton" class="btn btn-primary waves-effect waves-light"   btn-loading="loadCtl.search" ng-click="init()">我是何清朝</button>
+                                <button id="restSearchButton" class="btn btn-default waves-effect" type="button" ng-click="resetSearch()">重置</button>
+                             	<button ng-if="user.competence != 4 " id="addUserButton" type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#user-add-modal">新增用户 <i class="fa fa-plus"></i></button>
                             </div>
                         </div>
                     </form>
@@ -86,7 +86,7 @@
                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >×</button> 
                      <h4 class="modal-title">添加用户</h4> 
                  </div> 
-                 <form class="modal-body" ng-submit="addUser()" name="addUserForm" novalidate="novalidate"> 
+                 <form id="addUserForm" class="modal-body" ng-submit="addUser()" name="addUserForm" novalidate="novalidate"> 
                      <div class="row"> 
                          <div class="col-md-6"> 
                              <div class="form-group"> 
@@ -181,7 +181,7 @@
 	                    </div>     
                  <div class="modal-footer"> 
                      <button id="close-add-user-modal" type="button" class="btn btn-default waves-effect" data-dismiss="modal" ng-click="closeAddModal()" >关闭</button> 
-                     <button type="submit" class="btn btn-info waves-effect waves-light"  ng-disabled="addUserForm.$invalid">保存并添加</button> 
+                     <button id="addUserSave" type="submit" class="btn btn-info waves-effect waves-light" btn-loading="loadCtl.addUser" ng-disabled="addUserForm.$invalid">保存并添加</button> 
                  </div> 
                  </form> 
              </div> 
@@ -194,7 +194,7 @@
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closePwdById()">×</button>
 						<h4 class="modal-title">修改密码</h4>
 					</div>
-					<form class="modal-body" ng-submit="updatePwdById()"   name="updatePwdByIdForm" >
+					<form id="updatePWDForm" class="modal-body" ng-submit="updatePwdById()"   name="updatePwdByIdForm" >
 						<div class="row">
 							<div class="col-md-12">
 								<div class="form-group">
@@ -217,7 +217,7 @@
 						</div>
 						<div class="modal-footer">
 							<button id="updatePwdById" type="button" class="btn btn-default waves-effect" data-dismiss="modal" ng-click="closePwdById()">关闭</button>
-							<button type="submit" class="btn btn-info waves-effect waves-light"  ng-disabled="updatePwdByIdForm.$invalid || newPwd != checkPwd">保存</button>
+							<button id="updatePWDSave" type="submit" class="btn btn-info waves-effect waves-light"  ng-disabled="updatePwdByIdForm.$invalid || newPwd != checkPwd">保存</button>
 						</div>
 					</form>
 				</div>

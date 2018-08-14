@@ -26,7 +26,7 @@ public class StringUtil {
     	try {
     		return Integer.valueOf(obj.toString());
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			return null;
 		}
     }
