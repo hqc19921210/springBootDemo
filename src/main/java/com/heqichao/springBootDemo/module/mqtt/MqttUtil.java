@@ -17,6 +17,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -32,6 +33,8 @@ import java.util.List;
  */
 @Component
 public class MqttUtil {
+    private static Integer DEFAULE_RANGE =100000;
+
     static Logger logger = LoggerFactory.getLogger(MqttUtil.class);
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
 
@@ -160,10 +163,19 @@ public class MqttUtil {
 
 
     public static LightningLog saveTransData(String mes){
-        int defaule=100;
+
+        EquipmentService equipmentService=  ApplicationContextUtil.getBean(EquipmentService.class);
         LightningLog log =new LightningLog();
         JSONObject jsonObject = JSON.parseObject(mes);
         String devEUI=jsonObject.getString("devEUI"); //设备id
+
+        double range =DEFAULE_RANGE;
+        Integer ra= equipmentService.queryRange(devEUI);
+        if(ra!=null && ra >0){
+            range=ra;
+        }
+        range=range/1000; //单位KA
+
         log.setDevEUI(devEUI);
         String data =jsonObject.getString("data");
         log.setData(data);
@@ -212,13 +224,13 @@ public class MqttUtil {
 
                     double peakDouble =(double)Long.parseLong(transDatas[11]+transDatas[12],16);
                     if(peakDouble >32768){
-                        log.setPeakValue(nbf.format((peakDouble-65536)/1000*defaule) +"KA");//电流峰值
+                        log.setPeakValue(nbf.format((peakDouble-65536)/1000*range) +"KA");//电流峰值
                     }else{
-                        log.setPeakValue(nbf.format(peakDouble/1000*defaule) +"KA");//电流峰值
+                        log.setPeakValue(nbf.format(peakDouble/1000*range) +"KA");//电流峰值
                     }
 
                     double effect=(double) Long.parseLong(transDatas[13]+transDatas[14],16);
-                    log.setEffectiveValue(nbf.format(effect/1000*defaule) +"KA"); //电流有效值
+                    log.setEffectiveValue(nbf.format(effect/1000*range) +"KA"); //电流有效值
 
                     double wave=(double)Long.parseLong(transDatas[15]+transDatas[16],16);
                     log.setWaveHeadTime(nbf.format(wave/10)+"uS");//电流波头时间
@@ -230,7 +242,7 @@ public class MqttUtil {
                     log.setActionTime(nbf.format(actionTime/10)+"uS");//电流作用时间
 
                     double energy =(double)Long.parseLong(transDatas[21]+transDatas[22],16);
-                    log.setEnergy(nbf.format(energy/1000*defaule)+"KA.uS"); //能量
+                    log.setEnergy(nbf.format(energy/1000*range)+"KA.uS"); //能量
 
                     //后两位作校验
                     log.setStatus(LightningLogService.LIGNHTNING_LOG);
@@ -239,6 +251,11 @@ public class MqttUtil {
                     log.setFunctionCode(transDatas[1]);//功能码
                     log.setDataLen(transDatas[2]);//数据区长度
                     String value = transDatas[3]+transDatas[4]+transDatas[5]+transDatas[6];//产品量程
+
+                    //保存产品量程
+                    Integer newRange = Math.toIntExact(Long.parseLong(value, 16));
+                    equipmentService.updateRange(devEUI,newRange);
+
                     String status =transDatas[7]+transDatas[8];
                     //后两位作校验
                     log.setStatus(status);
@@ -259,10 +276,10 @@ public class MqttUtil {
     }
 
     public static void main(String[] args) {
-        String a ="0";
-        double l =(double)Long.parseLong(a,16);
-        System.out.println(Long.parseLong(a,16)/1000*100);
-        NumberFormat nbf= NumberFormat.getInstance();
+        String a ="000186A0";
+        double l =(double)Long.parseLong(a,16)/1000;
+        System.out.println(l);
+       /* NumberFormat nbf= NumberFormat.getInstance();
         nbf.setMinimumFractionDigits(1);
         System.out.println(nbf.format(l/1000*100));
 
@@ -270,6 +287,6 @@ public class MqttUtil {
         System.out.println(bb/1000);
 
         long cc =1363;
-        System.out.println(cc/1000);
+        System.out.println(cc/1000);*/
     }
 }

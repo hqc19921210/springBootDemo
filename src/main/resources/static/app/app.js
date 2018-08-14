@@ -35,7 +35,10 @@ var demoApp =angular.module("demoApp", ["ngRoute"]);
 	}).when("/module/lightLog", {
 			templateUrl: "app/module/lightLog.html",
 			controller: lightLogCtrl
-		}).otherwise({
+	}).when("/module/warningLog", {
+			templateUrl: "app/module/warningLog.html",
+			controller: warningLogCtrl
+	}).otherwise({
 		templateUrl: "app/module/home.html",
 		controller: homeCtrl
 	});

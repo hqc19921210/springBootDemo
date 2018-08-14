@@ -32,3 +32,23 @@ create table lightning_log(
 	energy VARCHAR(200),
 	status VARCHAR(200)
 )AUTO_INCREMENT = 1 ;
+
+
+CREATE TABLE `warning_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `createTime` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updateTime` datetime DEFAULT CURRENT_TIMESTAMP,
+  `devEUI` varchar(200) DEFAULT NULL,
+  `time` datetime DEFAULT NULL,
+  `fPort` int(11) DEFAULT NULL,
+  `gatewayCount` int(11) DEFAULT NULL,
+  `rssi` int(11) DEFAULT NULL,
+  `fCnt` int(11) DEFAULT NULL,
+  `loRaSNR` float DEFAULT NULL,
+  `data` varchar(400) DEFAULT NULL,
+  `devicePath` varchar(200) DEFAULT NULL,
+  `functionCode` varchar(200) DEFAULT NULL,
+  `dataLen` varchar(200) DEFAULT NULL,
+  `status` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)

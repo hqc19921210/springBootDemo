@@ -70,59 +70,29 @@
 
 						<ul class="nav navbar-nav navbar-right pull-right">
 							<li class="dropdown hidden-xs">
-								<a href="#" data-target="#" class="dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true">
-									<i class="md md-notifications"></i> <span class="badge badge-xs badge-danger">3</span>
+								<a   data-target="#" class="dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true">
+									<i class="md md-notifications"></i> <span class="badge badge-xs badge-danger" ng-bind="$root.faultCount"></span>
 								</a>
 								<ul class="dropdown-menu dropdown-menu-lg">
-									<li class="text-center notifi-title">Notification</li>
+									<li class="text-center notifi-title">通知</li>
 									<li class="list-group">
-										<!-- list item-->
-										<a href="javascript:void(0);" class="list-group-item">
-											<div class="media">
-												<div class="pull-left">
-													<em class="fa fa-user-plus fa-2x text-info"></em>
-												</div>
-												<div class="media-body clearfix">
-													<div class="media-heading">New user registered</div>
-													<p class="m-0">
-														<small>You have 10 unread messages</small>
-													</p>
-												</div>
-											</div>
-										</a>
-										<!-- list item-->
-										<a href="javascript:void(0);" class="list-group-item">
-											<div class="media">
-												<div class="pull-left">
-													<em class="fa fa-diamond fa-2x text-primary"></em>
-												</div>
-												<div class="media-body clearfix">
-													<div class="media-heading">New settings</div>
-													<p class="m-0">
-														<small>There are new settings available</small>
-													</p>
-												</div>
-											</div>
-										</a>
 										<!-- list item-->
 										<a href="javascript:void(0);" class="list-group-item">
 											<div class="media">
 												<div class="pull-left">
 													<em class="fa fa-bell-o fa-2x text-danger"></em>
 												</div>
-												<div class="media-body clearfix">
-													<div class="media-heading">Updates</div>
+												<div class="media-body clearfix" ng-click="gotoWarningLog()">
+													<div class="media-heading">设备报警</div>
 													<p class="m-0">
-														<small>There are
-															<span class="text-primary">2</span> new updates available</small>
+														<small>您有
+															<span class="text-primary" ng-bind="$root.faultCount"></span>个设备故障问题待处理</small>
 													</p>
 												</div>
 											</div>
 										</a>
 										<!-- last list item -->
-										<a href="javascript:void(0);" class="list-group-item">
-											<small>See all notifications</small>
-										</a>
+
 									</li>
 								</ul>
 							</li>
@@ -175,7 +145,7 @@
                                         <a href="javascript:void(0);"><span>杆塔位置</span></a>
                                     </li>-->
 									<li>
-                                        <a href="#/module/demoCharTest"><span>报警查询</span></a>
+                                        <a href="#/module/warningLog"><span>报警查询</span></a>
                                     </li>
 									<li>
                                         <a href="#/module/demoCharTest"><span>数据管理（清空操作）</span></a>
@@ -326,7 +296,7 @@
 		<script src="app/controller/demo2Controllers.js"></script>
 		<script src="app/controller/imageControllers.js"></script>
 		<script src="app/controller/lightLogControllers.js"></script>
-
+		<script src="app/controller/warningLogControllers.js"></script>
 		<script type="text/javascript">
 			jQuery(document).ready(function($) {
 				$('.counter').counterUp({
@@ -339,7 +309,10 @@
 		<script type="text/javascript">
 
 			var defaultSize=10;
-			demoApp.controller("indexCtrl", function($scope, $http, $rootScope, $timeout) {
+			demoApp.controller("indexCtrl", function($scope, $http, $rootScope, $timeout,$interval,$location) {
+
+				//报警数
+				$rootScope.faultCount=0;
 				$scope.newPwd ="";
 				$scope.checkPwd ="";
 				$scope.encordSrcPwd="";
@@ -356,9 +329,34 @@
 						//未登录则跳回登录页
 						window.location.href="/login.html";
 					}
-
 				});
+				//查询报警数
+				$scope.queryFaultCount=function(isFirst ){
+					$http.post("service/queryFaultCount").success(function(data) {
+						if(data.success){
+							var cou =data.resultObj;
+							if(isFirst){
+								$rootScope.faultCount =cou;
+							}else{
+								console.info($rootScope.faultCount);
+								console.info(cou);
+								if(cou > $rootScope.faultCount){
+									swal("收到"+(cou - $rootScope.faultCount)+"条新的通知！请及时处理");
+								}
+								$rootScope.faultCount =cou;
+							}
+						}
+					});
+				}
 
+				$scope.queryFaultCount(true);
+				$interval(function() {
+					$scope.queryFaultCount(false);
+				}, 6*1000);
+
+                $scope.gotoWarningLog =function () {
+                    $location.path("/module/warningLog");
+                }
 
 				$scope.logout=function(){
 					$http.get("service/logout").success(function(data) {
@@ -380,11 +378,11 @@
 									if(data.resultObj == "errorMsg"){
 							        	swal(data.message, null, "error");
 							        }else{
-										swal({   
-								            title: "修改密码成功，请重新登录",   
-								            text: "即将跳转登陆页...",   
-								            timer: 3000,   
-								            showConfirmButton: false 
+										swal({
+								            title: "修改密码成功，请重新登录",
+								            text: "即将跳转登陆页...",
+								            timer: 3000,
+								            showConfirmButton: false
 								        });
 										$timeout(function(){$scope.logout();}, 2900);
 							        }
@@ -401,7 +399,7 @@
 					$scope.encordNewPwd="";
 					$("#updatePwdId").click();
 				}
-				
+
 				$scope.ajxUserInfo = function(user){
 					$scope.currCompany=user.company;
 					$scope.currContact=user.contact;
@@ -413,16 +411,16 @@
 					$scope.currCompetence=user.competence+"";
 					$scope.userEditable = true;
 				}
-				
+
 				$scope.chgUserEdit = function(){
 					$scope.userEditable = !$scope.userEditable;
 				}
-				
+
 				$scope.closeUserInfoModal = function(){
 					$scope.ajxUserInfo($rootScope.user);
 					$("#close-user-info-modal").click();
 				}
-				
+
 				$scope.userUpdate = function() {
 			        $http.post("service/updateUserInfo",
 			        		{company:$scope.currCompany,
@@ -452,7 +450,7 @@
 									});
 						        }
 			        });
-					
+
 			    }
 
 			});
