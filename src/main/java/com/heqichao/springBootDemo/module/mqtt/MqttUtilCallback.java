@@ -2,10 +2,13 @@ package com.heqichao.springBootDemo.module.mqtt;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.heqichao.springBootDemo.base.param.ApplicationContextUtil;
 import com.heqichao.springBootDemo.base.service.EquipmentService;
 import com.heqichao.springBootDemo.base.util.JsonUtil;
 import com.heqichao.springBootDemo.module.entity.LightningLog;
+import com.heqichao.springBootDemo.module.entity.WarningLog;
 import com.heqichao.springBootDemo.module.service.LightningLogService;
+import com.heqichao.springBootDemo.module.service.WarningLogService;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -87,23 +90,47 @@ public class MqttUtilCallback implements MqttCallback {
             log.setUpdateTime(date);
             log.setStatus(LightningLogService.OFF_LINE);
             mqttUtilCallback.lightningLogService.save(log);
-            mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.NORMAL);
+
+            //todo
+            mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.BREAKDOWN);
         }else{
             LightningLog log =MqttUtil.saveTransData(mes);
             if(log!=null){
                 log.setCreateTime(date);
                 log.setUpdateTime(date);
                 mqttUtilCallback.lightningLogService.save(log);
-              /*  if(LightningLogService.HEART_BEAT_ERROR.equals(log.getStatus())){
+                WarningLogService warningLogService=ApplicationContextUtil.getBean(WarningLogService.class);
+                logger.error( devId+":"+log.getStatus()+"  ！！！");
+                if(LightningLogService.HEART_BEAT_ERROR.equals(log.getStatus())){
                     //设置设备故障
-                    logger.error( devId+":"+LightningLogService.HEART_BEAT_ERROR+" 设备下线！！！");
-                    mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.NORMAL);
+                    logger.error( devId+":"+LightningLogService.HEART_BEAT_ERROR+" 设备故障,但状态仍为在线！！！");
+                    mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.BREAKDOWN);
+
+                    //故障提醒
+                    WarningLog warningLog=new WarningLog();
+                    warningLog.setDevEUI(devId);
+                    warningLog.setCreateTime(date);
+                    warningLog.setUpdateTime(date);
+                    warningLog.setStatus(WarningLogService.FAULT);
+                    warningLog.setData(log.getData());
+                  /*  warningLog.setDataLen(log.getDataLen());
+                    warningLog.setDevicePath(log.getDevicePath());
+                    warningLog.setfCnt(log.getfCnt());
+                    warningLog.setfPort(log.getfPort());
+                    warningLog.setFunctionCode(log.getFunctionCode());
+                    warningLog.setGatewayCount(log.getGatewayCount());
+                    warningLog.setLoRaSNR(log.getLoRaSNR());
+                    warningLog.setRssi(log.getRssi());*/
+                    warningLog.setTime(log.getTime());
+                    warningLogService.save(warningLog);
+
                 }else{
                     logger.error(devId+ " 设备正常！！！");
                     mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.NORMAL);
-                }*/
-                logger.error( devId+":"+log.getStatus()+"  ！！！");
-                mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.NORMAL);
+
+                    //更新故障信息 有心跳则为已修复
+                    warningLogService.updateFix(devId);
+                }
             }
         }
 

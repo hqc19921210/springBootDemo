@@ -1,0 +1,64 @@
+<div class="container" >
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">报警记录列表</h3>
+                </div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>设备ID</th>
+                                        <!--<th>设备通道</th>-->
+                                        <th>上报时间</th>
+                                        <th>状态</th>
+                                        <th>修复时间</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="entity in data">
+                                        <td ng-bind="entity.devEUI"></td>
+                                        <td ng-bind="entity.time"></td>
+                                        <td >
+                                            <span ng-if="entity.status == '0'" style="color: darkred">故障</span>
+                                            <span ng-if="entity.status == '1'">已修复</span>
+                                        </td>
+                                        <td >
+                                            <span ng-if="entity.status == '0'"></span>
+                                            <span ng-if=" entity.status== '1'" ng-bind="entity.updateTime"></span>
+                                        </td>
+
+                                    </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 分页 -->
+                       <!-- <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="" style="text-align: center">
+                                <ul class="pagination m-b-5">
+                                    <li ng-repeat="obj in pageArr">
+                                        <a ng-if="obj.show" ng-click="changePage(obj.num)"  ng-class="{true:'page-put'}[quereyData.page==obj.num]" ng-bind="obj.num"></a>
+                                        <a ng-if="obj.hide" >...</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>-->
+                        <page-info pages="pages" curpage="quereyData.page" change="changePage(page)"></page-info>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

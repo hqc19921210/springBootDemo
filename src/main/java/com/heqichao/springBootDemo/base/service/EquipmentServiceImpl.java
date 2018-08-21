@@ -65,8 +65,18 @@ public class EquipmentServiceImpl implements EquipmentService {
     public List<String> getEquipmentByStatus(String status) {
     	return eMapper.getEquipmentByStatus(status);
     }
-    
-    @Override
+
+	@Override
+	public int updateRange(String eid, Integer range) {
+		return eMapper.updateRange(eid, range);
+	}
+
+	@Override
+	public Integer queryRange(String eid) {
+		return eMapper.queryRange(eid);
+	}
+
+	@Override
     public ResponeResult insertEqu(Map map) {
     	Equipment equ = new Equipment(map);
     	Integer uid = ServletUtil.getSessionUser().getId();

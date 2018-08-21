@@ -32,7 +32,20 @@ public interface EquipmentService {
 
 	List<String> getEquipmentByStatus(String status);
 
+	/**
+	 * 更新设备的量程
+	 * @param eid
+	 * @param status
+	 * @return
+	 */
+	int updateRange(String eid, Integer range);
 
+	/**
+	 * 查询设备的量程
+	 * @param eid
+	 * @return
+	 */
+	Integer queryRange(String eid);
 
 
 }

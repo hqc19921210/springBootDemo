@@ -19,7 +19,7 @@ public class Equipment extends BaseEntity  {
 	private String eid;
 	private String eType;
 	private Integer amount;
-	private String eRange;
+	private Integer eRange;
     private Integer total;
     private Integer alarms;
     private String eStatus;
@@ -39,7 +39,7 @@ public class Equipment extends BaseEntity  {
     	this.eid = StringUtil.getStringByMap(map,"eid");
     	this.eType = StringUtil.getStringByMap(map,"eType");
     	this.amount = StringUtil.objectToInteger(StringUtil.getStringByMap(map,"amount"));
-    	this.eRange = StringUtil.getStringByMap(map,"eRange");
+    	this.eRange = StringUtil.objectToInteger(StringUtil.getStringByMap(map,"eRange"));
     	this.total = StringUtil.objectToInteger(StringUtil.getStringByMap(map,"total"));
     	this.alarms = StringUtil.objectToInteger(StringUtil.getStringByMap(map,"alarms"));
     	this.eStatus = StringUtil.getStringByMap(map,"eStatus");
@@ -65,10 +65,10 @@ public class Equipment extends BaseEntity  {
 	public void setAmount(Integer amount) {
 		this.amount = amount;
 	}
-	public String getRange() {
+	public Integer getRange() {
 		return eRange;
 	}
-	public void setRange(String eRange) {
+	public void setRange(Integer eRange) {
 		this.eRange = eRange;
 	}
 	public Integer getTotal() {

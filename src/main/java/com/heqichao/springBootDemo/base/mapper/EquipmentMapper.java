@@ -52,8 +52,7 @@ public interface EquipmentMapper {
 			+ " values(#{eid},#{eType},#{amount},#{eRange},#{alarms},#{eStatus},sysdate(),#{remark},#{ownId},'Y',#{updateUid}) ")
 	public int insertEquipment(Equipment equ);
 	
-	@Update("update user set company=#{company}, contact=#{contact}, phone=#{phone}, fax=#{fax}, email=#{email}, site=#{site}, remark=#{remark}, update_time = sysdate(), update_uid = #{id} where id=#{id} and STATUS = 'Y' ")
-	public int updateUserInfo(User user);
+
 	
 	@Update("update equipment set  update_time = sysdate(), update_uid = #{udid}, STATUS = 'N' where id=#{id} and STATUS = 'Y' ")
 	public int delEquById(@Param("id")Integer eid,@Param("udid")Integer udid);
@@ -64,4 +63,9 @@ public interface EquipmentMapper {
 	@Select("select count(1)>0 from equipment where eid = #{eid} and STATUS = 'Y' ")
 	public boolean duplicatedEid(@Param("eid")String eid);
 
+	@Update("update equipment set  e_range = #{range} where eid=#{eid} and STATUS = 'Y'")
+	 int updateRange(@Param("eid")String eid,@Param("range")Integer range);
+
+	@Select("select e_range from equipment where eid = #{eid} and STATUS = 'Y'")
+	Integer queryRange(@Param("eid")String eid);
 }
