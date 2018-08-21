@@ -1,8 +1,15 @@
 package com.heqichao.springBootDemo.module.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
+import com.heqichao.springBootDemo.module.entity.LiteLog;
+import com.heqichao.springBootDemo.module.mapper.LiteLogMapper;
 import org.apache.commons.collections.map.HashedMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.heqichao.springBootDemo.base.param.RequestContext;
@@ -20,6 +27,8 @@ import com.iotplatform.client.invokeapi.SubscriptionManagement;
 public class LiteNAServiceImp implements LiteNAService {
 	private static String map;  
 
+	@Autowired
+	private LiteLogMapper liteLogMapper;
 	@Override
 	public Object getDataChange() throws Exception {
 //		NorthApiClient northApiClient = initApiClient();
@@ -79,7 +88,18 @@ public class LiteNAServiceImp implements LiteNAService {
         return "失败";
         
 	}
-	 private static NorthApiClient initApiClient() {
+
+	@Override
+	public List<LiteLog> queryAll() {
+		return liteLogMapper.queryAll();
+	}
+
+	@Override
+	public void deleteAll() {
+		liteLogMapper.deleteAll();
+	}
+
+	private static NorthApiClient initApiClient() {
 	    	NorthApiClient northApiClient = new NorthApiClient();
 	        
 	        ClientInfo clientInfo = new ClientInfo();
@@ -148,8 +168,48 @@ public class LiteNAServiceImp implements LiteNAService {
 	 }
 	@Override
 	public void chg() {
-		System.out.println(RequestContext.getContext().getRequest());
-		this.map=RequestContext.getContext().getParamMap().toString();
-		
+		String mes =RequestContext.getContext().getRequest().toString();
+		this.map=mes;
+
+		JSONObject jsonObject =changeMse(mes);
+		JSONObject service =jsonObject.getJSONObject("service");
+		JSONObject data=service.getJSONObject("data");
+		String currenState= (String) data.get("Curren_state");
+		String eventTime= (String) service.get("eventTime");
+		//20180821T022524Z
+		SimpleDateFormat simpleDateFormat =new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+		Date date=null;
+		try {
+			date=simpleDateFormat.parse(eventTime);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		LiteLog log =new LiteLog(mes,currenState,date);
+		liteLogMapper.saveLog(log);
+
 	}
+
+	private  JSONObject changeMse(String mes){
+		mes=mes.replaceAll("=",":");
+		mes=mes.replaceAll("\"","");
+		mes=mes.replaceAll(" ","");
+		String newMes ="";
+		char[] mesList =mes.toCharArray();
+		for(char c :mesList){
+			if('{' == c ){
+				newMes = newMes+c+"\"";
+			}else  if('}' == c){
+				newMes = newMes+"\""+c;
+			}else if(':' == c || ',' == c){
+				newMes = newMes+"\""+c+"\"";
+			}else{
+				newMes=newMes+c;
+			}
+		}
+		newMes= newMes.replace("\"{\"","{\"");
+		newMes= newMes.replace("\"}\"","\"}");
+		JSONObject jsonObject = JSONObject.parseObject(newMes);
+		return jsonObject;
+	}
+
 }

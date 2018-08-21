@@ -5,7 +5,7 @@ create table USER_INFO(
 	name varchar(100),
 	password varchar(200),
 	createTime datetime DEFAULT CURRENT_TIMESTAMP
-)
+);
 
 create table lightning_log(
 	id int PRIMARY KEY AUTO_INCREMENT,
