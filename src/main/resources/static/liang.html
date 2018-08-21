@@ -20,10 +20,26 @@
 		        });
 				
 		    };
+
+		    $scope.data=[];
+		    $scope.queryAll=function(){
+				$http.post("service/queryLiteAll").success(function(data) {
+					$scope.data=data.resultObj;
+				});
+			}
+
+			$scope.deleteAll = function() {
+				$http.post("service/deleteLiteAll").success(function(data) {
+					$scope.data=[];
+				});
+			};
+			$scope.queryAll();
+
 		    $scope.reset = function() {
 		    	$http.get("service/getDataChange").success(function(data) {
 					console.log(data);
 					$scope.text = data.resultObj;
+					$scope.queryAll();
 				});
 				
 		    };
@@ -36,6 +52,7 @@
 		{{text}}
 		</textarea>
 		<button ng-click="reset()">Manual refresh</button>
+		<button ng-click="deleteAll()"  type="button" >clean</button>
 		<form ng-submit="addUser()">
 		<br>
 		Time_state:<br>
@@ -47,6 +64,21 @@
 		<textarea rows="10" cols="30">
 		{{res}}
 		</textarea>
+
+	<table class="table">
+		<thead>
+		<tr>
+			<th>currenState</th>
+			<th>eventTime</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr ng-repeat="entity in data">
+			<td ng-bind="entity.currenState"></td>
+			<td ng-bind="entity.eventTime"></td>
+		</tr>
+		</tbody>
+	</table>
 
 </div>
 

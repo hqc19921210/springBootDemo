@@ -29,8 +29,18 @@ public class LiteNAController {
 	}
 	@RequestMapping(value = "/liteNaCallback2")
 	ResponeResult liteNaCallback2() throws Exception {
-		System.out.println("33333333333333333333333333333333333");
 		liteNAService.chg();
+		return new ResponeResult();
+	}
+
+	@RequestMapping(value = "/queryLiteAll")
+	ResponeResult queryAll() throws Exception {
+		return new ResponeResult(liteNAService.queryAll());
+	}
+
+	@RequestMapping(value = "/deleteLiteAll")
+	ResponeResult deleteAll() throws Exception {
+		liteNAService.deleteAll();
 		return new ResponeResult();
 	}
 }
