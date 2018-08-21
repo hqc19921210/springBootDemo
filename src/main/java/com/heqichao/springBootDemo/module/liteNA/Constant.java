@@ -55,7 +55,7 @@ public class Constant {
      *
      * please replace uri, when you use the demo.
      */
-    public static final String REPORT_CMD_EXEC_RESULT_CALLBACK_URL = CALLBACK_BASE_URL + "/na/iocm/devNotify/v1.1.0/reportCmdExecResult";
+    public static final String REPORT_CMD_EXEC_RESULT_CALLBACK_URL = "http://120.78.181.134:8888/service/liteNaCallback2";
 
 
     //Paths of certificates.

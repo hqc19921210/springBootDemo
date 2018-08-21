@@ -1,13 +1,19 @@
 package com.heqichao.springBootDemo.module.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.http.HttpResponse;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.heqichao.springBootDemo.base.param.RequestContext;
 import com.heqichao.springBootDemo.base.util.StringUtil;
 import com.heqichao.springBootDemo.module.liteNA.Constant;
+import com.heqichao.springBootDemo.module.liteNA.HttpsUtil;
+import com.heqichao.springBootDemo.module.liteNA.JsonUtil;
+import com.heqichao.springBootDemo.module.liteNA.StreamClosedHttpResponse;
 import com.iotplatform.client.NorthApiClient;
 import com.iotplatform.client.NorthApiException;
 import com.iotplatform.client.dto.*;
@@ -53,29 +59,77 @@ public class LiteNAServiceImp implements LiteNAService {
 	}
 	@Override
 	public String liangPost(Map vmap) throws Exception {
-		/**---------------------initialize northApiClient------------------------*/
-        NorthApiClient northApiClient = initApiClient();
-        SignalDelivery signalDelivery = new SignalDelivery(northApiClient);
-        
-        /**---------------------get accessToken at first------------------------*/
-        Authentication authentication = new Authentication(northApiClient);        
-        AuthOutDTO authOutDTO = authentication.getAuthToken();        
-        String accessToken = authOutDTO.getAccessToken();
-        
-        /**---------------------post NB-IoT device command------------------------*/
-        //this is a test NB-IoT device
-        String deviceId = "f08b77ca-d98e-43bd-8e54-ad773c5c3768";
+//		/**---------------------initialize northApiClient------------------------*/
+//        NorthApiClient northApiClient = initApiClient();
+//        SignalDelivery signalDelivery = new SignalDelivery(northApiClient);
+//        
+//        /**---------------------get accessToken at first------------------------*/
+//        Authentication authentication = new Authentication(northApiClient);        
+//        AuthOutDTO authOutDTO = authentication.getAuthToken();        
+//        String accessToken = authOutDTO.getAccessToken();
+//        
+//        /**---------------------post NB-IoT device command------------------------*/
+//        //this is a test NB-IoT device
+//        String deviceId = "f08b77ca-d98e-43bd-8e54-ad773c5c3768";
         Integer i = StringUtil.objectToInteger(StringUtil.getStringByMap(vmap,"remark"));
-        PostDeviceCommandOutDTO2 pdcOutDTO = postCommand(signalDelivery, deviceId, accessToken,i);
-        if (pdcOutDTO != null) {
-        	String commandId = pdcOutDTO.getCommandId();
-        	/**---------------------update device command------------------------*/
-            UpdateDeviceCommandInDTO udcInDTO = new UpdateDeviceCommandInDTO();
-            udcInDTO.setStatus("CANCELED");
-            UpdateDeviceCommandOutDTO udcOutDTO = signalDelivery.updateDeviceCommand(udcInDTO, commandId, null, accessToken);
-            System.out.println(udcOutDTO.toString());
-            return udcOutDTO.toString();
-		}
+//        PostDeviceCommandOutDTO2 pdcOutDTO = postCommand(signalDelivery, deviceId, accessToken,i);
+//        if (pdcOutDTO != null) {
+//        	String commandId = pdcOutDTO.getCommandId();
+//        	/**---------------------update device command------------------------*/
+//            UpdateDeviceCommandInDTO udcInDTO = new UpdateDeviceCommandInDTO();
+//            udcInDTO.setStatus("CANCELED");
+//            UpdateDeviceCommandOutDTO udcOutDTO = signalDelivery.updateDeviceCommand(udcInDTO, commandId, null, accessToken);
+//            System.out.println(udcOutDTO.toString());
+//            return udcOutDTO.toString();
+//		}
+		HttpsUtil httpsUtil = new HttpsUtil();
+        httpsUtil.initSSLConfigForTwoWay();
+
+        // Authentication，get token
+        String accessToken = login(httpsUtil);
+
+        //Please make sure that the following parameter values have been modified in the Constant file.
+        String urlPostAsynCmd = Constant.POST_ASYN_CMD;
+        String appId = Constant.APPID;
+
+        //please replace the deviceId, when you use the demo.
+        String deviceId = "f08b77ca-d98e-43bd-8e54-ad773c5c3768";
+        String callbackUrl = Constant.REPORT_CMD_EXEC_RESULT_CALLBACK_URL;
+
+        //please replace the following parameter values, when you use the demo.
+        //And those parameter values must be consistent with the content of profile that have been preset to IoT platform.
+        //The following parameter values of this demo are use the watermeter profile that already initialized to IoT platform.
+        String serviceId = "In_Current";
+        String method = "R";
+        ObjectNode paras = JsonUtil.convertObject2ObjectNode("{\"Time_state\":\""+i+"\"}");
+      
+        Map<String, Object> paramCommand = new HashMap<>();
+        paramCommand.put("serviceId", serviceId);
+        paramCommand.put("method", method);
+        paramCommand.put("paras", paras);      
+        
+        Map<String, Object> paramPostAsynCmd = new HashMap<>();
+        paramPostAsynCmd.put("deviceId", deviceId);
+        paramPostAsynCmd.put("command", paramCommand);
+        paramPostAsynCmd.put("callbackUrl", callbackUrl);
+        
+        String jsonRequest = JsonUtil.jsonObj2Sting(paramPostAsynCmd);
+                
+        Map<String, String> header = new HashMap<>();
+        header.put(Constant.HEADER_APP_KEY, appId);
+        header.put(Constant.HEADER_APP_AUTH, "Bearer" + " " + accessToken);
+        
+        HttpResponse responsePostAsynCmd = httpsUtil.doPostJson(urlPostAsynCmd, header, jsonRequest);
+
+        String responseBody = httpsUtil.getHttpResponseBody(responsePostAsynCmd);
+
+        System.out.println("PostAsynCommand, response content:");
+        System.out.print(responsePostAsynCmd.getStatusLine());
+        System.out.println(responseBody);
+        System.out.println();
+        if(responseBody != null) {
+        	return responseBody;
+        }
         return "失败";
         
 	}
@@ -146,6 +200,28 @@ public class LiteNAServiceImp implements LiteNAService {
 	 public void chg(Map map) {
 		 this.map=map.toString();
 	 }
+	 @SuppressWarnings("unchecked")
+	    public static String login(HttpsUtil httpsUtil) throws Exception {
+
+	        String appId = Constant.APPID;
+	        String secret = Constant.SECRET;
+	        String urlLogin = Constant.APP_AUTH;
+
+	        Map<String, String> paramLogin = new HashMap<>();
+	        paramLogin.put("appId", appId);
+	        paramLogin.put("secret", secret);
+
+	        StreamClosedHttpResponse responseLogin = httpsUtil.doPostFormUrlEncodedGetStatusLine(urlLogin, paramLogin);
+
+	        System.out.println("app auth success,return accessToken:");
+	        System.out.print(responseLogin.getStatusLine());
+	        System.out.println(responseLogin.getContent());
+	        System.out.println();
+
+	        Map<String, String> data = new HashMap<>();
+	        data = JsonUtil.jsonString2SimpleObj(responseLogin.getContent(), data.getClass());
+	        return data.get("accessToken");
+	    }
 	@Override
 	public void chg() {
 		System.out.println(RequestContext.getContext().getRequest());
