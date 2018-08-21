@@ -1,6 +1,7 @@
 demoApp.directive("btnLoading", function() {
 	return {
 		restrict:'A',
+		scope: true,
 		link:function(scope,element,attr){
 			scope.prevText=element.text();
 			scope.$watch(function(){

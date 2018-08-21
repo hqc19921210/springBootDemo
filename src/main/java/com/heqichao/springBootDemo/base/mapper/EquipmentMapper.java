@@ -36,8 +36,17 @@ public interface EquipmentMapper {
 			+ " FROM equipment where STATUS = 'Y'  "
 			+ "<if test=\"competence == 3 \"> and own_id = #{id}  </if>"
 			+ "<if test=\"competence == 4 \"> and own_id = #{parentId}  </if>"
+			+ "<if test =\"sEid !=null  and sEid!='' \"> and eid like CONCAT(CONCAT('%',#{sEid}),'%')  </if>"
+			+ "<if test =\"sType !=null  and sType!='' \"> and e_type like CONCAT(CONCAT('%',#{sType}),'%')  </if>"
+			+ "<if test =\"sStatus !=null  and sStatus!='' \"> and e_status = #{sStatus}  </if>"
 			+ " </script>")
-	public List<Equipment> getEquipments(User user);
+	public List<Equipment> getEquipments(
+			@Param("competence")Integer competence,
+			@Param("id")Integer id,
+			@Param("parentId")Integer parentId,
+			@Param("sEid")String sEid,
+			@Param("sType")String sType,
+			@Param("sStatus")String sStatus);
 	
 	@Insert("insert into equipment (eid,e_type,amount,e_range,alarms,e_status,online_time,remark,own_id,status,update_uid)"
 			+ " values(#{eid},#{eType},#{amount},#{eRange},#{alarms},#{eStatus},sysdate(),#{remark},#{ownId},'Y',#{updateUid}) ")

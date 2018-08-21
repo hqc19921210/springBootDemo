@@ -1,6 +1,7 @@
 package com.heqichao.springBootDemo.base.service;
 
 import com.heqichao.springBootDemo.base.mapper.EquipmentMapper;
+import com.heqichao.springBootDemo.base.param.RequestContext;
 import com.heqichao.springBootDemo.base.param.ResponeResult;
 import com.github.pagehelper.PageInfo;
 import com.heqichao.springBootDemo.base.entity.Equipment;
@@ -32,8 +33,17 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public PageInfo queryEquipmentList() {
+    	Map map = RequestContext.getContext().getParamMap();
+    	String eid = StringUtil.getStringByMap(map,"eid");
+    	String type = StringUtil.getStringByMap(map,"type");
+    	String seleStatus = StringUtil.getStringByMap(map,"seleStatus");
     	PageUtil.setPage();
-        PageInfo pageInfo = new PageInfo(eMapper.getEquipments(ServletUtil.getSessionUser()));
+        PageInfo pageInfo = new PageInfo(eMapper.getEquipments(
+        		ServletUtil.getSessionUser().getCompetence(),
+        		ServletUtil.getSessionUser().getId(),
+        		ServletUtil.getSessionUser().getParentId(),
+        		eid,type,seleStatus
+        		));
     	return pageInfo;
     }
     @Override

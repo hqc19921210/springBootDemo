@@ -10,13 +10,20 @@ function equCtrl($scope, $http, $rootScope) {
         size:defaultSize, //每页数据量 defaultSize全局变量
     };
 	$scope.pages=0;
+	$scope.loadCtl={
+    		search:false,	
+    		addEnq:false
+    };
+	$scope.chkCmp = $rootScope.user.competence;
     $scope.init=function(){
+    	$scope.loadCtl.search = true;
     	$http.post("service/getEquipments",$scope.quereyData).success(function(data) {
 //    		console.info(data);
     		$scope.equipments = data.resultObj.list;
     		$scope.pages=data.resultObj.pages;
     		$scope.pageArr=data.resultObj.navigatepageNums;
     		$scope.quereyData.page=data.resultObj.pageNum;
+    		$scope.loadCtl.search = false;
     	});
     }
   //初始化
@@ -27,15 +34,17 @@ function equCtrl($scope, $http, $rootScope) {
         $scope.quereyData.page=page;
         $scope.init();
     }
+    $scope.resetSearch=function(){
+        $scope.quereyData.eid=null;
+        $scope.quereyData.type=null;
+        $scope.quereyData.seleStatus=null;
+        $scope.quereyData.page=1;
+        $scope.pages=0;
+        $scope.init();
+    }
     
-//    $('#onlineDatepicker').datepicker({
-//	    format: "yyyy-mm-dd",
-//	    todayBtn: "linked",
-//	    autoclose:true,//加上这个参数
-//	    language: "zh-CN"
-//	});
-    $scope.chkCmp = $rootScope.user.competence;
     $scope.addEqu = function() {
+    	$scope.loadCtl.addEnq = true;
         $http.post("service/addEqu",
         		{eid:$scope.eid,
     			eType:$scope.eType,
@@ -53,8 +62,9 @@ function equCtrl($scope, $http, $rootScope) {
 			        	//修改成功后
 			        	$scope.closeAddEquModal();
 			        	swal("新增成功", null, "success");
-			            $scope.reloadEquList();
+			        	$scope.init();
 			        }
+			    	$scope.loadCtl.addEnq = false;
         });
 		
     };
@@ -78,10 +88,6 @@ function equCtrl($scope, $http, $rootScope) {
 		$("#close-add-equ-modal").click();
 	};
     
-    $scope.reloadEquList = function(){
-		$scope.init();
-	};
-	
 	$scope.delEqu = function(eid){
 		swal({   
             title: "是否确定删除该设备？",   
@@ -110,7 +116,7 @@ function equCtrl($scope, $http, $rootScope) {
 					swal(data.message, null, "error");
 				}else{
 					swal("删除成功", null, "success");
-					$scope.reloadEquList();
+					$scope.init();
 				}
 			});
 	}

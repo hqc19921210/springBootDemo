@@ -27,6 +27,10 @@ public class SessionAppFilter implements Filter {
         noLoginUrl.put("/service/login",new Object());
         noLoginUrl.put("/service/updatePassword",new Object());
         noLoginUrl.put("/service/checkLogin",new Object());
+        noLoginUrl.put("/service/liangPost",new Object());
+        noLoginUrl.put("/service/liangClear",new Object());
+        noLoginUrl.put("/service/getDataChange",new Object());
+        noLoginUrl.put("/service/liteNaCallback2",new Object());
     }
 
     @Override
