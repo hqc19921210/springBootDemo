@@ -74,13 +74,26 @@ public class LightningLogServiceImpl implements LightningLogService {
         lightningLogMapper.saveLightningLog(log);
     }
 
-    @Override
-    public void setDevError(String devId, Date time) {
-
-    }
 
     @Override
     public List<String> queryLogOnTime(int time) {
         return lightningLogMapper.queryLogOnTime(time);
+    }
+
+    @Override
+    public void deleteAll() {
+        List<String> list =new ArrayList<String>();
+        Integer cmp =ServletUtil.getSessionUser().getCompetence();
+        if(cmp !=null ){
+            //管理员查询所有
+            if(UserService.ROOT.equals(cmp)){
+                list=equipmentService.getEquipmentIdListAll();
+
+            } else  if(UserService.CUSTOMER.equals(cmp)){  //用户查自己设备
+                list=equipmentService.getUserEquipmentIdList(ServletUtil.getSessionUser().getId());
+            }
+            //访客不允许
+        }
+        lightningLogMapper.deleteLightningLogByDevIds(list);
     }
 }

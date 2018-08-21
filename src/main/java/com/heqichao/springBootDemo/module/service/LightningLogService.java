@@ -19,9 +19,11 @@ public interface LightningLogService {
     PageInfo queryAll();
     void save(LightningLog log);
 
-    void setDevError(String devId,Date time);
+
 
     //查询多少分钟前的日志数据 定时任务用
     List<String> queryLogOnTime(int time);
+
+    void deleteAll();
 
 }
