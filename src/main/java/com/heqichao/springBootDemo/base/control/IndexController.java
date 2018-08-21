@@ -16,5 +16,9 @@ public class IndexController extends BaseController {
     String index() {
         return "/index.html";
     }
+    @GetMapping("/liang")
+    String liang() {
+    	return "/liang.html";
+    }
 
 }

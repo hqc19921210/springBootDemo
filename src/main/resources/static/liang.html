@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	 <title>DEMO</title>
+	</head>
+<script type="text/javascript" src="static/js/angular-1.5.8.min.js"></script>
+<script>
+		var app = angular.module('myApp', []);
+		app.controller('myCtrl', function($scope,$http) {
+		    $scope.firstName= "John";
+		    $scope.lastName= "Doe";
+		    $http.get("service/getDataChange").success(function(data) {
+				console.log(data);
+				$scope.text = data.resultObj;
+			});
+		    $scope.addUser = function() {
+		        $http.post("service/liangPost",{remark:$scope.remark}).success(function(data) {
+					$scope.res = data.resultObj;
+		        });
+				
+		    };
+		    $scope.reset = function() {
+		    	$http.get("service/getDataChange").success(function(data) {
+					console.log(data);
+					$scope.text = data.resultObj;
+				});
+				
+		    };
+		});
+</script>
+<body>
+<div ng-app="myApp" ng-controller="myCtrl">
+		<p>deviceDataChanged log</p>
+		<textarea rows="10" cols="30">
+		{{text}}
+		</textarea>
+		<button ng-click="reset()">Manual refresh</button>
+		<form ng-submit="addUser()">
+		<br>
+		Time_state:<br>
+		<input type="number" name="remark" ng-model="remark">
+		<br><br>
+		<input type="submit" value="Issue command">
+		</form> 
+		<p>result</p>
+		<textarea rows="10" cols="30">
+		{{res}}
+		</textarea>
+
+</div>
+
+</body>
+</html>

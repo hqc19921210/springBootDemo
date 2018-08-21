@@ -93,6 +93,24 @@
 			<artifactId>org.eclipse.paho.client.mqttv3</artifactId>
 			<version>1.0.2</version>
 		</dependency>
+		<!-- org.apache.http -->
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpcore</artifactId>
+		    <version>4.4.6</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		    <version>4.5.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpmime</artifactId>
+		    <version>4.5.3</version>
+		</dependency>
+						
 
 		<!-- excel -->
 		<dependency>
@@ -110,6 +128,25 @@
 			<artifactId>poi-scratchpad</artifactId>
 			<version>3.8</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-collections/commons-collections -->
+		<dependency>
+		    <groupId>commons-collections</groupId>
+		    <artifactId>commons-collections</artifactId>
+		    <version>3.2.1</version>
+		</dependency>
+
+		<dependency>
+	         <groupId>com.alipay</groupId>
+	         <artifactId>sdk-java</artifactId>
+	         <version>20170307171631</version>
+	   </dependency>
+		<dependency>
+		    <groupId>net.sf.json-lib</groupId>
+		    <artifactId>json-lib</artifactId>
+		    <version>2.4</version>
+		    <classifier>jdk15</classifier>
+		</dependency>
+			   
 	</dependencies>
 <!--
 	<build>
@@ -129,7 +166,8 @@
 					<executable>true</executable>
 				</configuration>
 			</plugin>
-		</plugins>
+		
+ 		</plugins>
 	</build>
 	<repositories>
 		<repository>

@@ -27,8 +27,15 @@ public interface UserMapper {
 			+ " FROM user "
 			+ "where STATUS = 'Y'  "
 			+ "<if test=\"competence == 3 \"> and id = #{id} or parent_id = #{id} </if>"
+			+ "<if test =\"sAccount !=null  and sAccount!='' \"> and account like CONCAT(CONCAT('%',#{sAccount}),'%')  </if>"
+			+ "<if test =\"sCompany !=null  and sCompany!='' \"> and company like CONCAT(CONCAT('%',#{sCompany}),'%')  </if>"
+			+ "<if test =\"sCompetence !=null  and sCompetence!=0 \"> and competence = #{sCompetence}  </if>"
 			+ " </script>")
-	public List<User> getUsers(User user);
+	public List<User> getUsers(@Param("competence")Integer competence,
+							@Param("id")Integer id,
+							@Param("sAccount")String sAccount,
+							@Param("sCompany")String sCompany,
+							@Param("sCompetence")Integer sCompetence);
 	
 	@Select("select id,company from user where competence = 3 and STATUS = 'Y'")
 	public List<User> getCompanySelectList();

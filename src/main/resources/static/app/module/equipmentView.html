@@ -7,13 +7,34 @@
 					<h3 class="panel-title">设备列表</h3>
 				</div>
 				<div class="panel-body">
-				<div class="row" ng-if="user.competence != 4 ">
-                     <div class="col-sm-6">
-                         <div class="m-b-30">
-                             <button class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#equ-add-modal" ng-click="chkCmp == 2 ? seleCompetenceChg() : return">新增设备 <i class="fa fa-plus"></i></button>
-                         </div>
-                     </div>
-                 </div>
+				<form role="form" class="form-horizontal" >
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label  class="col-sm-1 control-label">杆塔ID：</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" ng-model="quereyData.eid" placeholder="模糊搜索">
+                                </div>
+                                <label  class="col-sm-2 control-label">设备种类：</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" ng-model="quereyData.type" placeholder="模糊搜索">
+                                </div>
+                                <label  class="col-sm-1 control-label">状态：</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control"  ng-model="quereyData.seleStatus" >
+									<option  value="N">在线</option>
+									<option  value="B">离线</option>
+								</select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row-margin-top">
+                            <div class="col-sm-5 col-md-offset-9 ">
+	                             <button ng-if="user.competence != 4 " type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#equ-add-modal" ng-click="chkCmp == 2 ? seleCompetenceChg() : return">新增设备 <i class="fa fa-plus"></i></button>
+                                <button  class="btn btn-primary waves-effect waves-light" type="submit"  btn-loading="loadCtl.search" ng-click="init()">搜索</button>
+                                <button class="btn btn-default waves-effect" type="button" ng-click="resetSearch()">重置</button>
+                            </div>
+                        </div>
+                    </form>
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="table-responsive">
@@ -114,7 +135,7 @@
 	                    </div>     
                  <div class="modal-footer"> 
                      <button id="close-add-equ-modal" type="button" class="btn btn-default waves-effect" data-dismiss="modal" ng-click="closeAddEquModal()" >关闭</button> 
-                     <button type="submit" class="btn btn-info waves-effect waves-light"  ng-disabled="addEquForm.$invalid">保存并添加</button> 
+                     <button type="submit" class="btn btn-info waves-effect waves-light"  ng-disabled="addEquForm.$invalid" btn-loading="loadCtl.addEnq">保存并添加</button> 
                  </div> 
                  </form> 
              </div> 

@@ -1,7 +1,7 @@
 function homeCtrl($scope, $http, $rootScope,$timeout) {
 	$scope.cmp = !$rootScope.user ? true : ($rootScope.user.competence == 2 ? false : true) ;
 	!function($) {
-	    "use strict";
+//	    "use strict";
 
 	    var Dashboard = function() {
 	        this.$body = $("body")

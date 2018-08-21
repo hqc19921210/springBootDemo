@@ -1,6 +1,7 @@
 package com.heqichao.springBootDemo.base.service;
 
 import com.heqichao.springBootDemo.base.mapper.UserMapper;
+import com.heqichao.springBootDemo.base.param.RequestContext;
 import com.heqichao.springBootDemo.base.param.ResponeResult;
 import com.github.pagehelper.PageInfo;
 import com.heqichao.springBootDemo.base.entity.User;
@@ -29,8 +30,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageInfo queryUsersList() {
+    	Map map = RequestContext.getContext().getParamMap();
+    	String account = StringUtil.getStringByMap(map,"account");
+    	String company = StringUtil.getStringByMap(map,"company");
+    	Integer seleCompetence = StringUtil.objectToInteger(StringUtil.getStringByMap(map,"seleCompetence"));
     	PageUtil.setPage();
-        PageInfo pageInfo = new PageInfo(userMapper.getUsers(ServletUtil.getSessionUser()));
+        PageInfo pageInfo = new PageInfo(userMapper.getUsers(
+        		ServletUtil.getSessionUser().getCompetence(),
+        		ServletUtil.getSessionUser().getId(),
+        		account,company,seleCompetence));
     	return pageInfo;
     }
     
