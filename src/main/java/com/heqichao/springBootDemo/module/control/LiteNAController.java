@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.heqichao.springBootDemo.base.param.ResponeResult;
 import com.heqichao.springBootDemo.module.service.LiteNAService;
-import com.iotplatform.client.dto.NotifyDeviceDataChangedDTO;
 
 @RestController
 @RequestMapping(value = "/service")

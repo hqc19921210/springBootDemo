@@ -9,14 +9,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 /**
  * Created by heqichao on 2018-8-21.
  */
+@Component("lite_log")
 public class LiteLog extends BaseEntity {
     private String message;
     private String currenState;
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date eventTime;
+    
+    public LiteLog() {
+    	
+    }
 
     public String getMessage() {
         return message;

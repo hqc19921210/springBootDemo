@@ -7,9 +7,8 @@
 <script type="text/javascript" src="static/js/angular-1.5.8.min.js"></script>
 <script>
 		var app = angular.module('myApp', []);
-		app.controller('myCtrl', function($scope,$http) {
-		    $scope.firstName= "John";
-		    $scope.lastName= "Doe";
+		app.controller('myCtrl', function($scope,$http,$interval) {
+		    $scope.count= 5;
 		    $http.get("service/getDataChange").success(function(data) {
 				console.log(data);
 				$scope.text = data.resultObj;
@@ -24,6 +23,8 @@
 		    $scope.data=[];
 		    $scope.queryAll=function(){
 				$http.post("service/queryLiteAll").success(function(data) {
+					console.log(data);
+					$scope.count=5;
 					$scope.data=data.resultObj;
 				});
 			}
@@ -34,10 +35,18 @@
 				});
 			};
 			$scope.queryAll();
+			$interval(function() {
+				$scope.queryAll();
+			}, 6*1000);
+			$interval(function() {
+				if($scope.count != 0){
+					$scope.count--;
+				}
+				console.log($scope.count);
+			}, 1000);
 
 		    $scope.reset = function() {
 		    	$http.get("service/getDataChange").success(function(data) {
-					console.log(data);
 					$scope.text = data.resultObj;
 					$scope.queryAll();
 				});
@@ -47,38 +56,41 @@
 </script>
 <body>
 <div ng-app="myApp" ng-controller="myCtrl">
-		<p>deviceDataChanged log</p>
+		<!-- <p>deviceDataChanged log</p>
 		<textarea rows="10" cols="30">
 		{{text}}
-		</textarea>
-		<button ng-click="reset()">Manual refresh</button>
+		</textarea> -->
+		<p><b>ACCEPT:</b></p>
+		<table class="table">
+			<thead>
+			<tr>
+				<th>currenState</th>
+				<th>eventTime</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr ng-repeat="entity in data">
+				<td ng-bind="entity.currenState"></td>
+				<td ng-bind="entity.eventTime"></td>
+			</tr>
+			</tbody>
+		</table>
+		<small>Refresh after {{count}} second</small><br>
+		<button ng-click="queryAll()">Manual refresh</button>
 		<button ng-click="deleteAll()"  type="button" >clean</button>
+		<br><br>
+		<p><b>COMMAND:</b></p>
 		<form ng-submit="addUser()">
-		<br>
 		Time_state:<br>
 		<input type="number" name="remark" ng-model="remark">
-		<br><br>
+		<br>
 		<input type="submit" value="Issue command">
 		</form> 
-		<p>result</p>
+		<!-- <p>result</p>
 		<textarea rows="10" cols="30">
 		{{res}}
-		</textarea>
+		</textarea> -->
 
-	<table class="table">
-		<thead>
-		<tr>
-			<th>currenState</th>
-			<th>eventTime</th>
-		</tr>
-		</thead>
-		<tbody>
-		<tr ng-repeat="entity in data">
-			<td ng-bind="entity.currenState"></td>
-			<td ng-bind="entity.eventTime"></td>
-		</tr>
-		</tbody>
-	</table>
 
 </div>
 
