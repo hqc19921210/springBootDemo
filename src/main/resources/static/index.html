@@ -131,9 +131,16 @@
                             </li>
 
                             
-							<li class="has_sub">
-                                <a href="#" class="waves-effect waves-light"><i class="md md-poll"></i><span>监测管理 </span><span class="pull-right"><i class="md md-add"></i></span></a>
+							 <li class="has_sub">
+                                <a href="#" class="waves-effect waves-light"><i class="md md-poll"></i><span>LORA</span><span class="pull-right"><i class="md md-add"></i></span></a>
                                 <ul class="list-unstyled">
+                                
+                                	<li>
+                                        <a href="#/module/equView"><span>设备管理</span></a>
+                                    </li>
+									<li>
+                                        <a href="#/module/imageChar"><span>显示站点图</span></a>
+                                    </li>
                                     
                                     <li>
                                         <a href="#/module/lightLog"><span>电流监控</span></a>
@@ -148,19 +155,44 @@
                                         <a href="#/module/warningLog"><span>报警查询</span></a>
                                     </li>
 									<li>
+                                        <a href="#/module/demoCharTest"><span>命令下发</span></a>
+                                    </li>
+									<li>
                                         <a href="#/module/demoCharTest"><span>数据管理（清空操作）</span></a>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> 
 							<li class="has_sub">
-                                <a href="javascript:void(0);" class="waves-effect waves-light"><i class="md ion-android-storage"></i><span>设备管理 </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                <a href="javascript:void(0);" class="waves-effect waves-light"><i class="md ion-android-storage"></i><span>NBIOT</span><span class="pull-right"><i class="md md-add"></i></span></a>
                                 <ul>
                                     
                                     <li>
-                                        <a href="#/module/equView"><span>设备配置</span></a>
+                                        <a href="#/module/liteApp"><span>应用管理</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#/module/liteEqu"><span>设备管理</span></a>
                                     </li>
 									<li>
-                                        <a href="#/module/imageChar"><span>显示站点图</span></a>
+                                        <a href="#/module/liteLog"><span>上报数据</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#/module/demoCharTest"><span>数据管理（清空操作）</span></a>
+                                    </li>
+									
+                                </ul>
+                            </li>
+                            <li class="has_sub">
+                                <a href="javascript:void(0);" class="waves-effect waves-light"><i class="md ion-earth"></i><span>GPRS</span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                <ul>
+                                    
+                                    <li>
+                                        <a href="#/module/demoCharTest"><span>设备管理</span></a>
+                                    </li>
+									<li>
+                                        <a href="#/module/demoCharTest"><span>上报数据</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#/module/demoCharTest"><span>数据管理（清空操作）</span></a>
                                     </li>
 									
                                 </ul>
@@ -254,10 +286,10 @@
 		<!-- Datatable init js -->
 		<script src="assets/pages/datatables.init.js"></script>
 
-		<!--Morris Chart-->
+		<!--Morris Chart
 		<script src="assets/plugins/morris.js/morris.min.js"></script>
 		<script src="assets/plugins/raphael/raphael-min.js"></script>
-		<script src="assets/pages/morris.init.js"></script>
+		<script src="assets/pages/morris.init.js"></script>-->
 
 		
 		<!-- 杆塔图echar -->
@@ -266,11 +298,11 @@
 		<!-- Sweet-Alert  -->
 		<script src="assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
 
-		<!-- todos app  -->
-		<script src="assets/pages/jquery.todo.js"></script>
+		<!-- todos app  
+		<script src="assets/pages/jquery.todo.js"></script>-->
 
-		<!-- chat app  -->
-		<script src="assets/pages/jquery.chat.js"></script>
+		<!-- chat app  
+		<script src="assets/pages/jquery.chat.js"></script>-->
 		
 	
 		<!-- flot Chart -->
@@ -297,6 +329,9 @@
 		<script src="app/controller/imageControllers.js"></script>
 		<script src="app/controller/lightLogControllers.js"></script>
 		<script src="app/controller/warningLogControllers.js"></script>
+		<script src="app/controller/liteEquControllers.js"></script>
+		<script src="app/controller/liteAppControllers.js"></script>
+		<script src="app/controller/liteLogControllers.js"></script>
 		<script type="text/javascript">
 			jQuery(document).ready(function($) {
 				$('.counter').counterUp({
@@ -308,7 +343,7 @@
 
 		<script type="text/javascript">
 
-			var defaultSize=10;
+			var defaultSize=15;
 			demoApp.controller("indexCtrl", function($scope, $http, $rootScope, $timeout,$interval,$location) {
 
 				//报警数
@@ -503,7 +538,7 @@
          <div class="modal-dialog"> 
              <div class="modal-content"> 
                  <div class="modal-header"> 
-                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >×</button> 
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="ajxUserInfo(user)" >×</button> 
                      <h4 class="modal-title">用户信息</h4> 
                  </div> 
                  <form class="modal-body" ng-submit="userUpdate()" name="userUpdateForm" novalidate="novalidate"> 

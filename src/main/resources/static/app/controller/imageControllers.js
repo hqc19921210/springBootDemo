@@ -120,7 +120,7 @@ function imageCharCtrl($scope, $http, $rootScope) {
     // 使用基本 的配置项和数据显示图表。
     myChart.setOption(option);
     //显示loading
-    myChart.showLoading();
+//    myChart.showLoading();
 
 //点击事件
     myChart.on('click', function (params) {
@@ -163,6 +163,7 @@ function imageCharCtrl($scope, $http, $rootScope) {
     }
     
     $scope.init=function(){
+    	myChart.showLoading();
     	$http.post("service/getEquipments",$scope.quereyData).success(function(data) {
     		console.info(data);
     		$scope.equipments = data.resultObj.list;

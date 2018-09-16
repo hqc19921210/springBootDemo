@@ -47,7 +47,8 @@ public class SessionAppFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         try {
             String uri = request.getServletPath();
-            if(noLoginUrl.get(uri) == null){
+            
+            if(noLoginUrl.get(uri) == null&&!uri.contains("/service/nbiotCallback/")){
                 if(ServletUtil.getSessionUser() == null){
                     ServletUtil.writeToResponse(response,ServletUtil.NO_LOGIN_RESULT);
                     return;

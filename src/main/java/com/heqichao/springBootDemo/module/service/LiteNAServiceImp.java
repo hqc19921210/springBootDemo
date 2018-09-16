@@ -12,11 +12,18 @@ import com.alibaba.fastjson.JSONObject;
 import com.heqichao.springBootDemo.module.entity.LiteLog;
 import com.heqichao.springBootDemo.module.mapper.LiteLogMapper;
 import org.apache.http.HttpResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.pagehelper.PageInfo;
 import com.heqichao.springBootDemo.base.param.RequestContext;
+import com.heqichao.springBootDemo.base.util.DataUtil;
+import com.heqichao.springBootDemo.base.util.PageUtil;
+import com.heqichao.springBootDemo.base.util.ServletUtil;
 import com.heqichao.springBootDemo.base.util.StringUtil;
 import com.heqichao.springBootDemo.module.liteNA.Constant;
 import com.heqichao.springBootDemo.module.liteNA.HttpsUtil;
@@ -25,11 +32,15 @@ import com.heqichao.springBootDemo.module.liteNA.StreamClosedHttpResponse;
 
 
 @Service
+@Transactional
 public class LiteNAServiceImp implements LiteNAService {
+	
+	Logger logger = LoggerFactory.getLogger(getClass());
 	private static String map;  
 
 	@Autowired
 	private LiteLogMapper liteLogMapper;
+	
 	@Override
 	public Object getDataChange() throws Exception {
         return map;
@@ -77,11 +88,10 @@ public class LiteNAServiceImp implements LiteNAService {
         HttpResponse responsePostAsynCmd = httpsUtil.doPostJson(urlPostAsynCmd, header, jsonRequest);
 
         String responseBody = httpsUtil.getHttpResponseBody(responsePostAsynCmd);
-
-        System.out.println("PostAsynCommand, response content:");
-        System.out.print(responsePostAsynCmd.getStatusLine());
-        System.out.println(responseBody);
-        System.out.println();
+        
+        logger.info("PostAsynCommand, response content:");
+        logger.info(responsePostAsynCmd.getStatusLine().toString());
+        logger.info(responseBody);
         if(responseBody != null) {
         	return responseBody;
         }
@@ -93,43 +103,41 @@ public class LiteNAServiceImp implements LiteNAService {
 	public List<LiteLog> queryAll() {
 		return liteLogMapper.queryAll();
 	}
+	@Override
+	public PageInfo queryLites() {
+		Map map = RequestContext.getContext().getParamMap();
+    	String deviceId = StringUtil.getStringByMap(map,"deviceId");
+    	String start = StringUtil.getStringByMap(map,"start");
+    	String end = StringUtil.getStringByMap(map,"end");
+    	if(StringUtil.isNotEmpty(end)){
+            end=end+" 23:59:59";
+        }
+    	PageUtil.setPage();
+        PageInfo pageInfo = new PageInfo(liteLogMapper.queryLites(
+        		ServletUtil.getSessionUser().getId(),
+        		ServletUtil.getSessionUser().getParentId(),
+        		ServletUtil.getSessionUser().getCompetence(),
+        		deviceId,start,end
+        		));
+		return pageInfo;
+	}
 
 	@Override
 	public void deleteAll() {
 		liteLogMapper.deleteAll();
 	}
 
-	 @SuppressWarnings("unchecked")
-	    public static String login(HttpsUtil httpsUtil) throws Exception {
-
-	        String appId = Constant.APPID;
-	        String secret = Constant.SECRET;
-	        String urlLogin = Constant.APP_AUTH;
-
-	        Map<String, String> paramLogin = new HashMap<>();
-	        paramLogin.put("appId", appId);
-	        paramLogin.put("secret", secret);
-
-	        StreamClosedHttpResponse responseLogin = httpsUtil.doPostFormUrlEncodedGetStatusLine(urlLogin, paramLogin);
-
-	        System.out.println("app auth success,return accessToken:");
-	        System.out.print(responseLogin.getStatusLine());
-	        System.out.println(responseLogin.getContent());
-	        System.out.println();
-
-	        Map<String, String> data = new HashMap<>();
-	        data = JsonUtil.jsonString2SimpleObj(responseLogin.getContent(), data.getClass());
-	        return data.get("accessToken");
-	    }
 	@Override
 	public void chg() {
 		String mes =RequestContext.getContext().getParamMap().toString();
+		logger.info("调用回调url传入参数："+mes);
 		this.map=mes;
 
 		JSONObject jsonObject =changeMse(mes);
 		JSONObject service =jsonObject.getJSONObject("service");
+		String deviceId =jsonObject.getString("deviceId");
 		JSONObject data=service.getJSONObject("data");
-		String currenState= (String) data.get("Curren_state");
+//		String currenState= (String) data.get("Curren_state");
 		String eventTime= (String) service.get("eventTime");
 		//20180821T022524Z
 		SimpleDateFormat simpleDateFormat =new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
@@ -149,12 +157,13 @@ public class LiteNAServiceImp implements LiteNAService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		LiteLog log =new LiteLog(mes,currenState,localTime);
+		LiteLog log =new LiteLog(mes,data.toJSONString(),localTime);
+		log.setDeviceId(deviceId);
 		liteLogMapper.saveLog(log);
 
 	}
 
-	private  JSONObject changeMse(String mes){
+	private static  JSONObject changeMse(String mes){
 		mes=mes.replaceAll("=",":");
 		mes=mes.replaceAll("\"","");
 		mes=mes.replaceAll(" ","");
@@ -176,5 +185,28 @@ public class LiteNAServiceImp implements LiteNAService {
 		JSONObject jsonObject = JSONObject.parseObject(newMes);
 		return jsonObject;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public String login(HttpsUtil httpsUtil) throws Exception {
+		
+		String appId = Constant.APPID;
+		String secret = Constant.SECRET;
+		String urlLogin = Constant.APP_AUTH;
+		
+		Map<String, String> paramLogin = new HashMap<>();
+		paramLogin.put("appId", appId);
+		paramLogin.put("secret", secret);
+		
+		StreamClosedHttpResponse responseLogin = httpsUtil.doPostFormUrlEncodedGetStatusLine(urlLogin, paramLogin);
+		
+		logger.info("app auth success,return accessToken:");
+		logger.info(responseLogin.getStatusLine().toString());
+		logger.info(responseLogin.getContent());
+		
+		Map<String, String> data = new HashMap<>();
+		data = JsonUtil.jsonString2SimpleObj(responseLogin.getContent(), data.getClass());
+		return data.get("accessToken");
+	}
+	
 	
 }

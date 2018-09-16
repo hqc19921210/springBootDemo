@@ -1,6 +1,7 @@
 package com.heqichao.springBootDemo.base.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 public class HomeEntity implements Serializable{
@@ -14,9 +15,9 @@ public class HomeEntity implements Serializable{
 	private Integer userAll;
 	//设备总数
 	private Integer equAll;
-	//设备在线总数
+	//LOA设备总数
 	private Integer equNom;
-	//设备离线总数
+	//LOA在线设备
 	private Integer equBrD;
 	//设备故障总数
 	private Integer warNum;
@@ -31,7 +32,7 @@ public class HomeEntity implements Serializable{
 	//折线图数据
 	private Map plotMap;
 	//饼图数据
-	private Map pieMap;
+	private List<Integer> pieMap;
 	
 	public String getTag() {
 		return tag;
@@ -105,10 +106,10 @@ public class HomeEntity implements Serializable{
 	public void setPlotMap(Map plotMap) {
 		this.plotMap = plotMap;
 	}
-	public Map getPieMap() {
+	public List<Integer> getPieMap() {
 		return pieMap;
 	}
-	public void setPieMap(Map pieMap) {
+	public void setPieMap(List<Integer> pieMap) {
 		this.pieMap = pieMap;
 	}
 	
