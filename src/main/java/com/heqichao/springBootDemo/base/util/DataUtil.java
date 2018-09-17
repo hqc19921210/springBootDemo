@@ -1,5 +1,7 @@
 package com.heqichao.springBootDemo.base.util;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.heqichao.springBootDemo.base.exception.ResponeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,10 +10,15 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by heqichao on 2018-7-30.
+ * 
+ * @version heqichao 	2018-7-30 	v1.0	init 		<br/>		
+ * 			Muzzy Xu. 	2018-08-27 	v1.1	add json to map		 
  */
 public class DataUtil {
 
@@ -95,6 +102,28 @@ public class DataUtil {
             throw new ResponeException("getLocalIPSByGateway",e);
         }
     }
+    
+    /**
+     * 转换json字符串 to HashMap
+     * @param String
+     * @return
+     */
+    
+    public static HashMap<String, Object> DecodejsonToHashMap(String object){  
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if (object != null) {
+			try {
+				object = java.net.URLDecoder.decode(object, "UTF-8");
+				ObjectMapper mapper = new ObjectMapper();
+				map = mapper.readValue(object,
+						new TypeReference<Map<String, Object>>() {
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	       return map;  
+	   }  
 
 
     public static void main(String[] args) {

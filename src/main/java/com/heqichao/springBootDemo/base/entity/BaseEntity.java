@@ -11,7 +11,7 @@ import java.util.Date;
 public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    protected int id;
+    protected Integer id;
 
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
     protected Date createTime;
@@ -19,11 +19,11 @@ public class BaseEntity implements Serializable {
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
     protected Date updateTime;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -10,8 +10,8 @@
                          </div>
                          <div class="tiles-progress">
                              <div class="m-t-20">
-                                 <h5 class="text-uppercase text-white m-0">客户总数： <span class="pull-right">6</span></h5>
-                                 <h5 class="text-uppercase text-white m-0">用户总数： <span class="pull-right">25</span></h5>
+                                 <h5 class="text-uppercase text-white m-0">客户总数： <span class="pull-right" ng-bind="home.custAll"></span></h5>
+                                 <h5 class="text-uppercase text-white m-0">用户总数： <span class="pull-right" ng-bind="home.userAll"></span></h5>
                              </div>
                          </div>
                      </div>
@@ -24,8 +24,8 @@
                          </div>
                          <div class="tiles-progress">
                              <div class="m-t-20">
-                                 <h5 class="text-uppercase text-white m-0">电流峰值： <span class="pull-right">2220.01A</span></h5>
-                                 <h5 class="text-uppercase text-white m-0">最近雷击时间： <span class="pull-right">2018-7-31 03:15:20</span></h5>
+                                 <h5 class="text-uppercase text-white m-0">电流峰值： <span class="pull-right" ng-bind="home.equNom"></span></h5>
+                                 <h5 class="text-uppercase text-white m-0">最近雷击时间： <span class="pull-right" ng-bind="home.equNom"></span></h5>
                              </div>
                          </div>
                      </div>
@@ -34,12 +34,12 @@
                  <div class="col-md-8 col-sm-8 col-lg-4">
                      <div class="mini-stat clearfix bg-success bx-shadow">
                          <div class="mini-stat-info text-right">
-                             <span >设备数量</span>
+                             <span >LORA设备状态</span>
                          </div>
                          <div class="tiles-progress">
                              <div class="m-t-20">
-                                 <h5 class="text-uppercase text-white m-0">设备总数： <span class="pull-right">170</span></h5>
-                                 <h5 class="text-uppercase text-white m-0">其中正常：<span class="pull-right">119</span></h5>
+                                 <h5 class="text-uppercase text-white m-0">LORA总数： <span class="pull-right" ng-bind="home.equNom"></span></h5>
+                                 <h5 class="text-uppercase text-white m-0">其中在线：<span class="pull-right" ng-bind="home.equBrD"></span></h5>
                              </div>
                          </div>
                      </div>
@@ -63,9 +63,9 @@
              <!-- End row-->
 
 
-             <div class="row">
+            <div class="row">
                  <div class="col-lg-8">
-                     <div class="portlet"><!-- /portlet heading -->
+                     <div class="portlet">
                          <div class="portlet-heading">
                              <h3 class="portlet-title text-dark text-uppercase">
                                  	年度雷击统计
@@ -98,14 +98,15 @@
                                  </div>
                              </div>
                          </div>
-                     </div> <!-- /Portlet -->
-                 </div> <!-- end col -->
+                     </div> 
+                 </div> 
+                 <!-- end col -->
 
                  <div class="col-lg-4">
-                     <div class="portlet"><!-- /portlet heading -->
+                     <div class="portlet">
                          <div class="portlet-heading">
                              <h3 class="portlet-title text-dark text-uppercase">
-                                 	设备状态统计
+                                 	设备统计
                              </h3>
                              <div class="portlet-widgets">
                                  <a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a>
@@ -122,22 +123,20 @@
                                          </div>
 
                                          <div class="row text-center m-t-30">
-                                             <div class="col-sm-6">
-                                                 <h4 class="counter">170台</h4>
+                                             <div class="col-sm-12">
+                                                 <h4 class="counter">{{home.equAll}}台</h4>
                                                  <small class="text-muted"> 总设备数</small>
-                                             </div>
-                                             <div class="col-sm-6">
-                                                 <h4 class="counter">119台</h4>
-                                                 <small class="text-muted">其中正常设备</small>
                                              </div>
                                          </div>
                                      </div>
                                  </div>
                              </div>
                          </div>
-                     </div> <!-- /Portlet -->
-                 </div> <!-- end col -->
-             </div> <!-- End row -->
+                     </div> 
+                 </div> 
+                 <!-- end col -->
+             </div> 
+             <!-- End row -->
 
 
 </div>

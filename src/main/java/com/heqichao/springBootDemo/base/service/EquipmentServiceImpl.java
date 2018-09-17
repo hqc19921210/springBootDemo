@@ -118,7 +118,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     public ResponeResult deleteEquByID(Map map) {
     	Integer eid = StringUtil.objectToInteger(StringUtil.getStringByMap(map,"eid"));
     	Integer udid = ServletUtil.getSessionUser().getId();
-    	if(  eid == null || udid == null) {
+    	Integer cmp = ServletUtil.getSessionUser().getCompetence();
+    	if(  eid == null || udid == null || cmp == 4) {
     		return new ResponeResult(true,"Delete fail!","errorMsg");
     	}else {
     		if(eMapper.delEquById(eid,udid)>0) {

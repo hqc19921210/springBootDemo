@@ -1,0 +1,313 @@
+<div class="container" >
+	
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">NBIOT设备列表</h3>
+				</div>
+				<div class="panel-body">
+				<form role="form" class="form-horizontal" >
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label  class="col-sm-1 control-label">设备ID：</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" ng-model="quereyData.deviceId" placeholder="模糊搜索">
+                                </div>
+                                <label  class="col-sm-2 control-label">设备名称：</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" ng-model="quereyData.name" placeholder="模糊搜索">
+                                </div>
+                                <label  class="col-sm-1 control-label">协议：</label>
+                                <div class="col-sm-2">
+                                    <input type="text" class="form-control" ng-model="quereyData.agreement" placeholder="模糊搜索">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row-margin-top">
+                            <div class="col-sm-5 col-md-offset-9 ">
+	                             <button ng-if="user.competence != 4 " type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#equ-add-modal" ng-click="chkCmp == 2 ? seleAddBtn() : return">新增设备 <i class="fa fa-plus"></i></button>
+                                <button  class="btn btn-primary waves-effect waves-light" type="submit"  btn-loading="loadCtl.search" ng-click="init()">搜索</button>
+                                <button class="btn btn-default waves-effect" type="button" ng-click="resetSearch()">重置</button>
+                            </div>
+                        </div>
+                    </form>
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+									<tr>
+										<th>设备名称</th>
+										<th>设备ID</th>
+										<th>所属应用</th>
+										<th>设备类型</th>
+										<th>协议类型</th>
+										<th>上线时间</th>
+										<th>备注</th>
+										<th>操作</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr ng-repeat="eqm in equipments"> 
+									<td>{{ eqm.name }}</td>
+									<td>{{ eqm.deviceId }}</td>
+									<td>{{ eqm.appName }}</td>
+									<td>{{ eqm.type }}</td>
+									<td>{{ eqm.agreement }}</td>
+									<td>{{ eqm.onlineTime }}</td>
+									<td>{{ eqm.remark }}</td>
+									<td> 
+										<a href="javascript:void(0)" data-toggle="modal" data-target="#equ-command-modal" ng-click="selEquCmd(eqm)" >下发命令 </a>
+										<a href="javascript:void(0)" data-toggle="modal" data-target="#equ-info-modal" ng-click="selEquInfo(eqm)" >详情 </a>
+										<a href="javascript:void(0)"  ng-click="delEqu(eqm.id)"><span>删除</span></a></td>
+									</tr>
+									
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+						 <!-- 分页 -->
+                        <page-info pages="pages" curpage="quereyData.page" change="changePage(page)"></page-info>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="equ-add-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addEquModal" aria-hidden="true" style="display: none">
+         <div class="modal-dialog"> 
+             <div class="modal-content"> 
+                 <div class="modal-header"> 
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeAddEquModal()">×</button> 
+                     <h4 class="modal-title">添加设备</h4> 
+                 </div> 
+                 <form class="modal-body" ng-submit="addEqu()" name="addEquForm" novalidate="novalidate">
+	               		<div class="row" ng-show="chkCmp == 2"> 
+	                       <div class="col-md-12"> 
+	                           <div class="form-group "> 
+	                                <label  class="control-label">请选择设备所属客户<span style="color : red">*</span></label>  
+	                                <select ng-if="chkCmp == 2" class="form-control" name="seleCompany"  ng-model="$parent.seleCompany" ng-options="x for (x, y) in selCompanys" required>
+								</select>
+	                           </div> 
+	                       </div> 
+	                   </div> 
+	               		<div class="row" > 
+	                       <div class="col-md-12"> 
+	                           <div class="form-group "> 
+	                                <label  class="control-label">请选择设备所属应用<span style="color : red">*</span></label>  
+	                                <select class="form-control"  ng-model="seleApp" ng-options="x for (x, y) in selApps" required>
+								</select>
+	                           </div> 
+	                       </div> 
+	                   </div> 
+                     <div class="row"> 
+                         <div class="col-md-12"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">设备ID<span style="color : red">*</span></label> 
+                                 <input type="text" class="form-control" name="deviceId" ng-model="deviceId" required >
+                             </div> 
+                         </div> 
+                        </div> 
+                        <div class="row"> 
+                            <div class="col-md-4"> 
+                                <div class="form-group"> 
+                                    <label  class="control-label">设备名称<span style="color : red">*</span></label> 
+                                    <input type="text" class="form-control" name="name" ng-model="name" required  > 
+                                </div> 
+                            </div> 
+                         <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">设备类型<span style="color : red">*</span></label> 
+                                 <input type="text" class="form-control" name="type" ng-model="type" required > 
+                             </div> 
+                         </div> 
+                         <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">协议类型<span style="color : red">*</span></label> 
+                                 <input type="text" class="form-control" name="agreement" ng-model="agreement" required > 
+                             </div> 
+                         </div> 
+                     </div> 
+                        <div class="row"> 
+                            <div class="col-md-4"> 
+                                <div class="form-group"> 
+                                    <label  class="control-label">验证码</label> 
+                                    <input type="text" class="form-control" name="verification" ng-model="verification"   > 
+                                </div> 
+                            </div> 
+                         <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">厂商ID</label> 
+                                 <input type="text" class="form-control" name="supportId" ng-model="supportId"  > 
+                             </div> 
+                         </div> 
+                         <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">厂商名称</label> 
+                                 <input type="text" class="form-control" name="supportName" ng-model="supportName"  > 
+                             </div> 
+                         </div> 
+                     </div> 
+                      <div class="row"> 
+	                        <div class="col-md-12"> 
+	                            <div class="form-group no-margin"> 
+	                                 <label  class="control-label">备注</label>  
+	                                <textarea  class="form-control autogrow" name="remark" ng-model="remark" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 75px"></textarea> 
+	                            </div> 
+	                        </div> 
+	                    </div>     
+                 <div class="modal-footer"> 
+                     <button id="close-add-equ-modal" type="button" class="btn btn-default waves-effect" data-dismiss="modal" ng-click="closeAddEquModal()" >关闭</button> 
+                     <button type="submit" class="btn btn-info waves-effect waves-light"  ng-disabled="addEquForm.$invalid" btn-loading="loadCtl.addEnq">保存并添加</button> 
+                 </div> 
+                 </form> 
+             </div> 
+         </div>
+     </div>
+     
+	<div id="equ-info-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="liteEquInfoModal" aria-hidden="true" style="display: none">
+         <div class="modal-dialog"> 
+             <div class="modal-content"> 
+                 <div class="modal-header"> 
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeUpdateEquModal()">×</button> 
+                     <h4 class="modal-title">设备详情</h4> 
+                 </div> 
+                 <form class="modal-body" ng-submit="updateEqu()" name="updateEquForm" novalidate="novalidate">
+	               		<div class="row" ng-show="chkCmp == 2"> 
+	                       <div class="col-md-12"> 
+	                           <div class="form-group "> 
+	                                <label  class="control-label">所属客户<span style="color : red">*</span></label>  
+	                                <select ng-if="chkCmp == 2" class="form-control" ng-disabled="infoEditable" ng-model="$parent.currEqu.ownId" ng-options="x for (x, y) in selCompanys" required>
+								</select>
+	                           </div> 
+	                       </div> 
+	                   </div> 
+	                   <div class="row" > 
+	                       <div class="col-md-12"> 
+	                           <div class="form-group "> 
+	                                <label  class="control-label">所属应用<span style="color : red">*</span></label>  
+	                                <select class="form-control" ng-disabled="infoEditable" ng-model="currEqu.appId" ng-options="x for (x, y) in selApps" required>
+								</select>
+	                           </div> 
+	                       </div> 
+	                   </div> 
+                     <div class="row"> 
+                         <div class="col-md-12"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">设备ID<span style="color : red">*</span></label> 
+                                 <input type="text" class="form-control" ng-disabled="infoEditable" ng-model="currEqu.deviceId" required >
+                             </div> 
+                         </div> 
+                        </div> 
+                        <div class="row"> 
+                            <div class="col-md-4"> 
+                                <div class="form-group"> 
+                                    <label  class="control-label">设备名称<span style="color : red">*</span></label> 
+                                    <input type="text" class="form-control" ng-disabled="infoEditable" ng-model="currEqu.name" required  > 
+                                </div> 
+                            </div> 
+                         <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">设备类型<span style="color : red">*</span></label> 
+                                 <input type="text" class="form-control" ng-disabled="infoEditable" ng-model="currEqu.type" required > 
+                             </div> 
+                         </div> 
+                         <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">协议类型<span style="color : red">*</span></label> 
+                                 <input type="text" class="form-control" ng-disabled="infoEditable" ng-model="currEqu.agreement" required > 
+                             </div> 
+                         </div> 
+                     </div> 
+                        <div class="row"> 
+                            <div class="col-md-4"> 
+                                <div class="form-group"> 
+                                    <label  class="control-label">验证码</label> 
+                                    <input type="text" class="form-control" ng-disabled="infoEditable" ng-model="currEqu.verification"   > 
+                                </div> 
+                            </div> 
+                         <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">厂商ID</label> 
+                                 <input type="text" class="form-control" ng-disabled="infoEditable" ng-model="currEqu.supportId"  > 
+                             </div> 
+                         </div> 
+                         <div class="col-md-4"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">厂商名称</label> 
+                                 <input type="text" class="form-control" ng-disabled="infoEditable" ng-model="currEqu.supportName"  > 
+                             </div> 
+                         </div> 
+                     </div> 
+                      <div class="row"> 
+	                        <div class="col-md-12"> 
+	                            <div class="form-group no-margin"> 
+	                                 <label  class="control-label">备注</label>  
+	                                <textarea  class="form-control autogrow" ng-disabled="infoEditable" ng-model="currEqu.remark" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 75px"></textarea> 
+	                            </div> 
+	                        </div> 
+	                    </div>     
+                 <div class="modal-footer"> 
+                     <button id="close-info-equ-modal" type="button" class="btn btn-default waves-effect" data-dismiss="modal" ng-click="closeUpdateEquModal()" >{{chkCmp != 4 ? '关闭' : '确定'}}</button> 
+                     <button type="button" class="btn btn-info waves-effect waves-light" ng-show="chkCmp != 4 && infoEditable" ng-click="chgEdit()" >编辑</button> 
+                     <button type="submit" class="btn btn-info waves-effect waves-light" ng-show="chkCmp != 4 && !infoEditable" ng-disabled="updateEquForm.$invalid || !updateEquForm.$dirty" btn-loading="loadCtl.updEqu">保存</button> 
+                 </div> 
+                 </form> 
+             </div> 
+         </div>
+     </div>
+	<div id="equ-command-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="liteEquCmdModal" aria-hidden="true" style="display: none">
+         <div class="modal-dialog"> 
+             <div class="modal-content"> 
+                 <div class="modal-header"> 
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeCmdEquModal()">×</button> 
+                     <h4 class="modal-title">命令下发</h4> 
+                 </div> 
+                 <h5>当前设备ID：{{cmdEqu.deviceId}}</h5>
+                 <form class="modal-body" ng-submit="commandEqu()" name="cmdEquForm" novalidate="novalidate">
+                     <div class="row"> 
+                         <div class="col-md-6"> 
+                                <div class="form-group"> 
+                                    <label  class="control-label">服务名称<span style="color : red">*</span></label> 
+                                    <input type="text" class="form-control"  ng-model="cmdEqu.serviceId" required  > 
+                                </div> 
+                            </div> 
+                         <div class="col-md-6"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">访问模式<span style="color : red">*</span></label> 
+                                 <input type="text" class="form-control"  ng-model="cmdEqu.method" required > 
+                             </div> 
+                         </div> 
+                      </div> 
+                     <div class="row"> 
+                         <div class="col-md-6"> 
+                                <div class="form-group"> 
+                                    <label  class="control-label">命令下发字段<span style="color : red">*</span></label> 
+                                    <input type="text" class="form-control"  ng-model="cmdEqu.paramField"  required > 
+                                </div> 
+                            </div> 
+                         <div class="col-md-6"> 
+                             <div class="form-group"> 
+                                 <label  class="control-label">命令下发值<span style="color : red">*</span></label> 
+                                 <input type="text" class="form-control"  ng-model="cmdEqu.paramValue" required > 
+                             </div> 
+                         </div> 
+                      </div> 
+                      <div class="row"> 
+	                        <div class="col-md-12"> 
+	                            <div class="form-group no-margin"> 
+	                                 <label  class="control-label">结果</label>  
+	                                <textarea  class="form-control autogrow" ng-disabled="true" ng-model="cmdEqu.res" style="overflow: auto; word-wrap: break-word; resize: horizontal; height: 175px"></textarea> 
+	                            </div> 
+	                        </div> 
+	                    </div>     
+                 <div class="modal-footer"> 
+                     <button id="close-cmd-equ-modal" type="button" class="btn btn-default waves-effect" data-dismiss="modal" ng-click="closeCmdEquModal()" >关闭</button> 
+                     <button type="submit" class="btn btn-info waves-effect waves-light" ng-disabled="cmdEquForm.$invalid" btn-loading="loadCtl.cmdEqu">下发命令</button> 
+                 </div> 
+                 </form> 
+             </div> 
+         </div>
+     </div>
+</div>
