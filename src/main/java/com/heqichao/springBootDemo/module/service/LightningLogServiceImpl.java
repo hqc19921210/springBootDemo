@@ -4,9 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.heqichao.springBootDemo.base.param.RequestContext;
 import com.heqichao.springBootDemo.base.service.EquipmentService;
 import com.heqichao.springBootDemo.base.service.UserService;
-import com.heqichao.springBootDemo.base.util.PageUtil;
-import com.heqichao.springBootDemo.base.util.ServletUtil;
-import com.heqichao.springBootDemo.base.util.StringUtil;
+import com.heqichao.springBootDemo.base.util.*;
 import com.heqichao.springBootDemo.module.entity.LightningLog;
 import com.heqichao.springBootDemo.module.mapper.LightningLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,5 +93,11 @@ public class LightningLogServiceImpl implements LightningLogService {
             //访客不允许
         }
         lightningLogMapper.deleteLightningLogByDevIds(list);
+    }
+
+    @Override
+    public List<Map> queryLightCountByYear() {
+        String year = DateUtil.dateToString(new Date(),"yyyy");
+        return lightningLogMapper.queryLightCountByYear(year);
     }
 }

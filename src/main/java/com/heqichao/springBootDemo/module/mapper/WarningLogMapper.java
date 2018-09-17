@@ -5,11 +5,17 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by heqichao on 2018-7-15.
  */
 public interface WarningLogMapper {
+
+    @Select("SELECT * "
+            + " FROM warning_log "
+            + "where devEUI = #{devEUI} and status=#{status}  ")
+    List<WarningLog> queryByDevAndStatus(@Param("devEUI") String devEUI,@Param("status") String status);
 
     @Select("SELECT * "
             + " FROM warning_log "
@@ -48,4 +54,6 @@ public interface WarningLogMapper {
             + "<if test =\"status !=null  and status!=''\"> and status = #{status} </if>"
             +"</script>")
     int queryFaultCount(@Param("list") List<String> list, @Param("status") String status);
+
+
 }

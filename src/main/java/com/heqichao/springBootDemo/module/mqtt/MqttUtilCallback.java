@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by heqichao on 2018-7-9.
@@ -106,13 +107,16 @@ public class MqttUtilCallback implements MqttCallback {
                     logger.error( devId+":"+LightningLogService.HEART_BEAT_ERROR+" 设备故障,但状态仍为在线！！！");
                     mqttUtilCallback.equipmentService.setEquStatus(devId,EquipmentService.BREAKDOWN);
 
-                    //故障提醒
-                    WarningLog warningLog=new WarningLog();
-                    warningLog.setDevEUI(devId);
-                    warningLog.setCreateTime(date);
-                    warningLog.setUpdateTime(date);
-                    warningLog.setStatus(WarningLogService.FAULT);
-                    warningLog.setData(log.getData());
+                    //检查如果已为故障则不保存
+                   List list = warningLogService.queryByDevAndStatus(devId,WarningLogService.FAULT);
+                    if(list==null || list.size()<1){
+                        //故障提醒
+                        WarningLog warningLog=new WarningLog();
+                        warningLog.setDevEUI(devId);
+                        warningLog.setCreateTime(date);
+                        warningLog.setUpdateTime(date);
+                        warningLog.setStatus(WarningLogService.FAULT);
+                        warningLog.setData(log.getData());
                   /*  warningLog.setDataLen(log.getDataLen());
                     warningLog.setDevicePath(log.getDevicePath());
                     warningLog.setfCnt(log.getfCnt());
@@ -121,8 +125,9 @@ public class MqttUtilCallback implements MqttCallback {
                     warningLog.setGatewayCount(log.getGatewayCount());
                     warningLog.setLoRaSNR(log.getLoRaSNR());
                     warningLog.setRssi(log.getRssi());*/
-                    warningLog.setTime(log.getTime());
-                    warningLogService.save(warningLog);
+                        warningLog.setTime(log.getTime());
+                        warningLogService.save(warningLog);
+                    }
 
                 }else{
                     logger.error(devId+ " 设备正常！！！");

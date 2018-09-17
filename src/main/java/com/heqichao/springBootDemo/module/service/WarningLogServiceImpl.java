@@ -88,4 +88,9 @@ public class WarningLogServiceImpl implements WarningLogService {
         }
         return count;
     }
+
+    @Override
+    public List<WarningLog> queryByDevAndStatus(String devId, String status) {
+        return warningLogMapper.queryByDevAndStatus(devId,status);
+    }
 }

@@ -25,4 +25,9 @@ public class LightningLogController extends BaseController{
     ResponeResult queryLightLogs() {
         return new ResponeResult(lightningLogService.queryAll());
     }
+
+    @RequestMapping(value = "/queryLightCountByYear")
+    ResponeResult queryLightCountByYear() {
+        return new ResponeResult(lightningLogService.queryLightCountByYear());
+    }
 }
