@@ -25,4 +25,6 @@ public interface WarningLogService {
 
     int queryFaultCount();
 
+    List<WarningLog> queryByDevAndStatus(String devId,String status);
+
 }

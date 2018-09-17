@@ -5,6 +5,7 @@ import com.heqichao.springBootDemo.module.entity.LightningLog;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by heqichao on 2018-7-15.
@@ -25,5 +26,7 @@ public interface LightningLogService {
     List<String> queryLogOnTime(int time);
 
     void deleteAll();
+
+    List<Map> queryLightCountByYear();
 
 }

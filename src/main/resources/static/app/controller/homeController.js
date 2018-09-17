@@ -4,12 +4,17 @@ function homeCtrl($scope, $http, $rootScope,$timeout) {
         this.$body = $("body")
         this.$realData = []
     };
+    $scope.sum=0;
+    $scope.max= 100;
     var plabels = ["", "雷击次数"];
     var pcolors = ['#2b4049', '#2b9ac9'];
+    var plotUploads = [];
+    var plotDownloads = [[1, 0], [2, 0], [3,0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0], [9, 0], [10, 0], [11,0], [12,0]];
     var borderColor = '#fff';
     var bgColor = '#fff';
     var pielabels = ["GPRS","LORA","NBIOT"];
-    var colors = ['#2b4049', '#2b9ac9', "#58c9c7"];
+    var pieColors = ['#2b4049', '#2b9ac9', "#58c9c7"];
+	var pieDatas = [0,0,0];
     //creates plot graph
     Dashboard.prototype.createPlotGraph = function(selector, data1, data2, labels, colors, borderColor, bgColor) {
       //shows tooltip
@@ -61,7 +66,7 @@ function homeCtrl($scope, $http, $rootScope,$timeout) {
           },
           yaxis: {
             min: 0,
-            max: 15,
+            max: $scope.max,
             color: 'rgba(0,0,0,0)'
           },
           xaxis: {
@@ -122,26 +127,50 @@ function homeCtrl($scope, $http, $rootScope,$timeout) {
 
         //initializing various charts and components
         Dashboard.prototype.init = function() {
+    	
           //plot graph data
-          var uploads = [];
-          var downloads = [[1, 5], [2, 12], [3,4], [4, 3], [5, 12], [6, 11], [7, 14], [8, 14], [9, 12], [10, 15], [11, 9], [12, 6]];
-          
-          this.createPlotGraph("#website-stats", uploads, downloads, plabels, pcolors, borderColor, bgColor);
+          this.createPlotGraph("#website-stats", plotUploads, plotDownloads, plabels, pcolors, borderColor, bgColor);
 
             //Pie graph data
-           
-           
-            this.createPieGraph("#pie-chart #pie-chart-container", pielabels , datas, colors);
+            this.createPieGraph("#pie-chart #pie-chart-container", pielabels , pieDatas, pieColors);
 
         },
 
     //init Dashboard
     $.Dashboard = new Dashboard, $.Dashboard.Constructor = Dashboard;
-    var datas = [0,0,0];
-    $http.get("service/getHomePie").success(function(data) {
-    	datas = data.resultObj.pieMap;
-    	$scope.home=data.resultObj;
-    	$.Dashboard.init();
+    $http.post("/service/queryLightCountByYear" ).success(function(data) {
+		console.info(data);
+		var queryData = data.resultObj;
+		if(queryData){
+			plotDownloads =[];
+			for(var i=0;i<12;i++){
+				var mouth=i+1;
+				var count=0;
+				if(mouth>=10){
+					mouth=mouth+"";
+				}else{
+					mouth="0"+mouth;
+				}
+				for(var j=0;j<queryData.length;j++){
+					if(mouth == queryData[j].months){
+						count= queryData[j].count;
+						if( $scope.max<count){
+							$scope.max=count;
+						}
+						$scope.sum=$scope.sum+count;
+						break;
+					}
+				}
+				plotDownloads.push([i+1,count]);
+			}
+
+		}
+		$http.get("service/getHomePie").success(function(data) {
+			pieDatas = data.resultObj.pieMap;
+			$scope.home=data.resultObj;
+			$.Dashboard.init();
+		});
+
 	});
 //    console.log(datas);
 //	$timeout(function(){$.Dashboard.init(); }, 1000);

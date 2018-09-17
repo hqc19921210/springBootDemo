@@ -4,6 +4,7 @@ import com.heqichao.springBootDemo.module.entity.LightningLog;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by heqichao on 2018-7-15.
@@ -41,4 +42,10 @@ public interface LightningLogMapper {
 
     @Select("select DISTINCT devEUI from lightning_log where createTime >= now()-interval #{time} minute")
     List<String> queryLogOnTime(@Param("time") int time);
+
+
+    @Select("select DATE_FORMAT(ligntningTime,'%m') months,count(id) count from lightning_log, equipment e"
+    		+ "where ligntningTime is not null and ligntningTime > #{year} and devEUI = e.eid "
+    		+ "group by months order by months asc")
+    List<Map> queryLightCountByYear(@Param("year") String year);
 }

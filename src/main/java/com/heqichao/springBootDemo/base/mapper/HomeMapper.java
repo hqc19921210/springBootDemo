@@ -14,7 +14,7 @@ public interface HomeMapper {
 	
 	
 	@Select("<script>select 0 from dual " 
-			+" union all select count(1) from equipment where status = 'N'" 
+			+" union all select count(1) from equipment where status = 'Y'" 
 			+ "<if test=\"competence == 3 \"> and own_id = #{id}  </if>"
 			+ "<if test=\"competence == 4 \"> and own_id = #{parentId}  </if>"
 			+" union all select count(1) from lite_equipment where status = 'N' "  
@@ -36,7 +36,7 @@ public interface HomeMapper {
 			" union all select count(1) from lite_equipment where status = 'N' "  
 			+ "<if test=\"competence == 3 \"> and own_id = #{id}  </if>"
 			+ "<if test=\"competence == 4 \"> and own_id = #{parentId}  </if>"
-			+" union all select count(1) from equipment where status = 'N'" 
+			+" union all select count(1) from equipment where status = 'Y'" 
 			+ "<if test=\"competence == 3 \"> and own_id = #{id}  </if>"
 			+ "<if test=\"competence == 4 \"> and own_id = #{parentId}  </if>"
 			+ ") as t_all </script>")
@@ -45,7 +45,7 @@ public interface HomeMapper {
 			@Param("id")Integer id,
 			@Param("parentId")Integer parentId);
 	
-	@Select("<script>select count(1) from equipment where status = 'N' and e_status = 'N' "  
+	@Select("<script>select count(1) from equipment where status = 'Y' and e_status = 'N' "  
 			+ "<if test=\"competence == 3 \"> and own_id = #{id}  </if>"
 			+ "<if test=\"competence == 4 \"> and own_id = #{parentId}  </if>"
 			+ " </script>")

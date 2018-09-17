@@ -39,7 +39,7 @@
                          <div class="tiles-progress">
                              <div class="m-t-20">
                                  <h5 class="text-uppercase text-white m-0">LORA总数： <span class="pull-right" ng-bind="home.equNom"></span></h5>
-                                 <h5 class="text-uppercase text-white m-0">其中正常：<span class="pull-right" ng-bind="home.equBrD"></span></h5>
+                                 <h5 class="text-uppercase text-white m-0">其中在线：<span class="pull-right" ng-bind="home.equBrD"></span></h5>
                              </div>
                          </div>
                      </div>
@@ -82,15 +82,15 @@
                                          <div id="website-stats" style="position: relative;height: 320px"></div>
                                          <div class="row text-center m-t-30">
                                              <div class="col-sm-4">
-                                                 <h4 class="counter">297次</h4>
+                                                 <h4 class="counter">{{sum}}次</h4>
                                                  <small class="text-muted"> 年雷击总数</small>
                                              </div>
                                              <div class="col-sm-4">
-                                                 <h4 class="counter">24.75次</h4>
+                                                 <h4 class="counter">{{sum/12 | number:3}}次</h4>
                                                  <small class="text-muted">月平均雷击数</small>
                                              </div>
                                              <div class="col-sm-4">
-                                                 <h4 class="counter">6.19次</h4>
+                                                 <h4 class="counter">{{sum/52| number:3}}次</h4>
                                                  <small class="text-muted">周平均雷击数</small>
                                              </div>
                                          </div>
