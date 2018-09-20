@@ -1,10 +1,7 @@
 package com.heqichao.springBootDemo.module.mqtt;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.heqichao.springBootDemo.base.param.ApplicationContextUtil;
 import com.heqichao.springBootDemo.base.service.EquipmentService;
-import com.heqichao.springBootDemo.base.util.JsonUtil;
 import com.heqichao.springBootDemo.module.entity.LightningLog;
 import com.heqichao.springBootDemo.module.entity.WarningLog;
 import com.heqichao.springBootDemo.module.service.LightningLogService;
@@ -18,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 

@@ -13,7 +13,8 @@ import java.util.Date;
 @Component("lightning_log")
 public class LightningLog extends BaseEntity {
 
-    //设备id
+	private static final long serialVersionUID = 3697938152486111066L;
+	//设备id
     private String devEUI;
     //上报时间
     @JSONField(format="yyyy-MM-dd HH:mm:ss")

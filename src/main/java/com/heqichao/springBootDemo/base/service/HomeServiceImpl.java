@@ -36,6 +36,11 @@ public class HomeServiceImpl implements HomeService {
     		List<Integer> users =hMapper.queryUserData();
     		hentity.setCustAll(users.get(0));
     		hentity.setUserAll(users.get(1));
+    	}else {
+    		List<String> users =hMapper.queryUserMax(competence, id, parentId);
+    		hentity.setLastTime(users.get(0));
+    		hentity.setPeak(users.get(1));
+    		
     	}
     	hentity.setEquNom(pieMap.get(1));//LOA设备总数
     	hentity.setEquBrD(equOnline);//在线设备

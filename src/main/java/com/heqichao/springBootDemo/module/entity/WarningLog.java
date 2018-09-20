@@ -12,7 +12,8 @@ import java.util.Date;
  */
 @Component("warning_log")
 public class WarningLog extends BaseEntity {
-    //设备id
+	private static final long serialVersionUID = 3764610283779054194L;
+	//设备id
     private String devEUI;
     //上报时间
     @JSONField(format="yyyy-MM-dd HH:mm:ss")

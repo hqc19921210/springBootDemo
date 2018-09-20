@@ -12,9 +12,6 @@
  */
 package com.heqichao.springBootDemo.module.liteNA;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class Constant {
 

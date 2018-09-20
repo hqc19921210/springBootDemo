@@ -3,7 +3,6 @@ package com.heqichao.springBootDemo.base.listener;
 import com.heqichao.springBootDemo.module.mqtt.MqttUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -21,7 +20,7 @@ public class MyApplicationRunningListener implements ApplicationRunner {
     Logger logger = LoggerFactory.getLogger(getClass());
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
-//        initTask();
+        initTask();
         logger.info("应用启动成功："+new Date());
     }
 

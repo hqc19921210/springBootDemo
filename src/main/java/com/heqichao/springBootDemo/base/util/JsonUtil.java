@@ -2,12 +2,6 @@ package com.heqichao.springBootDemo.base.util;
 
 import com.alibaba.fastjson.JSON;
 
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Created by heqichao on 2018-2-14.
  */

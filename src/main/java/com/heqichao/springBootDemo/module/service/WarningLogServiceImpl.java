@@ -6,8 +6,6 @@ import com.heqichao.springBootDemo.base.service.EquipmentService;
 import com.heqichao.springBootDemo.base.service.UserService;
 import com.heqichao.springBootDemo.base.util.PageUtil;
 import com.heqichao.springBootDemo.base.util.ServletUtil;
-import com.heqichao.springBootDemo.base.util.StringUtil;
-import com.heqichao.springBootDemo.module.entity.LightningLog;
 import com.heqichao.springBootDemo.module.entity.WarningLog;
 import com.heqichao.springBootDemo.module.mapper.WarningLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;

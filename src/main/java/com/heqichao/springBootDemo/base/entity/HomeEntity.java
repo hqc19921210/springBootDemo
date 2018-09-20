@@ -9,6 +9,10 @@ public class HomeEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 	//管理员或用户
 	private String tag;
+	//最大电流峰值
+	private String peak;
+	//最后雷击时间
+	private String lastTime;
 	//客户总数
 	private Integer custAll;
 	//用户总数
@@ -39,6 +43,19 @@ public class HomeEntity implements Serializable{
 	}
 	public void setTag(String tag) {
 		this.tag = tag;
+	}
+	
+	public String getPeak() {
+		return peak;
+	}
+	public void setPeak(String peak) {
+		this.peak = peak;
+	}
+	public String getLastTime() {
+		return lastTime;
+	}
+	public void setLastTime(String lastTime) {
+		this.lastTime = lastTime;
 	}
 	public Integer getCustAll() {
 		return custAll;
