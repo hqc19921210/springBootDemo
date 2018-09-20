@@ -1,0 +1,61 @@
+<div class="container" >
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">波形分析界面</h3>
+                </div>
+
+                <div class="panel-body">
+                    <form role="form" class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label  class="col-sm-1 control-label">设备ID</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" ng-model="quereyData.devEUI" placeholder="设备ID" disabled>
+                                </div>
+                                <label  class="col-sm-1 control-label">雷击时间</label>
+                                <div class="col-sm-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control"  id="datepickerStrat" ng-model="quereyData.start">
+                                        <!--  <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>-->
+                                        <span class="input-group-addon">到</span>
+                                        <input type="text" class="form-control"    id="datepickerEnd"  ng-model="quereyData.end">
+                                        <!-- <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>-->
+                                    </div>
+                                </div>
+                               <!-- <label  class="col-sm-1 control-label">功能码</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control"  ng-model="quereyData.functionCode"  placeholder="功能码">
+                                </div>-->
+                                <label class="col-sm-1 control-label">雷击参数：</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control"  ng-model="type"  ng-change="changepType()">
+                                     <!--   <option  value="3"  ng-options="value.id as value.label group by value.group for value in typeData">客户</option>-->
+                                        <option value="{{key}}"  ng-repeat="(key, val) in typeData" >{{val[0]}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-1 col-lg-11">
+                                <button class="btn btn-primary   waves-effect waves-light" btn-loading="loading" ng-click="init()">搜索</button>
+
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div id="website-stats2" style="position: relative;height: 320px"></div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

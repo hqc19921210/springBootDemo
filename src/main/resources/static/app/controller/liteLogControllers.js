@@ -42,7 +42,6 @@ function liteLogCtrl($scope, $http, $rootScope) {
     //翻页
     $scope.changePage=function(page){
         $scope.quereyData.page=page;
-        console.info($scope.quereyData.page);
         $scope.init();
     }
 

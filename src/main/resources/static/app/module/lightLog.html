@@ -33,7 +33,8 @@
                         <div class="form-group">
                             <div class="col-lg-offset-1 col-lg-11">
                                 <button class="btn btn-primary   waves-effect waves-light" btn-loading="loading" ng-click="init()">搜索</button>
-                                <button class="btn btn-default waves-effect" type="button" ng-click="clear()">重置</button>
+                                <button class="btn btn-default waves-effect waves-light" type="button" btn-loading="loading" ng-click="clear()">重置</button>
+                                <button class="btn btn-default waves-effect waves-light"  type="button" btn-loading="loading"  ng-click="deleteLog()">清空数据</button>
                             </div>
                         </div>
                     </form>
@@ -59,17 +60,19 @@
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="entity in data">
-                                        <td ng-bind="entity.devEUI"></td>
+                                        <td ng-bind="entity.devEUI"  ng-click="gotoDevChart(entity)"></td>
                                      <!--   <td ng-bind=""></td>-->
-                                        <td ng-bind="entity.ligntningCount"></td>
-                                        <td ng-bind="entity.ligntningTime"></td>
-                                        <td ng-bind="entity.peakValue"></td>
-                                        <td ng-bind="entity.effectiveValue"></td>
-                                        <td ng-bind="entity.waveHeadTime"></td>
-                                        <td ng-bind="entity.halfPeakTime"></td>
-                                        <td ng-bind="entity.actionTime"></td>
-                                        <td ng-bind="entity.energy"></td>
-                                        <td >  <a ng-click="showLightLog(entity)" data-toggle="modal" data-target="#show-light-log-modal" class="on-default edit-row" style="cursor:pointer">详情</a></td>
+                                        <td ng-bind="entity.ligntningCount"   ng-click="gotoDevChart(entity)"></td>
+                                        <td ng-bind="entity.ligntningTime"  ng-click="gotoDevChart(entity)"></td>
+                                        <td ng-bind="entity.peakValue"  ng-click="gotoDevChart(entity)"></td>
+                                        <td ng-bind="entity.effectiveValue"  ng-click="gotoDevChart(entity)"></td>
+                                        <td ng-bind="entity.waveHeadTime"  ng-click="gotoDevChart(entity)"></td>
+                                        <td ng-bind="entity.halfPeakTime"  ng-click="gotoDevChart(entity)"></td>
+                                        <td ng-bind="entity.actionTime"  ng-click="gotoDevChart(entity)"></td>
+                                        <td ng-bind="entity.energy"  ng-click="gotoDevChart(entity)"></td>
+                                        <td >
+                                            <a ng-click="showLightLog(entity)" data-toggle="modal" data-target="#show-light-log-modal" class="on-default edit-row" style="cursor:pointer">详情</a>
+                                        </td>
                                     </tr>
 
 

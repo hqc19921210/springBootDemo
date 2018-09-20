@@ -14,7 +14,6 @@ function paginationCtrl($scope, $http, $rootScope) {
     //初始化数据
     $scope.init=function(){
         $http.post("/service/queryLightLogs",$scope.quereyData).success(function(data) {
-            console.info(data);
             $scope.data = data.resultObj.list;
             $scope.pages=data.resultObj.pages;
             var indexes = [];

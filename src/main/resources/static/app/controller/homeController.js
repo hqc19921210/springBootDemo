@@ -70,11 +70,14 @@ function homeCtrl($scope, $http, $rootScope,$timeout) {
             color: 'rgba(0,0,0,0)'
           },
           xaxis: {
-            color: 'rgba(0,0,0,0)'
+            color: 'rgba(0,0,0,0)',
+              tickFormatter: function (val, axis) {
+                  return val+"月";
+              },
           },
           tooltip: true,
           tooltipOpts: {
-              content: '%x月雷击 %y次',
+              content: '%x雷击%y次',
               shifts: {
                   x: -60,
                   y: 25
@@ -139,7 +142,6 @@ function homeCtrl($scope, $http, $rootScope,$timeout) {
     //init Dashboard
     $.Dashboard = new Dashboard, $.Dashboard.Constructor = Dashboard;
     $http.post("/service/queryLightCountByYear" ).success(function(data) {
-		console.info(data);
 		var queryData = data.resultObj;
 		if(queryData){
 			plotDownloads =[];

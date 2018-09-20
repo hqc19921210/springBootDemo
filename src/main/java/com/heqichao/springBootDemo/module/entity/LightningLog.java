@@ -49,7 +49,7 @@ public class LightningLog extends BaseEntity {
     private String actionTime;
     //能量
     private String energy;
-    //心跳状态 0000正常 0001故障 空未知 1111为雷击记录
+    //心跳状态 0000正常 0001故障 空未知 1111为雷击记录 -1为已删除数据
     private String status;
 
 
