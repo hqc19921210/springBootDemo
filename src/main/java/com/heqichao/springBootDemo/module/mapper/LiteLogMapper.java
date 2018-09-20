@@ -1,11 +1,8 @@
 package com.heqichao.springBootDemo.module.mapper;
 
-import com.heqichao.springBootDemo.module.entity.LightningLog;
 import com.heqichao.springBootDemo.module.entity.LiteLog;
-import com.heqichao.springBootDemo.module.entity.WarningLog;
 import org.apache.ibatis.annotations.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**

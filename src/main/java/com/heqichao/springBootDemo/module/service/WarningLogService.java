@@ -1,10 +1,8 @@
 package com.heqichao.springBootDemo.module.service;
 
 import com.github.pagehelper.PageInfo;
-import com.heqichao.springBootDemo.module.entity.LightningLog;
 import com.heqichao.springBootDemo.module.entity.WarningLog;
 
-import java.util.Date;
 import java.util.List;
 
 /**

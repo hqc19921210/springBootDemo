@@ -53,5 +53,20 @@ public interface HomeMapper {
 			@Param("competence")Integer competence,
 			@Param("id")Integer id,
 			@Param("parentId")Integer parentId);
+	@Select("<script>"
+			+ "select max(l.ligntningTime) from lightning_log l,equipment e " + 
+			" where l.devEUI = e.eid and l.STATUS = '1111' and e.`status`='Y'"  
+			+ "<if test=\"competence == 3 \"> and own_id = #{id}  </if>"
+			+ "<if test=\"competence == 4 \"> and own_id = #{parentId}  </if>"
+			+" union all " + 
+			" select max(l.peakValue) from lightning_log l,equipment e " + 
+			" where l.devEUI = e.eid and l.STATUS = '1111' and e.`status`='Y'"  
+			+ "<if test=\"competence == 3 \"> and own_id = #{id}  </if>"
+			+ "<if test=\"competence == 4 \"> and own_id = #{parentId}  </if>"
+			+ " </script>")
+	public List<String> queryUserMax(
+			@Param("competence")Integer competence,
+			@Param("id")Integer id,
+			@Param("parentId")Integer parentId);
 	
 }

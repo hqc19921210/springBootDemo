@@ -1,14 +1,8 @@
 package com.heqichao.springBootDemo.module.entity;
 
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.heqichao.springBootDemo.base.entity.BaseEntity;
-import com.heqichao.springBootDemo.base.util.JsonUtil;
-
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.stereotype.Component;
 
 /**

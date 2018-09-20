@@ -3,7 +3,6 @@ package com.heqichao.springBootDemo.base.service;
 import com.heqichao.springBootDemo.base.entity.User;
 import com.heqichao.springBootDemo.base.mapper.UserMapper;
 import com.heqichao.springBootDemo.base.param.ResponeResult;
-import com.heqichao.springBootDemo.base.util.AesUtil;
 import com.heqichao.springBootDemo.base.util.ServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

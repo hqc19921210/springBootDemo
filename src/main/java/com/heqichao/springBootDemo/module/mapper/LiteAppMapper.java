@@ -50,9 +50,20 @@ public interface LiteAppMapper {
     @Delete("update lite_application set status = 'D',update_time=sysdate(),update_uid=#{uid} where status = 'N' and id= #{id}   ")
     int deleteById(@Param("id")Integer id,@Param("uid")Integer uid);
     
-    @Delete("update lite_application a,lite_equipment e set a.status = 'D',e.status = 'D',"
-    		+ "a.update_time=sysdate(),e.update_time=sysdate(),a.update_uid=#{uid},e.update_uid=#{uid} where a.status = 'N' or e.status = 'N'   ")
-    int deleteLiteAll(@Param("uid")Integer uid);
+    @Delete("<script>"
+    		+"update lite_log l,lite_equipment e set l.l_status = 'D',"
+    		+ "l.updateTime=sysdate(),l.update_uid=#{uid} where l.l_status = 'N' and e.deviceId=l.deviceId "
+    		+ "<if test =\"cmp == 3 \"> and  e.own_id= #{uid}  </if>"
+            + "<if test =\"cmp == 4 \"> and  e.own_id= 0  </if>"
+    		+ "   "
+    		+"</script>")
+    int deleteLiteAll(@Param("uid") Integer uid,
+   		 @Param("pId") Integer pId,
+   		 @Param("cmp") Integer cmp);
+    
+//    @Delete("update lite_application a,lite_equipment e set a.status = 'D',e.status = 'D',"
+//    		+ "a.update_time=sysdate(),e.update_time=sysdate(),a.update_uid=#{uid},e.update_uid=#{uid} where a.status = 'N' or e.status = 'N'   ")
+//    int deleteLiteAll(@Param("uid")Integer uid);
 
 
 }

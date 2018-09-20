@@ -1,15 +1,11 @@
 package com.heqichao.springBootDemo.module.control;
 
 import com.heqichao.springBootDemo.base.control.BaseController;
-import com.heqichao.springBootDemo.base.param.RequestContext;
 import com.heqichao.springBootDemo.base.param.ResponeResult;
 import com.heqichao.springBootDemo.module.service.LightningLogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 /**
  * Created by heqichao on 2018-7-15.

@@ -2,7 +2,6 @@ package com.heqichao.springBootDemo.module.control;
 
 import com.heqichao.springBootDemo.base.control.BaseController;
 import com.heqichao.springBootDemo.base.param.ResponeResult;
-import com.heqichao.springBootDemo.module.service.LightningLogService;
 import com.heqichao.springBootDemo.module.service.WarningLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

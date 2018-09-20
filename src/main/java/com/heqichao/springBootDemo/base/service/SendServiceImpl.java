@@ -2,7 +2,6 @@ package com.heqichao.springBootDemo.base.service;
 
 import com.heqichao.springBootDemo.base.util.SmsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

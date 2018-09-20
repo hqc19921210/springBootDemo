@@ -2,8 +2,6 @@ package com.heqichao.springBootDemo.base.control;
 
 import com.heqichao.springBootDemo.base.param.ResponeResult;
 import com.heqichao.springBootDemo.base.service.EquipmentService;
-import com.heqichao.springBootDemo.base.service.UserService;
-
 import java.util.List;
 import java.util.Map;
 
