@@ -49,6 +49,10 @@ public interface LiteAppMapper {
 
     @Delete("update lite_application set status = 'D',update_time=sysdate(),update_uid=#{uid} where status = 'N' and id= #{id}   ")
     int deleteById(@Param("id")Integer id,@Param("uid")Integer uid);
+    
+    @Delete("update lite_application a,lite_equipment e set a.status = 'D',e.status = 'D',"
+    		+ "a.update_time=sysdate(),e.update_time=sysdate(),a.update_uid=#{uid},e.update_uid=#{uid} where a.status = 'N' or e.status = 'N'   ")
+    int deleteLiteAll(@Param("uid")Integer uid);
 
 
 }

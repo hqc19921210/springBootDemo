@@ -44,4 +44,9 @@ public class LiteAppController {
 	ResponeResult subLiteDataChg() throws Exception {
 		return liteAppService.subLiteDataChg();
 	}
+	
+	@RequestMapping(value = "/deleteLiteDataAll")
+	ResponeResult deleteLiteAll() throws Exception {
+		return liteAppService.deleteAppByID();
+	}
 }

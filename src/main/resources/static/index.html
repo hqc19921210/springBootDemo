@@ -176,7 +176,7 @@
                                         <a href="#/module/liteLog"><span>上报数据</span></a>
                                     </li>
                                     <li>
-                                        <a href="#/module/demoCharTest"><span>数据管理（清空操作）</span></a>
+                                        <a  href="javascript:void(0);" ng-if="user.competence != 4" ng-click="clearLiteData()"><span>数据管理（清空操作）</span></a>
                                     </li>
 									
                                 </ul>
@@ -319,6 +319,7 @@
 
 		<!-- md5 -->
 		<script src="assets/js/md5.js"></script>
+		
 		<!-- angular control js -->
 		<script src="app/controller/indexControllers.js"></script>
 		<script src="app/controller/demoControllers.js"></script>
@@ -487,6 +488,36 @@
 			        });
 
 			    }
+				$scope.clearLiteData = function(){
+					swal({   
+			            title: "是否清空NBIOT设备所有数据？",
+			            text: "该操作将清空所有NBIOT应用和NBIOT设备，且无法恢复！\r\n请谨慎操作！",
+			            type: "warning",   
+			            showCancelButton: true,   
+			            confirmButtonColor: "#DD6B55",   
+			            confirmButtonText: "确定清空",   
+			            cancelButtonText: "取消", 
+			            closeOnConfirm: false,   
+			            closeOnCancel: false 
+			        }, function(isConfirm){   
+			            if (isConfirm) {     
+			            	$scope.delLiteAll();
+			            }  else {     
+			                swal("操作取消", null, "error");   
+			            } 
+			        });
+					
+				}
+				
+				$scope.delLiteAll = function(){
+					$http.post("service/deleteLiteDataAll").success(function(data) {
+							if(data.resultObj == "errorMsg"){
+								swal(data.message, null, "error");
+							}else{
+								swal("删除成功", null, "success");
+							}
+						});
+				}
 
 			});
 		</script>
