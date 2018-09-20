@@ -8,29 +8,27 @@
 
                 <div class="panel-body">
                     <form role="form" class="form-horizontal">
-                        <div class="form-group">
+                        <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <label  class="col-sm-1 control-label">设备ID</label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" ng-model="quereyData.devEUI" placeholder="设备ID">
+                                    <input type="text" class="form-control" ng-model="quereyData.devEUI" placeholder="模糊搜索">
                                 </div>
                                 <label  class="col-sm-1 control-label">雷击时间</label>
                                 <div class="col-sm-3">
                                     <div class="input-group">
-                                            <input type="text" class="form-control"  id="datepickerStrat" ng-model="quereyData.start">
-                                          <!--  <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>-->
-                                        <span class="input-group-addon">到</span>
-                                            <input type="text" class="form-control"    id="datepickerEnd"  ng-model="quereyData.end">
-                                           <!-- <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>-->
+                                            <input type="text" class="form-control" style="z-index: 1"  id="datepickerStrat" ng-model="quereyData.start">
+                                            <span class="input-group-addon">到</span>
+                                            <input type="text" class="form-control" style="z-index: 1"  id="datepickerEnd"  ng-model="quereyData.end">
                                     </div>
                                 </div>
                                 <label  class="col-sm-1 control-label">功能码</label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control"  ng-model="quereyData.functionCode"  placeholder="功能码">
+                                    <input type="text" class="form-control"  ng-model="quereyData.functionCode"  placeholder="模糊搜索">
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row">
                             <div class="col-lg-offset-1 col-lg-11">
                                 <button class="btn btn-primary   waves-effect waves-light" btn-loading="loading" ng-click="init()">搜索</button>
                                 <button class="btn btn-default waves-effect waves-light" type="button" btn-loading="loading" ng-click="clear()">重置</button>

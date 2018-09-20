@@ -115,6 +115,8 @@ public class LightningLogServiceImpl implements LightningLogService {
                 List<Map> left =lightningLogMapper.queryLigChatLeft(list,devEUI,logId,size/2);
                 if(left==null || left.size()<1){
                     left=new ArrayList<Map>();
+                }else{
+                    res.addAll(left);
                 }
                 List<Map> right=lightningLogMapper.queryLigChatRight(list,devEUI,logId,size-left.size());
                 if(right!=null && right.size()>0){
