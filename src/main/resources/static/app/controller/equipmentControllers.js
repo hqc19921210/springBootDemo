@@ -18,7 +18,6 @@ function equCtrl($scope, $http, $rootScope) {
     $scope.init=function(){
     	$scope.loadCtl.search = true;
     	$http.post("service/getEquipments",$scope.quereyData).success(function(data) {
-//    		console.info(data);
     		$scope.equipments = data.resultObj.list;
     		$scope.pages=data.resultObj.pages;
     		$scope.pageArr=data.resultObj.navigatepageNums;

@@ -69,6 +69,7 @@
           },
           xaxis: {
             color: 'rgba(0,0,0,0)'
+
           },
           tooltip: true,
           tooltipOpts: {

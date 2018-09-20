@@ -5,14 +5,10 @@ function listCtrl($scope, $http,$rootScope) {
 	/*$http.get("data/players.json").success(function(data) {
 		$scope.players = data;
 	});*/
-//	console.info("listCtrl");
-//	console.info("登录用户：" );
-//	console.info($rootScope.user);
 }
 
 //Edit Controller
 function charCtrl($scope, $http, $routeParams, $location) {
-	console.info("charCtrl");
 	$scope.ID=$routeParams.ID;
 	//creating bar chart
 	var $barData  = [

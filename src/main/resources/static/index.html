@@ -157,9 +157,9 @@
 									<li>
                                         <a href="#/module/demoCharTest"><span>命令下发</span></a>
                                     </li>
-									<li>
+									<!--<li>
                                         <a href="#/module/demoCharTest"><span>数据管理（清空操作）</span></a>
-                                    </li>
+                                    </li>-->
                                 </ul>
                             </li> 
 							<li class="has_sub">
@@ -191,9 +191,9 @@
 									<li>
                                         <a href="#/module/demoCharTest"><span>上报数据</span></a>
                                     </li>
-                                    <li>
+                                   <!-- <li>
                                         <a href="#/module/demoCharTest"><span>数据管理（清空操作）</span></a>
-                                    </li>
+                                    </li>-->
 									
                                 </ul>
                             </li>
@@ -235,7 +235,6 @@
 		<script type="text/javascript" src="app/service/httpInterceptor.js"></script>
 		<script type="text/javascript" src="app/directive/pageDirectives.js"></script>
 		<script type="text/javascript" src="app/directive/btnLoadDirectives.js"></script>
-
 
 		<!-- html -->
 
@@ -333,6 +332,7 @@
 		<script src="app/controller/liteEquControllers.js"></script>
 		<script src="app/controller/liteAppControllers.js"></script>
 		<script src="app/controller/liteLogControllers.js"></script>
+		<script src="app/controller/devChartController.js"></script>
 		<script type="text/javascript">
 			jQuery(document).ready(function($) {
 				$('.counter').counterUp({
@@ -374,8 +374,6 @@
 							if(isFirst){
 								$rootScope.faultCount =cou;
 							}else{
-								console.info($rootScope.faultCount);
-								console.info(cou);
 								if(cou > $rootScope.faultCount){
 									swal("收到"+(cou - $rootScope.faultCount)+"条新的通知！请及时处理");
 								}
@@ -386,9 +384,10 @@
 				}
 
 				$scope.queryFaultCount(true);
+				//每30s刷新一次
 				$interval(function() {
 					$scope.queryFaultCount(false);
-				}, 6*1000);
+				}, 30*1000);
 
                 $scope.gotoWarningLog =function () {
                     $location.path("/module/warningLog");

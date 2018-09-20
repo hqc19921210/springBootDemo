@@ -29,4 +29,10 @@ public interface LightningLogService {
 
     List<Map> queryLightCountByYear();
 
+    /**
+     * 波形图
+     * @return
+     */
+    List<Map> queryLightChart();
+
 }

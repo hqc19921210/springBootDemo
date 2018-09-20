@@ -165,7 +165,6 @@ function imageCharCtrl($scope, $http, $rootScope) {
     $scope.init=function(){
     	myChart.showLoading();
     	$http.post("service/getEquipments",$scope.quereyData).success(function(data) {
-    		console.info(data);
     		$scope.equipments = data.resultObj.list;
     		$scope.initKey = (data.resultObj.pageNum-1)*6+1;
     		$scope.nodeList = [];
